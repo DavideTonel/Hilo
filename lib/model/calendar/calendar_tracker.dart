@@ -1,6 +1,5 @@
 import 'package:roadsyouwalked_app/model/calendar/calendar_day.dart';
 import 'package:roadsyouwalked_app/model/calendar/calendar_day_gap_type.dart';
-import 'dart:developer' as dev;
 
 class CalendarTracker {
   //final DateTime currentDate;
