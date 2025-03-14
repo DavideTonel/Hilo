@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:roadsyouwalked_app/bloc/navigation/bloc/navigation_home_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/navigation/home/navigation_home_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/navigation/global/navigation_bloc.dart';
 import 'package:roadsyouwalked_app/navigation/app_router.dart';
 
