@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:roadsyouwalked_app/pages/HomeFeedPage.dart';
+import 'package:roadsyouwalked_app/ui/pages/home/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,9 +12,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'RoadsYouWalked',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.tealAccent),
       ),
-      home: HomeFeedpage(),
+      home: HomePage(),
     );
   }
 }
