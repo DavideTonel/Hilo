@@ -17,8 +17,12 @@ class FeedPage extends StatelessWidget {
       builder: (context, state) {
         return ListView.builder(
           itemCount: state.photos.length,
-          prototypeItem: MemoryCard(),
-          itemBuilder: (context, i) => MemoryCard(),
+          itemBuilder: (context, i) => Padding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: MemoryCard(
+              photo: state.photos[i],
+            ),
+          ),
         );
       },
     );
