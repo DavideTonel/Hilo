@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/media/media_bloc.dart';
 import 'package:roadsyouwalked_app/ui/components/memory_card.dart';
 
 class FeedPage extends StatelessWidget {
@@ -8,10 +10,17 @@ class FeedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final temp = List.generate(10, (i) => i);
 
-    return ListView.builder(
-      itemCount: temp.length,
-      prototypeItem: MemoryCard(),
-      itemBuilder: (context, i) => MemoryCard()
+    return BlocConsumer<MediaBloc, MediaState>(
+      listener: (context, state) {
+        
+      },
+      builder: (context, state) {
+        return ListView.builder(
+          itemCount: state.photos.length,
+          prototypeItem: MemoryCard(),
+          itemBuilder: (context, i) => MemoryCard(),
+        );
+      },
     );
   }
 }

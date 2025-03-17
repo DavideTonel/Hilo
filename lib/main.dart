@@ -29,6 +29,7 @@ class MyAppWithRouter extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<NavigationBloc, NavigationState>(
       builder: (context, state) {
+        // TODO first page will have to be a splash page, in here it must control if user is logged or not and dowload the necessary data
         final appRouter = AppRouter(context.read<NavigationBloc>());
         return MaterialApp.router(
           routerConfig: appRouter.router,
