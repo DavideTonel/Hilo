@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/bloc/media/media_bloc.dart';
-import 'package:roadsyouwalked_app/bloc/navigation/global/navigation_bloc.dart';
-import 'package:roadsyouwalked_app/bloc/navigation/home/navigation_home_bloc.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/calendar_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/feed_page.dart';
 
@@ -13,17 +12,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var navBarIndex = 0;
 
-    return BlocConsumer<NavigationHomeBloc, NavigationHomeState>(
+    return BlocConsumer<MediaBloc, MediaState>(
       listener: (context, state) {
-        switch (state) {
-          case MemoryFeedUI _:
-            context.read<MediaBloc>().add(LoadPhotos());  // TODO only for debug when hot reloading
-            navBarIndex = 0;
-            break;
-          case CalendarUI _:
-            navBarIndex = 1;
-            break;
-        }
+        // TODO based on the state change the navBarIndex value
       },
       builder: (context, state) {
         return Scaffold(
@@ -44,14 +35,10 @@ class HomePage extends StatelessWidget {
             onDestinationSelected: (value) {
               switch (value) {
                 case 0:
-                  context.read<NavigationHomeBloc>().add(
-                    NavigateToMemoryFeed(),
-                  );
+                  // TODO change memories order type here
                   break;
                 case 1:
-                  context.read<NavigationHomeBloc>().add(
-                    NavigateToCalendar(),
-                  );
+                  
                   break;
                 default:
               }
@@ -77,7 +64,7 @@ class HomePage extends StatelessWidget {
           floatingActionButton: Container(
             color: Colors.lightBlueAccent[100],
             child: IconButton(
-              onPressed: () => context.read<NavigationBloc>().add(NavigateToCamera()),
+              onPressed: () => GoRouter.of(context).push("/memory/add/photo"),
               icon: Icon(
                 Icons.add
               )
