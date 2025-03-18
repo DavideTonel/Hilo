@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/bloc/navigation/global/navigation_bloc.dart';
+import 'package:roadsyouwalked_app/ui/pages/entry_point/splash_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/home_page.dart';
 
 class AppRouter {
@@ -8,11 +9,15 @@ class AppRouter {
 
   AppRouter(NavigationBloc navigationBloc) {
     router = GoRouter(
-      initialLocation: "/home",
+      initialLocation: "/",
       routes: [
         GoRoute(
           path: "/home",
           builder: (context, state) => HomePage()
+        ),
+        GoRoute(
+          path: "/",
+          builder: (context, state) => SplashPage()
         ),
       ],
       redirect: (context, state) {
@@ -20,6 +25,8 @@ class AppRouter {
         switch (blocState) {
           case HomeUI _:
             return "/home";
+          case SplashUI _:
+            return "/";
         }
       },
       refreshListenable: GoRouterRefreshStream(navigationBloc.stream)
