@@ -4,3 +4,5 @@ part of 'navigation_bloc.dart';
 sealed class NavigationEvent {}
 
 final class NavigateToHome extends NavigationEvent {}
+
+final class NavigateToCamera extends NavigationEvent {}

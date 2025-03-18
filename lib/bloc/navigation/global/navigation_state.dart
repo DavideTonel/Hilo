@@ -6,3 +6,5 @@ sealed class NavigationState {}
 final class SplashUI extends NavigationState {}
 
 final class HomeUI extends NavigationState {}
+
+final class CameraUI extends NavigationState {}

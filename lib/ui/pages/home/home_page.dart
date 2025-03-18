@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/media/media_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/navigation/global/navigation_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/navigation/home/navigation_home_bloc.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/calendar_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/feed_page.dart';
@@ -72,6 +73,15 @@ class HomePage extends StatelessWidget {
                 label: "Statistics",
               ),
             ],
+          ),
+          floatingActionButton: Container(
+            color: Colors.lightBlueAccent[100],
+            child: IconButton(
+              onPressed: () => context.read<NavigationBloc>().add(NavigateToCamera()),
+              icon: Icon(
+                Icons.add
+              )
+            ),
           ),
         );
       },
