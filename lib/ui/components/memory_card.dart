@@ -15,7 +15,7 @@ class MemoryCard extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
+    return Container(   // TODO make background color
       child: Column(
         children: [
           SizedBox(

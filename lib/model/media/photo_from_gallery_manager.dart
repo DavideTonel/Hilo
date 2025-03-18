@@ -1,19 +1,17 @@
 import 'package:photo_manager/photo_manager.dart';
-import 'dart:developer' as dev;
 
 class PhotoFromGalleryManager {
-  bool hasPermission = false;
 
   Future<void> init() async {
-    // TODO check if permission is already enabled
-    await PhotoManager.requestPermissionExtend().then((result) => {
-      hasPermission = result.isAuth
+    await hasPermission().then((res) async => {
+      if (!res) {
+        await PhotoManager.requestPermissionExtend()
+      }
     });
   }
 
   Future<List<AssetEntity>> loadPhotos() async {
-    if (hasPermission) {
-      dev.log("Yes permission founded when loading photos");
+    if (await hasPermission()) {
       List<AssetPathEntity> assetPaths = await PhotoManager.getAssetPathList(
         type: RequestType.image,
       );
@@ -23,8 +21,15 @@ class PhotoFromGalleryManager {
         return await selectedPath.getAssetListPaged(page: 0, size: 100);
       }
     }
-    dev.log("No permission founded when loading photos");
     return [];
+  }
+
+  Future<bool> hasPermission() async {
+    var res = await PhotoManager.getPermissionState(requestOption: PermissionRequestOption(
+      iosAccessLevel: IosAccessLevel.readWrite,
+      androidPermission: AndroidPermission(type: RequestType.common, mediaLocation: false)
+    ));
+    return res.isAuth;
   }
 }
 

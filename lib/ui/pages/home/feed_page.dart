@@ -8,8 +8,6 @@ class FeedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final temp = List.generate(10, (i) => i);
-
     return BlocConsumer<MediaBloc, MediaState>(
       listener: (context, state) {
         

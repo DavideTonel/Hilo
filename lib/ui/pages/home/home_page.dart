@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/media/media_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/navigation/home/navigation_home_bloc.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/calendar_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/feed_page.dart';
@@ -15,6 +16,7 @@ class HomePage extends StatelessWidget {
       listener: (context, state) {
         switch (state) {
           case MemoryFeedUI _:
+            context.read<MediaBloc>().add(LoadPhotos());  // TODO only for debug when hot reloading
             navBarIndex = 0;
             break;
           case CalendarUI _:
