@@ -6,3 +6,5 @@ sealed class CameraEvent {}
 final class InitializeCamera extends CameraEvent {}
 
 final class DisposeCamera extends CameraEvent {}
+
+final class TakePhoto extends CameraEvent {}

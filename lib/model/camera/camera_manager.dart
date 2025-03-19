@@ -21,4 +21,8 @@ class CameraManager {
   CameraController? getCameraController() {
     return _cameraController;
   }
+
+  Future<XFile?> takePhoto() async {
+    return await _cameraController?.takePicture();
+  }
 }

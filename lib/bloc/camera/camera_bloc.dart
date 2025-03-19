@@ -9,6 +9,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
   CameraBloc() : super(CameraInitial()) {
     on<InitializeCamera>(onInitializeCamera);
     on<DisposeCamera>(onDisposeCamera);
+    on<TakePhoto>(onTakePhoto);
   }
 
   Future<void> onInitializeCamera(
@@ -26,6 +27,17 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     DisposeCamera event,
     Emitter<CameraState> emit
   ) async {
+    state.cameraManager.disposeCamera();
+    //TODO emit state
+  }
 
+  Future<void> onTakePhoto(
+    TakePhoto event,
+    Emitter<CameraState> emit
+  ) async {
+    await state.cameraManager.takePhoto().then((file) {
+      // TODO save photo
+      emit(CameraLoaded(cameraManager: state.cameraManager));
+    });
   }
 }
