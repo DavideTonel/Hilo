@@ -31,7 +31,7 @@ class CameraPreviewPage extends StatelessWidget {
           case CameraInitial():
             dev.log("initial");
             break;
-          case CameraLoading():
+          case CameraLoading():   //TODO unnecessary states
             dev.log("loading");
             break;
           case CameraLoaded _:
@@ -46,9 +46,15 @@ class CameraPreviewPage extends StatelessWidget {
         return Scaffold(
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: ! loading ? IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.circle),
+          floatingActionButton: ! loading ? Padding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.circle,
+                size: 90.0,
+              ),
+            ),
           ) : null,
           body: loading ? CameraLoadingPage() : CameraPreviewWidget(cameraManager: state.cameraManager),
         );
