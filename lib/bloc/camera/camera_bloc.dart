@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:camera/camera.dart';
 import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/model/camera/camera_manager.dart';
 
@@ -28,7 +29,9 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     Emitter<CameraState> emit
   ) async {
     state.cameraManager.disposeCamera();
-    //TODO emit state
+    emit(
+      CameraInitial()
+    );
   }
 
   Future<void> onTakePhoto(
@@ -36,8 +39,12 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     Emitter<CameraState> emit
   ) async {
     await state.cameraManager.takePhoto().then((file) {
-      // TODO save photo
-      emit(CameraLoaded(cameraManager: state.cameraManager));
+      emit(
+        CameraPhotoTaken(
+          cameraManager: state.cameraManager,
+          photoTaken: file!
+        )
+      );
     });
   }
 }
