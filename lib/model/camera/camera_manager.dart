@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:roadsyouwalked_app/ui/pages/camera/camera_access_status.dart';
 
 class CameraManager {
   CameraController? _cameraController;
@@ -7,10 +8,14 @@ class CameraManager {
     return await availableCameras();
   }
 
-  Future<CameraController> initializeCamera(CameraDescription camera) async {
+  Future<CameraAccessStatus> initializeCamera(CameraDescription camera) async {
     _cameraController = CameraController(camera, ResolutionPreset.ultraHigh);
-    await _cameraController!.initialize();
-    return _cameraController!;
+    try {
+      await _cameraController!.initialize();
+      return CameraAccessGranted();
+    } catch (error) {
+      return CameraAccessDenied();
+    }
   }
 
   void disposeCamera() {

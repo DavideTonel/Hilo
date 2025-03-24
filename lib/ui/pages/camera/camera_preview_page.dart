@@ -44,7 +44,8 @@ class CameraPreviewPage extends StatelessWidget {
               child: CameraButton(onPressed: () => context.read<CameraBloc>().add(TakePhoto())),
             );
             break;
-          case CameraError():
+          case CameraDenied():
+            scaffoldBody = Center(child: Text("Camera denied"),);
             break;
           case CameraPhotoTaken():
             scaffoldBody = PhotoConfirmPage();

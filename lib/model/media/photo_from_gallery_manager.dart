@@ -32,9 +32,3 @@ class PhotoFromGalleryManager {
     return res.isAuth;
   }
 }
-
-class Memory {
-  AssetEntity photo;
-
-  Memory({required this.photo});
-}

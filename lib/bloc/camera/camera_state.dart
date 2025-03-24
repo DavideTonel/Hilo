@@ -30,12 +30,9 @@ final class CameraPhotoTaken extends CameraState {
   );
 }
 
-final class CameraError extends CameraState {
-  final String message;
-
-  const CameraError(
+final class CameraDenied extends CameraState {
+  const CameraDenied(
     {
-      required this.message,
       required super.cameraManager
     }
   );
