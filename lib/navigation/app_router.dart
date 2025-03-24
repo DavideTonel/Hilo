@@ -1,6 +1,5 @@
 import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/ui/pages/camera/camera_page.dart';
-import 'package:roadsyouwalked_app/ui/pages/camera/camera_preview_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/entry_point/splash_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/home_page.dart';
 
