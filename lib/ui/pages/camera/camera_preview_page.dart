@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/camera/camera_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/media/media_bloc.dart';
 import 'package:roadsyouwalked_app/ui/components/camera/camera_button.dart';
 
 import 'package:roadsyouwalked_app/ui/components/camera/camera_preview_widget.dart';
@@ -36,6 +37,7 @@ class CameraPreviewPage extends StatelessWidget {
             break;
           case CameraPhotoTaken():
             scaffoldBody = PhotoConfirmPage();
+            context.read<MediaBloc>().add(SavePhoto(name: "Ciao.png", data: state.photoTaken!));
             break;
         }
       },

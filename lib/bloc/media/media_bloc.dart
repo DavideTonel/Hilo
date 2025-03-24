@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:bloc/bloc.dart';
+import 'package:camera/camera.dart';
 import 'package:meta/meta.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:roadsyouwalked_app/model/media/photo_from_gallery_manager.dart';
@@ -10,6 +13,7 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
   MediaBloc() : super(MediaInitial()) {
     on<CheckPermission>(onCheckPermission);
     on<LoadPhotos>(onLoadPhotos);
+    on<SavePhoto>(onSavePhoto);
   }
 
   Future<void> onLoadPhotos(
@@ -43,5 +47,18 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
         )
       );
     }
+  }
+
+  Future<void> onSavePhoto(
+    SavePhoto event,
+    Emitter<MediaState> emit
+  ) async {
+    await state.manager.savePhoto(event.name, event.data);
+    emit(
+      MediaLoaded(
+        photos: state.photos,
+        manager: state.manager
+      )
+    );
   }
 }
