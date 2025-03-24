@@ -1,5 +1,5 @@
 import 'package:camera/camera.dart';
-import 'package:roadsyouwalked_app/ui/pages/camera/camera_access_status.dart';
+import 'package:roadsyouwalked_app/model/camera/camera_access_status.dart';
 
 class CameraManager {
   CameraController? _cameraController;

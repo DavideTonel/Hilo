@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:camera/camera.dart';
 import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/model/camera/camera_manager.dart';
-import 'package:roadsyouwalked_app/ui/pages/camera/camera_access_status.dart';
+import 'package:roadsyouwalked_app/model/camera/camera_access_status.dart';
 
 part 'camera_event.dart';
 part 'camera_state.dart';
