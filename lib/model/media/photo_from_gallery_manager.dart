@@ -11,15 +11,13 @@ class PhotoFromGalleryManager {
   }
 
   Future<List<AssetEntity>> loadPhotos() async {
-    if (await hasPermission()) {
-      List<AssetPathEntity> assetPaths = await PhotoManager.getAssetPathList(
-        type: RequestType.image,
-      );
+    List<AssetPathEntity> assetPaths = await PhotoManager.getAssetPathList(
+      type: RequestType.image,
+    );
 
-      if (assetPaths.isNotEmpty) {
-        AssetPathEntity selectedPath = assetPaths[0];
-        return await selectedPath.getAssetListPaged(page: 0, size: 100);
-      }
+    if (assetPaths.isNotEmpty) {
+      AssetPathEntity selectedPath = assetPaths[0];
+      return await selectedPath.getAssetListPaged(page: 0, size: 100);
     }
     return [];
   }

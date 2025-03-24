@@ -8,6 +8,7 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget body = Center(child: Text("Splash Logo"));
     return BlocConsumer<MediaBloc, MediaState>(
       listener: (context, state) {
         final GoRouter router = GoRouter.of(context);
@@ -17,12 +18,13 @@ class SplashPage extends StatelessWidget {
             router.go("/home");
             break;
           case MediaPermissionDenied _:
+            body = Center(child: Text("Permission Denied"));
             break;
           default:
         }
       },
       builder: (context, state) {
-        return Center(child: Text("Splash Logo"));
+        return body;
       },
     );
   }
