@@ -1,9 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:photo_manager/photo_manager.dart';
-import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
 
 class MemoryCard extends StatelessWidget{
-  final AssetEntity photo;
+  final File photo;
 
   const MemoryCard(
     {
@@ -20,12 +20,11 @@ class MemoryCard extends StatelessWidget{
         children: [
           SizedBox(
             width: size.width,
-            child: AssetEntityImage(
-              photo,
-              isOriginal: true,
-              thumbnailSize: ThumbnailSize(size.width.toInt(), 50),
+            child: Image.file(
+              photo,      // or File(photo.path),
               fit: BoxFit.contain,
               filterQuality: FilterQuality.high,
+              width: size.width,
             ),
           ),
           Padding(

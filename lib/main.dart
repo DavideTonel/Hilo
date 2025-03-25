@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:roadsyouwalked_app/bloc/media/media_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/private_storage/private_storage_bloc.dart';
 import 'package:roadsyouwalked_app/navigation/app_router.dart';
 
 void main() {
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => MediaBloc()),
+        BlocProvider(create: (context) => PrivateStorageBloc()),
       ],
       child: MyAppWithRouter()
     );
@@ -25,7 +25,7 @@ class MyAppWithRouter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<MediaBloc>().add(CheckPermission());
+    //context.read<PrivateStorageBloc>().add(LoadImages());
     final appRouter = AppRouter();
     return MaterialApp.router(
       routerConfig: appRouter.router,

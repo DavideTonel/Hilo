@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:roadsyouwalked_app/bloc/media/media_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/private_storage/private_storage_bloc.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/calendar_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/feed_page.dart';
 
@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var navBarIndex = 0;
 
-    return BlocConsumer<MediaBloc, MediaState>(
+    return BlocConsumer<PrivateStorageBloc, PrivateStorageState>(
       listener: (context, state) {
         // TODO based on the state change the navBarIndex value
       },

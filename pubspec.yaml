@@ -43,6 +43,8 @@ dependencies:
   photo_manager: ^3.6.4
   photo_manager_image_provider: ^2.2.0
   camera: ^0.11.1
+  path_provider: ^2.1.5
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:
