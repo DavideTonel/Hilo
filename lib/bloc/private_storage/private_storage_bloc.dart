@@ -3,6 +3,7 @@ import 'dart:developer' as dev;
 
 import 'package:bloc/bloc.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/model/media/private_storage_media_manager.dart';
 import 'package:roadsyouwalked_app/model/media/private_storage_operation_status.dart';
@@ -37,7 +38,10 @@ class PrivateStorageBloc extends Bloc<PrivateStorageEvent, PrivateStorageState> 
     SaveImage event,
     Emitter<PrivateStorageState> emit
   ) async {
-    await state.manager.saveImage(event.name, event.data).then((value) {
+    await state.manager.saveImage(
+      event.creatorId,
+      event.image
+    ).then((value) {
       emit(
         PrivateStorageLoaded(
           manager: state.manager,
@@ -51,7 +55,9 @@ class PrivateStorageBloc extends Bloc<PrivateStorageEvent, PrivateStorageState> 
     LoadImages event,
     Emitter<PrivateStorageState> emit
   ) async {
-    await state.manager.loadImages().then((images) {
+    await state.manager.loadImages(
+      event.creatorId
+    ).then((images) {
       emit(
         PrivateStorageLoaded(
           manager: state.manager,

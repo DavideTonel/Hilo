@@ -36,7 +36,12 @@ class CameraPreviewPage extends StatelessWidget {
             scaffoldBody = Center(child: Text("Camera denied"),);
             break;
           case CameraPhotoTaken():
-            context.read<PrivateStorageBloc>().add(SaveImage(name: "ciao.png", data: state.photoTaken!));
+            context.read<PrivateStorageBloc>().add(
+              SaveImage(
+                creatorId: "test_user_1",
+                image: state.photoTaken!
+              )
+            );
             scaffoldBody = PhotoConfirmPage();
             break;
         }

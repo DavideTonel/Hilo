@@ -6,14 +6,14 @@ sealed class PrivateStorageEvent {}
 final class Initialize extends PrivateStorageEvent {}
 
 final class SaveImage extends PrivateStorageEvent {
-  final String name;
-  final XFile data;
+  final String creatorId;
+  final XFile image;
 
-  SaveImage({required this.name, required this.data});
+  SaveImage({required this.creatorId, required this.image});
 }
 
 final class LoadImages extends PrivateStorageEvent {
-  final String directoryPath;
+  final String creatorId;
 
-  LoadImages({required this.directoryPath});
+  LoadImages({required this.creatorId});
 }

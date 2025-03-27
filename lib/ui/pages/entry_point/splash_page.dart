@@ -22,7 +22,11 @@ class SplashPage extends StatelessWidget {
             break;
           case PrivateStorageLoading _:
             dev.log("state loading");
-            context.read<PrivateStorageBloc>().add(LoadImages(directoryPath: path.join("userTest", "media")));            
+            context.read<PrivateStorageBloc>().add(
+              LoadImages(
+                creatorId: "test_user_1"
+              )
+            );            
             break;
           case PrivateStorageLoaded _:
             dev.log("state loaded");
