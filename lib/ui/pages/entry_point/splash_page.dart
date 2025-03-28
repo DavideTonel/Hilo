@@ -11,7 +11,6 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget body = Center(child: Text("Splash Logo"));
     context.read<PrivateStorageBloc>().add(Initialize());
-    //context.read<PrivateStorageBloc>().add(LoadImages(directoryPath: path.join("userTest", "media")));
     return BlocConsumer<PrivateStorageBloc, PrivateStorageState>(
       listener: (context, state) {
         final GoRouter router = GoRouter.of(context);
