@@ -1,4 +1,7 @@
 import 'package:go_router/go_router.dart';
+import 'package:roadsyouwalked_app/ui/pages/authentication/authentication_page.dart';
+import 'package:roadsyouwalked_app/ui/pages/authentication/login/login_page.dart';
+import 'package:roadsyouwalked_app/ui/pages/authentication/signup/signup_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/camera/camera_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/entry_point/splash_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/home_page.dart';
@@ -8,15 +11,24 @@ class AppRouter {
 
   AppRouter() {
     router = GoRouter(
-      initialLocation: "/",
+      initialLocation: "/auth",
       routes: [
         GoRoute(
           path: "/home",
           builder: (context, state) => HomePage()
         ),
         GoRoute(
-          path: "/",
-          builder: (context, state) => SplashPage()
+          path: "/auth",
+          //builder: (context, state) => SplashPage()
+          builder: (context, state) => AuthenticationPage()
+        ),
+        GoRoute(
+          path: "/auth/login",
+          builder: (context, state) => LoginPage()
+        ),
+        GoRoute(
+          path: "/auth/signup",
+          builder: (context, state) => SignupPage()
         ),
         GoRoute(
           path: "/memory/add/photo",
