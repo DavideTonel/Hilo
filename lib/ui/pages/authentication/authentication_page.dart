@@ -13,10 +13,8 @@ class AuthenticationPage extends StatelessWidget {
       listener: (context, state) {
         switch (state) {
           case Unauthenticated _:
+            //context.read<AuthBloc>().add(RequestLogin());
             GoRouter.of(context).go("/auth/login");
-            context.read<AuthBloc>().add(RequestLogin());
-            break;
-          case LoginRequested _:
             break;
           case Authenticated _:
             break;

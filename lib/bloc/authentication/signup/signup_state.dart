@@ -1,12 +1,40 @@
 part of 'signup_bloc.dart';
 
 @immutable
-sealed class SignupState {}
+sealed class SignupState {
+  final bool validUsername;
 
-final class SignupInitial extends SignupState {}
+  const SignupState({required this.validUsername});
+}
 
-final class SignupLoading extends SignupState {}
+final class SignupInitial extends SignupState {
+  const SignupInitial(
+    {
+      super.validUsername = false,
+    }
+  );
+}
 
-final class SignupSuccess extends SignupState {}
+final class SignupLoading extends SignupState {
+  const SignupLoading(
+    {
+      required super.validUsername
+    }
+  );
+}
 
-final class SignupFailure extends SignupState {}
+final class SignupSuccess extends SignupState {
+  const SignupSuccess(
+    {
+      required super.validUsername
+    }
+  );
+}
+
+final class SignupFailure extends SignupState {
+  const SignupFailure(
+    {
+      required super.validUsername
+    }
+  );
+}

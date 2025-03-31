@@ -1,24 +1,33 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:roadsyouwalked_app/db/user/user_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc() : super(AuthInitial()) {
+  final UserRepository _userRepository;
+
+  AuthBloc(this._userRepository) : super(AuthInitial()) {
     on<CheckAutoLogin>(onCheckAutoLogin);
-    on<RequestLogin>((event, emit) => emit(LoginRequested()));
   }
 
   Future<void> onCheckAutoLogin(
     CheckAutoLogin event,
     Emitter<AuthState> emit,
   ) async {
-    // Simulate a delay for auto-login check
-    await Future.delayed(const Duration(seconds: 1));
-
-    // Here you would typically check if the user is already logged in
-    // For this example, we'll just emit the Unauthenticated state
-    emit(Unauthenticated());
+    try {
+      final SharedPreferencesAsync prefs = SharedPreferencesAsync();
+      final username = await prefs.getString("username");
+      final password = await prefs.getString("password");
+      if (username != null && password != null) {
+        await _userRepository.checkUserExists(username, password).then((res) => res ? emit(Authenticated()) : emit(Unauthenticated()));
+      } else {
+        emit(Unauthenticated());
+      }
+    } catch (e) {
+      emit(Unauthenticated());
+    }
   }
 }
