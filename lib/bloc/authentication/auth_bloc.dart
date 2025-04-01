@@ -1,7 +1,8 @@
+import 'dart:developer' as dev;
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/db/user/user_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -18,15 +19,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     try {
-      final SharedPreferencesAsync prefs = SharedPreferencesAsync();
-      final username = await prefs.getString("username");
-      final password = await prefs.getString("password");
-      if (username != null && password != null) {
-        await _userRepository.checkUserExists(username, password).then((res) => res ? emit(Authenticated()) : emit(Unauthenticated()));
+      final map = await _userRepository.getAutoLoginCredentials();
+      if (map != null) {
+        final String username = map["username"]!;
+        final String password = map["password"]!;
+        await _userRepository
+          .checkUserExists(username, password)
+          .then((res) => res 
+            ? emit(
+              Authenticated(
+                username: username,
+                password: password,
+              )
+            ) : emit(
+              Unauthenticated()
+            )
+          );
       } else {
         emit(Unauthenticated());
       }
     } catch (e) {
+      dev.log(e.toString());
       emit(Unauthenticated());
     }
   }

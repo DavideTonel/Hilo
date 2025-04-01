@@ -51,7 +51,6 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           }
         }
       );
-      //).then((res) => res ? emit(SignupSuccess(validUsername: state.validUsername)) : emit(SignupFailure(validUsername: state.validUsername)));
     } catch (e) {
       dev.log(e.toString());
       emit(SignupFailure(validUsername: state.validUsername));  // TODO: add error message

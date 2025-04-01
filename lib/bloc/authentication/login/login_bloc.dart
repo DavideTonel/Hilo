@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/db/user/user_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -15,7 +14,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Future<void> onLoginRequest(LoginRequest event, Emitter<LoginState> emit) async {
-    //emit(LoginLoading());
     try {
       await _userRepository
       .checkUserExists(
@@ -26,15 +24,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if (res) {
           emit(LoginGranted(rememberUser: state.rememberUser));
           if (state.rememberUser) {
-            final SharedPreferencesAsync prefs = SharedPreferencesAsync();
-            await prefs.setString("username", event.username);
-            await prefs.setString("password", event.password);
+            await _userRepository.setAutoLoginCredentials(
+              event.username,
+              event.password
+            );
           }
         } else {
           emit(LoginDenied(rememberUser: state.rememberUser));
         }
       });
-      //.then((res) => res ? emit(LoginSuccess(rememberUser: state.rememberUser)) : emit(LoginFailure(rememberUser: state.rememberUser)));
     } catch (e) {
       emit(LoginDenied(rememberUser: state.rememberUser)); // TODO: add error message
     }
