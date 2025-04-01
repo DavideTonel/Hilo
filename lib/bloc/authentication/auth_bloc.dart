@@ -2,7 +2,7 @@ import 'dart:developer' as dev;
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:roadsyouwalked_app/db/user/user_repository.dart';
+import 'package:roadsyouwalked_app/data/repository/user_repository.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

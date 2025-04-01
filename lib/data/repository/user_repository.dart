@@ -1,6 +1,6 @@
-import 'package:roadsyouwalked_app/db/user/user_dao.dart';
+import 'package:roadsyouwalked_app/data/db/dao/user_dao.dart';
 import 'package:roadsyouwalked_app/model/authentication/user.dart';
-import 'package:roadsyouwalked_app/shared_preferences/shared_preferences_manager.dart';
+import 'package:roadsyouwalked_app/data/shared_preferences/shared_preferences_manager.dart';
 
 class UserRepository {
   final UserDao _userDao = UserDao();

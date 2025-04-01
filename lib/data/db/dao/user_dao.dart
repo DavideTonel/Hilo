@@ -1,5 +1,5 @@
 import 'dart:developer' as dev;
-import 'package:roadsyouwalked_app/db/database_manager.dart';
+import 'package:roadsyouwalked_app/data/db/database_manager.dart';
 import 'package:roadsyouwalked_app/model/authentication/user.dart';
 import 'package:sqflite/sqflite.dart';
 

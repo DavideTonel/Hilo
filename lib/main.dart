@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/authentication/auth_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/private_storage/private_storage_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
-import 'package:roadsyouwalked_app/db/user/user_repository.dart';
+import 'package:roadsyouwalked_app/data/repository/user_repository.dart';
 import 'package:roadsyouwalked_app/navigation/app_router.dart';
 
 // TODO: how to create only ona UserRepository to all blocs?

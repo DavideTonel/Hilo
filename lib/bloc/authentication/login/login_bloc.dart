@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:roadsyouwalked_app/db/user/user_repository.dart';
+import 'package:roadsyouwalked_app/data/repository/user_repository.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
