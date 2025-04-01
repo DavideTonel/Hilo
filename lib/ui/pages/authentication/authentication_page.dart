@@ -17,6 +17,8 @@ class AuthenticationPage extends StatelessWidget {
             GoRouter.of(context).go("/auth/login");
             break;
           case Authenticated _:
+            // [ ] go to home
+            // [ ] load user
             break;
           default:
         }

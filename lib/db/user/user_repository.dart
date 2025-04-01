@@ -15,4 +15,9 @@ class UserRepository {
   Future<bool> createUser(final User user) async {
     return await _userDao.createUser(user);
   }
+
+  Future<User?> getUser(final String username, final String password) async {
+    final List<User> users = await _userDao.getUser(username, password);
+    return users.first;
+  }
 }

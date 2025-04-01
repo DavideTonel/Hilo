@@ -19,10 +19,10 @@ final class LoginLoading extends LoginState {
   const LoginLoading({required super.rememberUser});
 }
 
-final class LoginSuccess extends LoginState {
-  const LoginSuccess({required super.rememberUser});
+final class LoginGranted extends LoginState {
+  const LoginGranted({required super.rememberUser});
 }
 
-final class LoginFailure extends LoginState {
-  const LoginFailure({required super.rememberUser});
+final class LoginDenied extends LoginState {
+  const LoginDenied({required super.rememberUser});
 }

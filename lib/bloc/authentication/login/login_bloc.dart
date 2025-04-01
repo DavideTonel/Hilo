@@ -24,19 +24,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       )
       .then((res) async {
         if (res) {
-          emit(LoginSuccess(rememberUser: state.rememberUser));
+          emit(LoginGranted(rememberUser: state.rememberUser));
           if (state.rememberUser) {
             final SharedPreferencesAsync prefs = SharedPreferencesAsync();
             await prefs.setString("username", event.username);
             await prefs.setString("password", event.password);
           }
         } else {
-          emit(LoginFailure(rememberUser: state.rememberUser));
+          emit(LoginDenied(rememberUser: state.rememberUser));
         }
       });
       //.then((res) => res ? emit(LoginSuccess(rememberUser: state.rememberUser)) : emit(LoginFailure(rememberUser: state.rememberUser)));
     } catch (e) {
-      emit(LoginFailure(rememberUser: state.rememberUser)); // TODO: add error message
+      emit(LoginDenied(rememberUser: state.rememberUser)); // TODO: add error message
     }
   }
 }

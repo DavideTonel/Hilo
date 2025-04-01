@@ -18,12 +18,15 @@ class HomePage extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
-            title:
-                navBarIndex == 0
-                    ? Text("For you", style: TextStyle(fontSize: 20))
-                    : null,
-          ),
+          appBar: navBarIndex == 0 ? AppBar(
+            title: Text("For you", style: TextStyle(fontSize: 20)),
+            actions: [
+              IconButton(
+                onPressed: () => GoRouter.of(context).push("/home/profile"),
+                icon: Icon(Icons.person),
+              ),
+            ],
+          ) : null,
           body: switch (navBarIndex) {
             0 => FeedPage(),
             1 => CalendarPage(),

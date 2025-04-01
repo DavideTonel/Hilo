@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/bloc/authentication/login/login_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 
+import 'dart:developer' as dev;
+
+// [ ] should be a statefull widget to manage the text field controllers?
 class LoginInfoPage extends StatelessWidget {
   final TextEditingController _usernameTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
@@ -10,27 +14,50 @@ class LoginInfoPage extends StatelessWidget {
 
   LoginInfoPage({super.key});
 
+  void _onLoginSuccess(BuildContext context) {
+    final userBloc = context.read<UserBloc>();
+    final router = GoRouter.of(context);
+    userBloc.add(
+      Login(
+        username: _usernameTextController.text,
+        password: _passwordTextController.text,
+      )
+    );
+    userBloc.stream.listen((state) {
+      if (state is UserLoaded) {
+        dev.log("Login success");
+        router.go("/home");
+      } else if (state is UserInitial) {
+        dev.log("User not loaded");
+      }
+    });
+  }
+
+  void _onLoginFailure(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          "Wrong username or password",
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(255, 159, 23, 14),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
         switch (state) {
-          case LoginSuccess _:
-            GoRouter.of(context).go("/home");
+          case LoginGranted _:
+            _onLoginSuccess(context);
             break;
-          case LoginFailure _:
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  "Wrong username or password",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                backgroundColor: const Color.fromARGB(255, 159, 23, 14),
-                duration: Duration(seconds: 3),
-              ),
-            );
+          case LoginDenied _:
+            _onLoginFailure(context);
             break;
           default:
         }

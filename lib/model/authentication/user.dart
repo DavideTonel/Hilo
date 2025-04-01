@@ -14,4 +14,13 @@ class User {
       //required this.birthday
     }
   );
+
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
+      username: map['username'] as String,
+      password: map['password'] as String,
+      firstName: map['firstName'] as String,
+      lastName:  map['lastName'] as String,
+    );
+  }
 }

@@ -4,6 +4,7 @@ import 'package:roadsyouwalked_app/ui/pages/authentication/login/login_page.dart
 import 'package:roadsyouwalked_app/ui/pages/authentication/signup/signup_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/camera/camera_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/home_page.dart';
+import 'package:roadsyouwalked_app/ui/pages/user/user_page.dart';
 
 class AppRouter {
   late final GoRouter router;
@@ -15,6 +16,10 @@ class AppRouter {
         GoRoute(
           path: "/home",
           builder: (context, state) => HomePage()
+        ),
+        GoRoute(
+          path: "/home/profile",
+          builder: (context, state) => UserPage()
         ),
         GoRoute(
           path: "/auth",

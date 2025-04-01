@@ -42,6 +42,8 @@ class UserDao {
         {
           'username': user.username,
           'password': user.password,
+          'firstName': user.firstName,
+          'lastName': user.lastName,
         },
         conflictAlgorithm: ConflictAlgorithm.abort,
       );
@@ -49,6 +51,21 @@ class UserDao {
     } catch (e) {
       dev.log(e.toString());
       return false;
+    }
+  }
+
+  Future<List<User>> getUser(final String username, final String password) async {
+    try {
+      final db = await dbManager.database;
+      final List<Map<String, dynamic>> result = await db.query(
+        'User',
+        where: 'username = ? AND password = ?',
+        whereArgs: [username, password],
+      );
+      return result.map((elem) => User.fromMap(elem)).toList();
+    } catch (e) {
+      dev.log(e.toString());
+      return [];
     }
   }
 }

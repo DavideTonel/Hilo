@@ -15,14 +15,16 @@ class DatabaseManager {
 
   Future<Database> initializeDB() async {
     return openDatabase(
-      join(await getDatabasesPath(), "test__1.db"),
+      join(await getDatabasesPath(), "test__2.db"),
       version: 1,
       onCreate: (db, version) {
         return db.execute(
         """
           CREATE TABLE User(
             username TEXT PRIMARY KEY,
-            password TEXT NOT NULL
+            password TEXT NOT NULL,
+            firstName TEXT NOT NULL,
+            lastName TEXT NOT NULL
           )
         """
         );
@@ -30,4 +32,4 @@ class DatabaseManager {
     );
   }
 }
-// TODO: add close
+// TODO: add close method
