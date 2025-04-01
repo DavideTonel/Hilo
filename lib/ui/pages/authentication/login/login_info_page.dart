@@ -14,7 +14,7 @@ class LoginInfoPage extends StatelessWidget {
 
   LoginInfoPage({super.key});
 
-  void _onLoginSuccess(BuildContext context) {
+  void _onLoginGranted(BuildContext context) {
     final userBloc = context.read<UserBloc>();
     final router = GoRouter.of(context);
     userBloc.add(
@@ -33,7 +33,7 @@ class LoginInfoPage extends StatelessWidget {
     });
   }
 
-  void _onLoginFailure(BuildContext context) {
+  void _onLoginDenied(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -54,10 +54,10 @@ class LoginInfoPage extends StatelessWidget {
       listener: (context, state) {
         switch (state) {
           case LoginGranted _:
-            _onLoginSuccess(context);
+            _onLoginGranted(context);
             break;
           case LoginDenied _:
-            _onLoginFailure(context);
+            _onLoginDenied(context);
             break;
           default:
         }
