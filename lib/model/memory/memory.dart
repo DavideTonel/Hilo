@@ -1,27 +1,18 @@
-import 'package:roadsyouwalked_app/model/memory/data/memory_data.dart';
+import 'package:roadsyouwalked_app/model/media/media.dart';
+import 'package:roadsyouwalked_app/model/memory/memory_data/memory_data.dart';
 
 class Memory {
-  final String id;
   final MemoryData data;
+  List<Media> mediaList;
 
   Memory(
     {
-      required this.id,
-      required this.data
+      required this.data,
+      this.mediaList = const []
     }
   );
 
   Map<String, dynamic> toMap() {
-    return {
-      "id": id,
-      "data": data.toMap(),
-    };
-  }
-
-  factory Memory.fromMap(Map<String, dynamic> map) {
-    return Memory(
-      id: map["id"] as String,
-      data: MemoryData.fromMap(map["data"] as Map<String, dynamic>),
-    );
+    return data.toMap();
   }
 }

@@ -1,14 +1,14 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:roadsyouwalked_app/model/memory/memory.dart';
+import 'package:roadsyouwalked_app/ui/components/media/image/local_image_widget.dart';
 
 class MemoryCard extends StatelessWidget{
-  final File photo;
+  final Memory memory;
 
   const MemoryCard(
     {
       super.key,
-      required this.photo
+      required this.memory
     }
   );
 
@@ -18,14 +18,10 @@ class MemoryCard extends StatelessWidget{
     return Container(   // TODO make background color
       child: Column(
         children: [
-          SizedBox(
+          LocalImageWidget(
+            path: memory.mediaList.first.reference,
             width: size.width,
-            child: Image.file(
-              photo,      // or File(photo.path),
-              fit: BoxFit.contain,
-              filterQuality: FilterQuality.high,
-              width: size.width,
-            ),
+            height: size.height * 0.50,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5.0),

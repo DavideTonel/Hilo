@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/camera/camera_bloc.dart';
-import 'package:roadsyouwalked_app/bloc/private_storage/private_storage_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
+import 'package:roadsyouwalked_app/model/media/media_type.dart';
 import 'package:roadsyouwalked_app/ui/components/camera/camera_button.dart';
 
 import 'package:roadsyouwalked_app/ui/components/camera/camera_preview_widget.dart';
@@ -36,10 +40,11 @@ class CameraPreviewPage extends StatelessWidget {
             scaffoldBody = Center(child: Text("Camera denied"),);
             break;
           case CameraPhotoTaken():
-            context.read<PrivateStorageBloc>().add(
-              SaveImage(
-                creatorId: "test_user_1",
-                image: state.photoTaken!
+            context.read<MemoryBloc>().add(
+              SaveMemory(
+                creatorId: context.read<UserBloc>().state.user!.username,
+                type: MediaType.image, 
+                file: File(state.photoTaken!.path)
               )
             );
             scaffoldBody = PhotoConfirmPage();

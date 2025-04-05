@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/authentication/auth_bloc.dart';
-import 'package:roadsyouwalked_app/bloc/private_storage/private_storage_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
+import 'package:roadsyouwalked_app/data/repository/memory_repository.dart';
 import 'package:roadsyouwalked_app/data/repository/user_repository.dart';
 import 'package:roadsyouwalked_app/navigation/app_router.dart';
 
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AuthBloc(UserRepository())..add(CheckAutoLogin())),
-        BlocProvider(create: (context) => PrivateStorageBloc()),
+        BlocProvider(create: (context) => MemoryBloc(MemoryRepository())),
         BlocProvider(create: (context) => UserBloc(UserRepository()))
       ],
       child: MyAppWithRouter()

@@ -3,7 +3,6 @@ import 'package:roadsyouwalked_app/data/db/database_manager.dart';
 import 'package:roadsyouwalked_app/model/authentication/user.dart';
 import 'package:sqflite/sqflite.dart';
 
-// TODO: methods user from map e user to map
 // TODO: change '' to ""
 // TODO: make dbManager private
 class UserDao {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/bloc/authentication/auth_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 
 import 'dart:developer' as dev;
@@ -11,6 +12,7 @@ class AuthenticationPage extends StatelessWidget {
 
   _onAuthenticationGranted(BuildContext context, AuthState state) {
     final userBloc = context.read<UserBloc>();
+    final memoriesBloc = context.read<MemoryBloc>();
     final router = GoRouter.of(context);
     userBloc.add(
       Login(
@@ -21,6 +23,7 @@ class AuthenticationPage extends StatelessWidget {
     userBloc.stream.listen((state) {
       if (state is UserLoaded) {
         dev.log("Login success");
+        memoriesBloc.add(LoadMemoriesByUserId(userId: userBloc.state.user!.username));
         router.go("/home");
       } else if (state is UserInitial) {
         dev.log("User not loaded");
