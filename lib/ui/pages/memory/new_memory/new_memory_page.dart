@@ -34,6 +34,9 @@ class NewMemoryPageState extends State<NewMemoryPage> {
                 onSaveMedia: (localFile, remoteUri, mediaType) {
                   context.read<NewMemoryBloc>().add(AddMedia(localFile: localFile, remoteUri: remoteUri, mediaType: mediaType));
                 },
+                onChangeDescription: (description) {
+                  context.read<NewMemoryBloc>().add(SetDescription(description: description));
+                }
               ),
               MoodEvalutaionPage(),
               Scaffold(

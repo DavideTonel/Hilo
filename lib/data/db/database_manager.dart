@@ -15,7 +15,7 @@ class DatabaseManager {
 
   Future<Database> initializeDB() async {
     return openDatabase(
-      join(await getDatabasesPath(), "uni_test_4.db"),
+      join(await getDatabasesPath(), "uni_test_5.db"),
       version: 1,
       onCreate: (db, version) async {
         await db.execute(
@@ -34,6 +34,7 @@ class DatabaseManager {
               id TEXT NOT NULL,
               creatorId TEXT NOT NULL,
               timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+              description TEXT,
               PRIMARY KEY (id, creatorId),
               FOREIGN KEY (creatorId) REFERENCES User(username) ON DELETE CASCADE
             );

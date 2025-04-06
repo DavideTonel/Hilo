@@ -38,9 +38,7 @@ class MemoryCard extends StatelessWidget{
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
-              "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum",
-            ),
+            child: Text(memory.data.core.description ?? ""),  // TODO remove if no description is present
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),

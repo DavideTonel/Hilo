@@ -10,8 +10,9 @@ import 'package:roadsyouwalked_app/ui/pages/memory/new_memory/new_memory_text_pa
 
 class NewMemoryInputPage extends StatefulWidget {
   final void Function(File? localFile, String? remoteUri, MediaType mediaType) onSaveMedia;
+  final void Function(String description) onChangeDescription;
 
-  const NewMemoryInputPage({super.key, required this.onSaveMedia});
+  const NewMemoryInputPage({super.key, required this.onSaveMedia, required this.onChangeDescription});
 
   @override
   NewMemoryInputPageState createState() => NewMemoryInputPageState();
@@ -33,7 +34,9 @@ class NewMemoryInputPageState extends State<NewMemoryInputPage> {
           CameraPage(
             onSaveMedia: widget.onSaveMedia,
           ),
-          NewMemoryTextPage(),
+          NewMemoryTextPage(
+            onChangeDescription: widget.onChangeDescription
+          ),
           NewMemoryAudioPage()
         ],
       ),

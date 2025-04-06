@@ -22,16 +22,11 @@ class MemoryRepository {
       List<Media> mediaList = await _mediaDao.getMediaByMemoryId(memory.data.core.id, memory.data.core.creatorId);
       // #3 add mediaList to memory
       memory.mediaList = mediaList;
-      dev.log('memory: ${memory.data.core.id}\tmediaList: ${mediaList.length}');
     }
     return memories;
   }
 
   Future<void> saveMemory(MemoryData memoryData, List<PendingMedia> pendingMediaList) async {
-    //final creatorId = memoryData.core.creatorId;
-    //final timestamp = memoryData.core.timestamp;
-    //final memoryId = "${creatorId}_$timestamp";
-
     await DatabaseManager.instance.database.then((db) {
       // #0 start transaction
       db.transaction((transaction) async {
@@ -49,13 +44,8 @@ class MemoryRepository {
             final Media media = await _mediaStorageService.saveMedia(pendingMedia);
 
             // #3 save media in the database
-            //if (media.reference != null) {
             await _mediaDao.insertMedia(media, transaction);
-            //} else {
-              //throw Exception("Error saving media: ${media.id}");
-            //}
           }
-          //dev.log("Memory and media saved successfully");
         } catch (e) {
           // # 0 roll back transaction
           dev.log(e.toString());

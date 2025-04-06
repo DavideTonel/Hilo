@@ -2,12 +2,14 @@ class MemoryCoreData {
   final String id;
   final String creatorId;
   final String timestamp;
+  final String? description;
 
   MemoryCoreData(
     {
       required this.id,
       required this.creatorId,
-      required this.timestamp
+      required this.timestamp,
+      this.description
     }
   );
 
@@ -15,7 +17,8 @@ class MemoryCoreData {
     return {
       "id": id,
       "creatorId": creatorId,
-      "timestamp": timestamp
+      "timestamp": timestamp,
+      "description": description
     };
   }
 
@@ -23,7 +26,8 @@ class MemoryCoreData {
     return MemoryCoreData(
       id: map["id"] as String,
       creatorId: map["creatorId"] as String,
-      timestamp: map["timestamp"] as String
+      timestamp: map["timestamp"] as String,
+      description: map["description"] as String
     );
   }
 }

@@ -23,4 +23,10 @@ final class AddMedia extends NewMemoryEvent {
   );
 }
 
+final class SetDescription extends NewMemoryEvent {
+  final String description;
+
+  SetDescription({required this.description});
+}
+
 final class SaveMemory extends NewMemoryEvent {}

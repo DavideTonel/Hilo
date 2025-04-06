@@ -23,6 +23,16 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
   NewMemoryBloc() : super(NewMemoryInitial()) {
     on<Initialize>(onInitialize);
     on<AddMedia>(onAddMedia);
+    on<SetDescription>((event, emit) {
+      emit(
+        NewMemoryInProgress(
+          memoryId: state.memoryId,
+          creatorId: state.creatorId,
+          description: event.description,
+          mediaList: state.mediaList
+        )
+      );
+    });
     on<SaveMemory>(onSaveMemory);
   }
 
@@ -88,7 +98,8 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
           core: MemoryCoreData(
             id: state.memoryId!,
             creatorId: state.creatorId!,
-            timestamp: DateTime.now().toIso8601String()
+            timestamp: DateTime.now().toIso8601String(),
+            description: state.description
           )
         ), 
         state.mediaList
