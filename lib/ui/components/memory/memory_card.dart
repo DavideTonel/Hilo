@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
 import 'package:roadsyouwalked_app/ui/components/media/image/local_image_widget.dart';
 
@@ -15,6 +16,7 @@ class MemoryCard extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final date = DateFormat('dd/MM/yyyy   HH:mm').format(DateTime.parse(memory.data.core.timestamp));
     return Container(   // TODO make background color
       child: Column(
         children: [
@@ -45,9 +47,7 @@ class MemoryCard extends StatelessWidget{
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  "19/12/2000"
-                ),
+                Text(date),
               ],
             ),
           )
