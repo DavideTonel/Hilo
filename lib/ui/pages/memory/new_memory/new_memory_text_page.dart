@@ -16,8 +16,7 @@ class NewMemoryTextPage extends StatelessWidget {
               onChangeDescription(value);
             },
             decoration: InputDecoration(
-              labelText: 'Descrivi la tua memoria...',
-              hintText: 'Scrivi una descrizione lunga qui',
+              labelText: 'How are you feeling?',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
