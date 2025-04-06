@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class NewMemoryTextPage extends StatelessWidget {
   final void Function(String description) onChangeDescription;
+  
   const NewMemoryTextPage({super.key, required this.onChangeDescription});
 
   @override
