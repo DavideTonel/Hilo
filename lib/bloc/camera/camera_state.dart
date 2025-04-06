@@ -21,8 +21,17 @@ final class CameraLoaded extends CameraState {
   const CameraLoaded({required super.cameraManager});
 }
 
-final class CameraPhotoTaken extends CameraState {
-  const CameraPhotoTaken(
+final class CameraMediaTaken extends CameraState {
+  const CameraMediaTaken(
+    {
+      required super.cameraManager,
+      required super.photoTaken
+    }
+  );
+}
+
+final class CameraMediaAccepted extends CameraState {
+  const CameraMediaAccepted(
     {
       required super.cameraManager,
       required super.photoTaken

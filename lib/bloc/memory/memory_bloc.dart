@@ -17,8 +17,8 @@ part 'memory_event.dart';
 part 'memory_state.dart';
 
 // TODO:
-// 2. create UI to create a memory
-// 3. create new bloc to handle memory creation
+// 1. create UI to create a memory
+// 2. create new bloc to handle memory creation
 class MemoryBloc extends Bloc<MemoryEvent, MemoryState> {
   final MemoryRepository _memoryRepository;
 

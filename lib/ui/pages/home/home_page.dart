@@ -67,7 +67,8 @@ class HomePage extends StatelessWidget {
           floatingActionButton: Container(
             color: Colors.lightBlueAccent[100],
             child: IconButton(
-              onPressed: () => GoRouter.of(context).push("/memory/add/photo"),
+              //onPressed: () => GoRouter.of(context).push("/memory/add/photo"),
+              onPressed: () => GoRouter.of(context).push("/memory/add"),
               icon: Icon(
                 Icons.add
               )

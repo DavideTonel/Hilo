@@ -8,7 +8,7 @@ import 'package:sqflite/sqflite.dart';
 class MediaDao {
   final DatabaseManager _dbManager = DatabaseManager.instance;
 
-  Future<String?> insertMedia(Media media, Transaction? transaction) async {
+  Future<String?> insertMedia(final Media media, final Transaction? transaction) async {
     dev.log("media source type: ${media.sourceType.value}");
     try {
       final controller = transaction ?? await _dbManager.database;
@@ -24,7 +24,7 @@ class MediaDao {
     }
   }
 
-  Future<Media?> getMediaById(String id) async {
+  Future<Media?> getMediaById(final String id) async {
     try {
       final db = await _dbManager.database;
       return await db.query(
@@ -46,7 +46,7 @@ class MediaDao {
     }
   }
 
-  Future<List<Media>> getMediaByMemoryId(String memoryId, String creatorId) async {
+  Future<List<Media>> getMediaByMemoryId(final String memoryId, final String creatorId) async {
     try {
       final db = await _dbManager.database;
       return await db.query(
@@ -57,6 +57,20 @@ class MediaDao {
     } catch (e) {
       dev.log(e.toString());
       return [];
+    }
+  }
+
+  Future<bool> isValidId(final String id) async {
+    try {
+      final db = await _dbManager.database;
+      return await db.query(
+        "Media",
+        where: "id = ?",
+        whereArgs: [id]
+      ).then((res) => res.isEmpty);
+    } catch (e) {
+      dev.log(e.toString());
+      return false;
     }
   }
 }

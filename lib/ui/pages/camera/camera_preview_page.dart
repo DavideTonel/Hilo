@@ -1,63 +1,23 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
-import 'package:roadsyouwalked_app/bloc/camera/camera_bloc.dart';
-import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
-import 'package:roadsyouwalked_app/model/media/media_type.dart';
+import 'package:roadsyouwalked_app/model/camera/camera_manager.dart';
 import 'package:roadsyouwalked_app/ui/components/camera/camera_button.dart';
-
 import 'package:roadsyouwalked_app/ui/components/camera/camera_preview_widget.dart';
-import 'package:roadsyouwalked_app/ui/components/camera/photo_confirm_page.dart';
-import 'package:roadsyouwalked_app/ui/pages/camera/camera_loading_page.dart';
 
 class CameraPreviewPage extends StatelessWidget {
-  const CameraPreviewPage({super.key});
+  final VoidCallback onCameraTap;
+  final CameraManager cameraManager;
+
+  const CameraPreviewPage({super.key, required this.cameraManager, required this.onCameraTap});
 
   @override
   Widget build(BuildContext context) {
-    context.read<CameraBloc>().add(InitializeCamera());
-
-    Widget scaffoldBody = CameraLoadingPage();
-    Widget? scaffoldActionButton;
-
-    return BlocConsumer<CameraBloc, CameraState>(
-      listener: (context, state) {
-        switch (state) {
-          case CameraInitial():
-            break;
-          case CameraLoaded():
-            scaffoldBody = CameraPreviewWidget(
-              cameraManager: state.cameraManager,
-            );
-            scaffoldActionButton = Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: CameraButton(onPressed: () => context.read<CameraBloc>().add(TakePhoto())),
-            );
-            break;
-          case CameraDenied():
-            scaffoldBody = Center(child: Text("Camera denied"),);
-            break;
-          case CameraPhotoTaken():
-            context.read<MemoryBloc>().add(
-              SaveMemory(
-                creatorId: context.read<UserBloc>().state.user!.username,
-                type: MediaType.image, 
-                file: File(state.photoTaken!.path)
-              )
-            );
-            scaffoldBody = PhotoConfirmPage();
-            break;
-        }
-      },
-      builder: (context, state) {
-        return Scaffold(
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: scaffoldActionButton,
-          body: scaffoldBody
-        );
-      },
+    return Scaffold(
+      body: CameraPreviewWidget(cameraManager: cameraManager),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: CameraButton(onPressed: onCameraTap),
+      ),
     );
   }
 }

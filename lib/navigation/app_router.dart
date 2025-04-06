@@ -2,8 +2,8 @@ import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/ui/pages/authentication/authentication_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/authentication/login/login_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/authentication/signup/signup_page.dart';
-import 'package:roadsyouwalked_app/ui/pages/camera/camera_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/home_page.dart';
+import 'package:roadsyouwalked_app/ui/pages/memory/new_memory/new_memory_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/user/user_page.dart';
 
 class AppRouter {
@@ -23,7 +23,6 @@ class AppRouter {
         ),
         GoRoute(
           path: "/auth",
-          //builder: (context, state) => SplashPage()
           builder: (context, state) => AuthenticationPage()
         ),
         GoRoute(
@@ -35,8 +34,8 @@ class AppRouter {
           builder: (context, state) => SignupPage()
         ),
         GoRoute(
-          path: "/memory/add/photo",
-          builder: (context, state) => CameraPage()
+          path: "/memory/add",
+          builder: (context, state) => NewMemoryPage()
         ),
       ],
     );

@@ -6,6 +6,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'dart:developer' as dev;
 
+// TODO: maybe rethrow could be useful
 class MemoryDao {
   final DatabaseManager _dbManager = DatabaseManager.instance;
 
@@ -21,9 +22,8 @@ class MemoryDao {
         data: MemoryData(
           core: MemoryCoreData.fromMap(map),
         )
-      )).toList());  // Memory FromMap I don't think would work. BasiData is plain with id attribute
+      )).toList());
     } catch (e) {
-      dev.log("Error in MemoryDao");
       dev.log(e.toString());
       return [];
     }
@@ -39,9 +39,21 @@ class MemoryDao {
       );
       return true;
     } catch (e) {
-      dev.log("Save in MemoryDao");
       dev.log(e.toString());
-      // TODO: retrhrow exception
+      return false;
+    }
+  }
+
+  Future<bool> isValidId(final String memoryId, final String creatorId) async {
+    try {
+      final db = await _dbManager.database;
+      return await db.query(
+        "Memory",
+        where: "creatorId = ? AND id = ?",
+        whereArgs: [creatorId, memoryId]
+      ).then((res) => res.isEmpty);
+    } catch (e) {
+      dev.log(e.toString());
       return false;
     }
   }
