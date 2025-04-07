@@ -79,12 +79,15 @@ final class NewMemorySaveSuccess extends NewMemoryState {
 }
 
 final class NewMemorySaveFailure extends NewMemoryState {
+  final String? errorMessage;
+  
   const NewMemorySaveFailure(
     {
       super.memoryId,
       super.creatorId,
       super.description,
-      super.mediaList = const []
+      super.mediaList = const [],
+      this.errorMessage
     }
   );
 }

@@ -19,37 +19,73 @@ class NewMemoryPageState extends State<NewMemoryPage> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) {
-          final creatorId = context.read<UserBloc>().state.user!.username;
-          return NewMemoryBloc()..add(Initialize(creatorId: creatorId));
-        }),
+        BlocProvider(
+          create: (context) {
+            final creatorId = context.read<UserBloc>().state.user!.username;
+            return NewMemoryBloc()..add(Initialize(creatorId: creatorId));
+          },
+        ),
       ],
       child: Builder(
         builder: (context) {
-          return PageView(
-            scrollDirection: Axis.vertical,
-            controller: _verticalController,
-            children: [
-              NewMemoryInputPage(
-                onSaveMedia: (localFile, remoteUri, mediaType) {
-                  context.read<NewMemoryBloc>().add(AddMedia(localFile: localFile, remoteUri: remoteUri, mediaType: mediaType));
-                },
-                onChangeDescription: (description) {
-                  context.read<NewMemoryBloc>().add(SetDescription(description: description));
-                }
-              ),
-              MoodEvalutaionPage(),
-              Scaffold(
-                body: Center(
-                  child: MaterialButton(
-                    onPressed: () => context.read<NewMemoryBloc>().add(SaveMemory()),
-                    child: Text("Save memory")
+          return BlocListener<NewMemoryBloc, NewMemoryState>(
+            listener: (context, state) {
+              switch (state) {
+                case NewMemorySaveFailure _:
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        state.errorMessage ?? "Error saving memory",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      backgroundColor: const Color.fromARGB(255, 159, 23, 14),
+                      duration: Duration(seconds: 3),
+                    ),
+                  );
+                  break;
+                case NewMemorySaveSuccess _:
+                  // TODO: add memory saved snackbar
+                  // TODO: update memories, maybe with one onSaveComplete() as a page attribute
+                  // TODO: go to home
+                  break;
+                default:
+              }
+            },
+            child: PageView(
+              scrollDirection: Axis.vertical,
+              controller: _verticalController,
+              children: [
+                NewMemoryInputPage(
+                  onSaveMedia: (localFile, remoteUri, mediaType) {
+                    context.read<NewMemoryBloc>().add(
+                      AddMedia(
+                        localFile: localFile,
+                        remoteUri: remoteUri,
+                        mediaType: mediaType,
+                      ),
+                    );
+                  },
+                  onChangeDescription: (description) {
+                    context.read<NewMemoryBloc>().add(
+                      SetDescription(description: description),
+                    );
+                  },
+                ),
+                MoodEvalutaionPage(),
+                Scaffold(
+                  body: Center(
+                    child: MaterialButton(
+                      onPressed: () => context.read<NewMemoryBloc>().add(SaveMemory()),
+                      child: Text("Save memory"),
+                    ),
                   ),
                 ),
-              )
-            ],
+              ],
+            ),
           );
-        }
+        },
       ),
     );
   }

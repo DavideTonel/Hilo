@@ -93,6 +93,12 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
     Emitter<NewMemoryState> emit
   ) async {
     try {
+      if (
+        (state.description == null || state.description!.isEmpty) &&
+        state.mediaList.isEmpty
+      ) {
+        throw IncompleteMemoryException("Missing description or one media");
+      }
       await _memoryRepository.saveMemory(
         MemoryData(
           core: MemoryCoreData(
@@ -107,12 +113,30 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
       emit(
         NewMemorySaveSuccess()
       );
+    } on IncompleteMemoryException catch (e) {
+      dev.log(e.toString());
+      emit(
+        NewMemorySaveFailure(
+          memoryId: state.memoryId,
+          creatorId: state.creatorId,
+          description: state.description,
+          mediaList: state.mediaList,
+          errorMessage: e.message
+        )
+      );
     } catch (e) {
       dev.log(e.toString());
-      dev.log("NewMemoryBloc");
       emit(
         NewMemorySaveFailure()
       );
     }
   }
+}
+
+class IncompleteMemoryException implements Exception {
+  final String message;
+  IncompleteMemoryException([this.message = "Memory is empty"]);
+
+  @override
+  String toString() => "IncompleteMemoryException: $message";
 }
