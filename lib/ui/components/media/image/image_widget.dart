@@ -3,17 +3,19 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-class ImageWidget extends StatelessWidget {
+class ImageWidget extends StatelessWidget { // TODO: implement if source is network
   final File file;
   final double? width;
   final double? height;
+  final FilterQuality? filterQuality;
 
   const ImageWidget(
     {
       super.key,
       required this.file,
       this.width,
-      this.height
+      this.height,
+      this.filterQuality = FilterQuality.high
     }
   );
   
