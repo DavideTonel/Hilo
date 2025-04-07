@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
-import 'package:roadsyouwalked_app/ui/components/memory/memory_card.dart';
+import 'package:roadsyouwalked_app/ui/components/memory/memory_card_widget.dart';
 
 class FeedPage extends StatelessWidget {
   const FeedPage({super.key});
@@ -17,7 +17,7 @@ class FeedPage extends StatelessWidget {
           itemCount: state.memories.length,
           itemBuilder: (context, i) => Padding(
             padding: const EdgeInsets.only(bottom: 20.0),
-            child: MemoryCard(
+            child: MemoryCardWidget(
               memory: state.memories[i],
             ),
           ),

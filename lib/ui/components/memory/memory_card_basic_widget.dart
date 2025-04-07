@@ -1,30 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
-import 'package:roadsyouwalked_app/ui/components/media/image/local_image_widget.dart';
 
-class MemoryCard extends StatelessWidget{
+class MemoryCardBasicWidget extends StatelessWidget {
   final Memory memory;
 
-  const MemoryCard(
-    {
-      super.key,
-      required this.memory
-    }
-  );
+  const MemoryCardBasicWidget({super.key, required this.memory});
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final date = DateFormat('dd/MM/yyyy   HH:mm').format(DateTime.parse(memory.data.core.timestamp));
     return Container(   // TODO make background color
       child: Column(
         children: [
-          LocalImageWidget(
-            path: memory.mediaList.first.reference,
-            width: size.width,
-            height: size.height * 0.50,
-          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5.0),
             child: Row(
@@ -38,9 +26,10 @@ class MemoryCard extends StatelessWidget{
               ],
             ),
           ),
+          if (memory.data.core.description != null)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(memory.data.core.description ?? ""),  // TODO remove if no description is present
+            child: Text(memory.data.core.description!),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
