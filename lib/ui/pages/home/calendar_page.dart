@@ -4,7 +4,7 @@ import 'package:roadsyouwalked_app/model/calendar/calendar_day_gap_type.dart';
 import 'package:roadsyouwalked_app/model/calendar/calendar_tracker.dart';
 import 'package:roadsyouwalked_app/model/media/memory_day_mapper.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
-import 'package:roadsyouwalked_app/ui/components/calendar/calendar_control_bar.dart';
+import 'package:roadsyouwalked_app/ui/components/calendar/control/calendar_control_bar.dart';
 import 'package:roadsyouwalked_app/ui/components/calendar/calendar_header.dart';
 import 'package:roadsyouwalked_app/ui/components/calendar/calendar_widget.dart';
 

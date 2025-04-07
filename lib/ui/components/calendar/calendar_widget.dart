@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:roadsyouwalked_app/model/calendar/calendar_day.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
-import 'package:roadsyouwalked_app/ui/components/calendar/calendar_day_widget.dart';
+import 'package:roadsyouwalked_app/ui/components/calendar/days/calendar_day_widget.dart';
 
 class CalendarWidget extends StatelessWidget {
   final Map<CalendarDay, List<Memory>> memoryMap;
