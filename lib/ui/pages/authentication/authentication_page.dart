@@ -5,8 +5,6 @@ import 'package:roadsyouwalked_app/bloc/authentication/auth_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 
-import 'dart:developer' as dev;
-
 import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
 
 class AuthenticationPage extends StatelessWidget {

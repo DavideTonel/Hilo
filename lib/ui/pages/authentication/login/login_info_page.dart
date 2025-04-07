@@ -5,8 +5,6 @@ import 'package:roadsyouwalked_app/bloc/authentication/login/login_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 
-import 'dart:developer' as dev;
-
 import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
 
 // [ ] should be a statefull widget to manage the text field controllers?

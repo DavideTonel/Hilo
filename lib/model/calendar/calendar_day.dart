@@ -10,4 +10,15 @@ class CalendarDay {
       required this.gapType
     }
   );
+
+  @override
+  bool operator ==(Object other) {
+    return other is CalendarDay &&
+      date.year == other.date.year &&
+      date.month == other.date.month &&
+      date.day == other.date.day;
+  }
+
+  @override
+  int get hashCode => Object.hash(date.year, date.month, date.day);
 }

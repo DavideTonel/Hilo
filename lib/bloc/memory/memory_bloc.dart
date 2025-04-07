@@ -1,66 +1,83 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/data/repository/memory_repository.dart';
-import 'package:roadsyouwalked_app/model/media/media_type.dart';
-import 'package:roadsyouwalked_app/model/media/pending_media.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
-import 'package:roadsyouwalked_app/model/memory/memory_data/memory_core_data.dart';
-
-import 'dart:developer' as dev;
-
-import 'package:roadsyouwalked_app/model/memory/memory_data/memory_data.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
-import 'package:uuid/uuid.dart';
 
 part 'memory_event.dart';
 part 'memory_state.dart';
 
-// TODO:
-// 1. create UI to create a memory
-// 2. create new bloc to handle memory creation
 class MemoryBloc extends Bloc<MemoryEvent, MemoryState> {
   final MemoryRepository _memoryRepository;
 
-  MemoryBloc(this._memoryRepository) : super(MemoryInitial()) {
+  MemoryBloc(this._memoryRepository) : super(MemoryInitial(
+    year: DateTime.now().year,
+    month: DateTime.now().month
+  )) {
     on<LoadMemoriesByUserId>(onLoadMemoriesByUserId);
-    on<SaveMemory>(onSaveMemory);
+    on<SetTime>(onSetTime);
   }
 
   Future<void> onLoadMemoriesByUserId(
     LoadMemoriesByUserId event,
     Emitter<MemoryState> emit
   ) async {
-    dev.log("loading memories");
-    await _memoryRepository.getMemoriesByUserId(event.userId).then((memories) {
-      dev.log("memories in bloc: ${memories.length}");
-      emit(MemoriesLoaded(memories: memories));
-    });
+    try {
+      List<Memory> memories;
+      switch (event.orderType) {
+        case MemoryOrderType.timeline:
+          memories = await _memoryRepository.getMemoriesByUserId(event.userId);
+          break;
+        case MemoryOrderType.calendar:
+          memories = await _memoryRepository.getMemoriesByUserIdAndTime(
+            event.userId,
+            event.year ?? DateTime.now().year,
+            event.month ?? DateTime.now().month
+          );
+          break;
+      }
+      emit(
+        MemoriesLoaded(
+          memories: memories,
+          orderType: event.orderType,
+          year: event.year ?? state.year,
+          month: event.month ?? state.month
+        )
+      );
+    } catch (e) {
+      emit(
+        MemoriesLoaded(
+          memories: [],
+          orderType: event.orderType,
+          year: event.year ?? state.year,
+          month: event.month ?? state.month
+        )
+      );
+    }
   }
 
-  Future<void> onSaveMemory(
-    SaveMemory event,
+  Future<void> onSetTime(
+    SetTime event,
     Emitter<MemoryState> emit
   ) async {
-    try {
-      final uuid = const Uuid();
-      final memoryId = uuid.v4();
-      final creatorId = event.creatorId;
-      final timestamp = DateTime.now().toIso8601String();
-
-      final mediaId = uuid.v4();
-      await _memoryRepository.saveMemory(
-        MemoryData(
-          core: MemoryCoreData(id: memoryId, creatorId: creatorId, timestamp: timestamp)
-        ),
-        [PendingMedia(id: mediaId, type: event.type, localFile: event.file, remoteUri: null, memoryId: memoryId, creatorId: creatorId)]
-      );
-      await _memoryRepository.getMemoriesByUserId(creatorId).then((memories) => emit(
-        MemoriesLoaded(memories: memories)
-      ));
-    } catch (e) {
-      dev.log(e.toString());
+    int month = event.month ?? state.month;
+    int year = event.year ?? state.year;
+    if (state.month == 1 && event.month == 0) {
+      month = 12;
+      year = state.year - 1;
+    } else if (state.month == 12 && event.month == 13) {
+      month = 1;
+      year = state.year + 1;
     }
+    
+    await onLoadMemoriesByUserId(
+      LoadMemoriesByUserId(
+        userId: event.userId,
+        orderType: state.orderType,
+        year: year,
+        month: month
+      ),
+      emit
+    );
   }
 }

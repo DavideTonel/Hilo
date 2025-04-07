@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:roadsyouwalked_app/model/calendar/calendar_day.dart';
 import 'package:roadsyouwalked_app/model/calendar/calendar_day_gap_type.dart';
+import 'package:roadsyouwalked_app/model/memory/memory.dart';
 
 class CalendarDayWidget extends StatelessWidget {
-  final String day;
-  final CalendarDayGapType gapType;
+  final CalendarDay day;
+  final List<Memory> memories;
 
   const CalendarDayWidget(
     {
       super.key,
       required this.day,
-      required this.gapType
+      required this.memories
     }
   );
 
@@ -20,12 +22,13 @@ class CalendarDayWidget extends StatelessWidget {
       child: Container(
         height: 90,
         width: 45,
-        color: gapType.value == "GapCurrent" ? Colors.blue : Colors.grey,
+        color: day.gapType == CalendarDayGapType.currentMonth ? Colors.blue : Colors.grey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(day),
+            Text(day.date.day.toString()),
+            Text(memories.length.toString())
           ],
         ),
       ),

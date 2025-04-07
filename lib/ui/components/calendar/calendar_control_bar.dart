@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CalendarControlBar extends StatelessWidget {
-  const CalendarControlBar({super.key});
+  final DateTime date;
+  final VoidCallback onPrevPressed;
+  final VoidCallback onNextPressed;
+
+  const CalendarControlBar(
+    {
+      super.key,
+      required this.date,
+      required this.onPrevPressed,
+      required this.onNextPressed
+    }
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -9,16 +21,16 @@ class CalendarControlBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
-          onPressed: () {},
+          onPressed: onPrevPressed,
           icon: Icon(
             Icons.chevron_left
           )
         ),
         Text(
-          "March, 2025"
+          DateFormat("MMM yyyy").format(date)
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: onNextPressed,
           icon: Icon(
             Icons.chevron_right
           )

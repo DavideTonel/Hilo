@@ -28,13 +28,11 @@ class MemoryRepository {
 
   Future<List<Memory>> getMemoriesByUserIdAndTime(final String userId, final int year, final int month) async {
     final String monthString = month.toString().padLeft(2, "0");
-    final String yearString = month.toString();
+    final String yearString = year.toString();
 
     List<Memory> memories = await _memoryDao.getMemoriesByUserIdAndTime(userId, yearString, monthString);
     for (var memory in memories) {
-      // #2 get mediaList for each memory
       List<Media> mediaList = await _mediaDao.getMediaByMemoryId(memory.data.core.id, memory.data.core.creatorId);
-      // #3 add mediaList to memory
       memory.mediaList = mediaList;
     }
     return memories;

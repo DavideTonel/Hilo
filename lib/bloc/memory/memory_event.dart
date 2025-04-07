@@ -19,16 +19,16 @@ final class LoadMemoriesByUserId extends MemoryEvent {
   );
 }
 
-final class SaveMemory extends MemoryEvent {
-  final String creatorId;
-  final MediaType type;
-  final File file;
+final class SetTime extends MemoryEvent {
+  final String userId;
+  final int? year;
+  final int? month;
 
-  SaveMemory(
+  SetTime(
     {
-      required this.creatorId,
-      required this.type,
-      required this.file
+      required this.userId,
+      this.year,
+      this.month
     }
   );
 }
