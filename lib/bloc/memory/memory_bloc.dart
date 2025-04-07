@@ -11,6 +11,7 @@ import 'package:roadsyouwalked_app/model/memory/memory_data/memory_core_data.dar
 import 'dart:developer' as dev;
 
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_data.dart';
+import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
 import 'package:uuid/uuid.dart';
 
 part 'memory_event.dart';

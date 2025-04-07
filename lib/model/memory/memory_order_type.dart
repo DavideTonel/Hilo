@@ -1,0 +1,3 @@
+enum MemoryOrderType {
+  timeline, calendar
+}

@@ -29,6 +29,25 @@ class MemoryDao {
     }
   }
 
+  Future<List<Memory>> getMemoriesByUserIdAndTime(final String userId, final String year, final String month) async {
+    try {
+      final db = await _dbManager.database;
+      return await db.query(
+        "Memory",
+        where: "creatorId = ? AND strftime('%Y', timestamp) = ? AND strftime('%m', timestamp) = ?",
+        whereArgs: [userId, year, month],
+        orderBy: "timestamp ASC"
+      ).then((res) => res.map((map) => Memory(
+        data: MemoryData(
+          core: MemoryCoreData.fromMap(map),
+        )
+      )).toList());
+    } catch (e) {
+      dev.log(e.toString());
+      return [];
+    }
+  }
+
   Future<bool> insertMemory(final Memory memory, Transaction? transaction) async {
     try {
       final controller = transaction ?? await _dbManager.database;

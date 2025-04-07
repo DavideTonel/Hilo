@@ -7,6 +7,8 @@ import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 
 import 'dart:developer' as dev;
 
+import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
+
 // [ ] should be a statefull widget to manage the text field controllers?
 class LoginInfoPage extends StatelessWidget {
   final TextEditingController _usernameTextController = TextEditingController();
@@ -27,11 +29,13 @@ class LoginInfoPage extends StatelessWidget {
     );
     userBloc.stream.listen((state) {
       if (state is UserLoaded) {
-        dev.log("Login success");
-        memoriesBloc.add(LoadMemoriesByUserId(userId: userBloc.state.user!.username));
+        memoriesBloc.add(
+          LoadMemoriesByUserId(
+            userId: userBloc.state.user!.username,
+            orderType: MemoryOrderType.timeline
+          )
+        );
         router.go("/home");
-      } else if (state is UserInitial) {
-        dev.log("User not loaded");
       }
     });
   }

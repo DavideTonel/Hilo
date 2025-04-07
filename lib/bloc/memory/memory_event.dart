@@ -5,8 +5,18 @@ sealed class MemoryEvent {}
 
 final class LoadMemoriesByUserId extends MemoryEvent {
   final String userId;
+  final MemoryOrderType orderType;
+  final int? year;
+  final int? month;
 
-  LoadMemoriesByUserId({required this.userId});
+  LoadMemoriesByUserId(
+    {
+      required this.userId,
+      required this.orderType,
+      this.year,
+      this.month
+    }
+  );
 }
 
 final class SaveMemory extends MemoryEvent {
