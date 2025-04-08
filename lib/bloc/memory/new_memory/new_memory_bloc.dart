@@ -93,6 +93,7 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
     Emitter<NewMemoryState> emit
   ) async {
     try {
+      /* TODO: check if assessement is present else throw Exception with message "Missing mood evaluation"*/
       if (
         (state.description == null || state.description!.isEmpty) &&
         state.mediaList.isEmpty
@@ -108,7 +109,8 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
             description: state.description
           )
         ), 
-        state.mediaList
+        state.mediaList,
+        // TODO: state.assessmentScore
       );
       emit(
         NewMemorySaveSuccess()
@@ -131,8 +133,23 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
       );
     }
   }
+
+  void onAddAssessment(
+    AddAssessment event,
+    Emitter<NewMemoryState> emit
+  ) {
+    emit(
+      NewMemoryInProgress(
+        memoryId: state.memoryId, creatorId: state.creatorId, description: state.description, mediaList: state.mediaList,
+        // TODO: assessementScore: event.score
+      )
+    );
+    /*
+    */
+  }
 }
 
+// TODO: move in another file
 class IncompleteMemoryException implements Exception {
   final String message;
   IncompleteMemoryException([this.message = "Memory is empty"]);

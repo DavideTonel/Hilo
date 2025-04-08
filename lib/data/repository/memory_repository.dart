@@ -38,7 +38,7 @@ class MemoryRepository {
     return memories;
   }
 
-  Future<void> saveMemory(MemoryData memoryData, List<PendingMedia> pendingMediaList) async {
+  Future<void> saveMemory(MemoryData memoryData, List<PendingMedia> pendingMediaList) async { // TODO add parameter assessmentScore
     await DatabaseManager.instance.database.then((db) {
       // #0 start transaction
       db.transaction((transaction) async {
@@ -58,6 +58,8 @@ class MemoryRepository {
             // #3 save media in the database
             await _mediaDao.insertMedia(media, transaction);
           }
+
+          // TODO: await _assessmentDao.insertAssessment(...);
         } catch (e) {
           // # 0 roll back transaction
           dev.log(e.toString());

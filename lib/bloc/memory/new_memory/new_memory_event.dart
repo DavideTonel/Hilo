@@ -23,6 +23,10 @@ final class AddMedia extends NewMemoryEvent {
   );
 }
 
+final class AddAssessment extends NewMemoryEvent {
+  // TODO: What type // AbstractMoodAssessmentScore score;
+}
+
 final class SetDescription extends NewMemoryEvent {
   final String description;
 

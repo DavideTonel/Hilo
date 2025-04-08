@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/assessment/assessment_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/new_memory/new_memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
-import 'package:roadsyouwalked_app/ui/pages/memory/new_memory/mood_evaluation_page.dart';
+import 'package:roadsyouwalked_app/model/assessment/test.dart';
+import 'package:roadsyouwalked_app/ui/pages/assessment/assessment_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/memory/new_memory/new_memory_input_page.dart';
 
 class NewMemoryPage extends StatefulWidget {
@@ -16,15 +18,21 @@ class NewMemoryPageState extends State<NewMemoryPage> {
   final PageController _verticalController = PageController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { // TODO: make it better
     return MultiBlocProvider(
-      providers: [
+      providers: [  // TODO: understand if initialize camera here is better
         BlocProvider(
           create: (context) {
             final creatorId = context.read<UserBloc>().state.user!.username;
             return NewMemoryBloc()..add(Initialize(creatorId: creatorId));
           },
         ),
+        BlocProvider(   // TODO: understand if wrapper is better
+          create: (_) => AssessmentBloc<PanasShortFormItem>(
+            scale: PanasShortForm.standard(),
+            scoreBuilder: (items) => PanasShortFormScore(items: items),
+          ),
+        )
       ],
       child: Builder(
         builder: (context) {
@@ -73,7 +81,7 @@ class NewMemoryPageState extends State<NewMemoryPage> {
                     );
                   },
                 ),
-                MoodEvalutaionPage(),
+                AssessmentPage<PanasShortFormItem>(),
                 Scaffold(
                   body: Center(
                     child: MaterialButton(
