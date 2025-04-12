@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:roadsyouwalked_app/bloc/assessment/assessment_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/new_memory/new_memory_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/mood_evaluation_bloc/mood_evaluation_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
-import 'package:roadsyouwalked_app/model/assessment/test.dart';
-import 'package:roadsyouwalked_app/ui/pages/assessment/assessment_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/memory/new_memory/new_memory_input_page.dart';
+import 'package:roadsyouwalked_app/ui/pages/mood_evaluation/mood_evaluation_page.dart';
 
 class NewMemoryPage extends StatefulWidget {
   const NewMemoryPage({super.key});
@@ -28,10 +27,7 @@ class NewMemoryPageState extends State<NewMemoryPage> {
           },
         ),
         BlocProvider(   // TODO: understand if wrapper is better
-          create: (_) => AssessmentBloc<PanasShortFormItem>(
-            scale: PanasShortForm.standard(),
-            scoreBuilder: (items) => PanasShortFormScore(items: items),
-          ),
+          create: (_) => MoodEvaluationBloc()..add(GetDefaultEvaluationScale()),
         )
       ],
       child: Builder(
@@ -81,7 +77,7 @@ class NewMemoryPageState extends State<NewMemoryPage> {
                     );
                   },
                 ),
-                AssessmentPage<PanasShortFormItem>(),
+                MoodEvaluationPage(), // TODO: add onEvaluationCompleted
                 Scaffold(
                   body: Center(
                     child: MaterialButton(

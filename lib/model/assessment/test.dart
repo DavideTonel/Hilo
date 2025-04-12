@@ -1,3 +1,4 @@
+/*
 import 'package:roadsyouwalked_app/model/assessment/affect_type.dart';
 
 abstract class AbstractMoodAssessmentScore {
@@ -148,3 +149,4 @@ class PanasShortForm extends AbstractMoodScale<PanasShortFormItem> {
 class PanasShortFormItem extends AbstractMoodItem {
   PanasShortFormItem({required super.id, required super.label, required super.minValue, required super.maxValue, required super.affectType});
 }
+*/

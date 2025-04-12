@@ -23,8 +23,10 @@ final class AddMedia extends NewMemoryEvent {
   );
 }
 
-final class AddAssessment extends NewMemoryEvent {
-  // TODO: What type // AbstractMoodAssessmentScore score;
+final class AddMoodEvaluation extends NewMemoryEvent {
+  final MoodEvaluationScoreData moodEvaluationScore;
+
+  AddMoodEvaluation({required this.moodEvaluationScore});
 }
 
 final class SetDescription extends NewMemoryEvent {

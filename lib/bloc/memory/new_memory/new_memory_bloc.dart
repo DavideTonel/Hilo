@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/data/db/dao/media_dao.dart';
 import 'package:roadsyouwalked_app/data/db/dao/memory_dao.dart';
 import 'package:roadsyouwalked_app/data/repository/memory_repository.dart';
+import 'package:roadsyouwalked_app/model/assessment/mood_evaluation.dart';
 import 'package:roadsyouwalked_app/model/media/media_type.dart';
 import 'package:roadsyouwalked_app/model/media/pending_media.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_core_data.dart';
@@ -29,11 +30,13 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
           memoryId: state.memoryId,
           creatorId: state.creatorId,
           description: event.description,
-          mediaList: state.mediaList
+          mediaList: state.mediaList,
+          moodEvaluationScore: state.moodEvaluationScore
         )
       );
     });
     on<SaveMemory>(onSaveMemory);
+    on<AddMoodEvaluation>(onAddMoodEvaluation);
   }
 
   Future<void> onInitialize(
@@ -53,7 +56,8 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         memoryId: memoryId, 
         creatorId: creatorId, 
         description: state.description, 
-        mediaList: state.mediaList
+        mediaList: state.mediaList,
+        moodEvaluationScore: state.moodEvaluationScore
       )
     );
   }
@@ -83,7 +87,8 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         memoryId: state.memoryId,
         creatorId: state.creatorId,
         description: state.description,
-        mediaList: [...state.mediaList, newPendingMedia]
+        mediaList: [...state.mediaList, newPendingMedia],
+        moodEvaluationScore: state.moodEvaluationScore
       )
     );
   }
@@ -93,24 +98,34 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
     Emitter<NewMemoryState> emit
   ) async {
     try {
-      /* TODO: check if assessement is present else throw Exception with message "Missing mood evaluation"*/
+      if (state.moodEvaluationScore == null) {
+        throw IncompleteMemoryException("Missing mood evaluation");
+      }
       if (
         (state.description == null || state.description!.isEmpty) &&
         state.mediaList.isEmpty
       ) {
         throw IncompleteMemoryException("Missing description or one media");
       }
+      final timestamp = DateTime.now().toIso8601String();
       await _memoryRepository.saveMemory(
         MemoryData(
           core: MemoryCoreData(
             id: state.memoryId!,
             creatorId: state.creatorId!,
-            timestamp: DateTime.now().toIso8601String(),
+            timestamp: timestamp,
             description: state.description
           )
         ), 
         state.mediaList,
-        // TODO: state.assessmentScore
+        MoodEvaluationData(
+          core: MoodEvaluationCoreData(
+            id: state.memoryId!,
+            creatorId: state.creatorId!,
+            timestamp: timestamp
+          ),
+          score: state.moodEvaluationScore!
+        )
       );
       emit(
         NewMemorySaveSuccess()
@@ -123,6 +138,7 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
           creatorId: state.creatorId,
           description: state.description,
           mediaList: state.mediaList,
+          moodEvaluationScore: state.moodEvaluationScore,
           errorMessage: e.message
         )
       );
@@ -134,18 +150,19 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
     }
   }
 
-  void onAddAssessment(
-    AddAssessment event,
+  void onAddMoodEvaluation(
+    AddMoodEvaluation event,
     Emitter<NewMemoryState> emit
   ) {
     emit(
       NewMemoryInProgress(
-        memoryId: state.memoryId, creatorId: state.creatorId, description: state.description, mediaList: state.mediaList,
-        // TODO: assessementScore: event.score
+        memoryId: state.memoryId,
+        creatorId: state.creatorId,
+        description: state.description,
+        mediaList: state.mediaList,
+        moodEvaluationScore: event.moodEvaluationScore
       )
     );
-    /*
-    */
   }
 }
 

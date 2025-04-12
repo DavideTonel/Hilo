@@ -1,7 +1,9 @@
 import 'package:roadsyouwalked_app/data/db/dao/media_dao.dart';
 import 'package:roadsyouwalked_app/data/db/dao/memory_dao.dart';
 import 'package:roadsyouwalked_app/data/db/database_manager.dart';
+import 'package:roadsyouwalked_app/data/repository/mood_evaluation_repository.dart';
 import 'package:roadsyouwalked_app/data/storage/media_storage_service.dart';
+import 'package:roadsyouwalked_app/model/assessment/mood_evaluation.dart';
 import 'package:roadsyouwalked_app/model/media/media.dart';
 import 'package:roadsyouwalked_app/model/media/pending_media.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_data.dart';
@@ -13,6 +15,7 @@ class MemoryRepository {
   final _memoryDao = MemoryDao();
   final _mediaDao = MediaDao();
   final _mediaStorageService = MediaStorageService();
+  final _moodEvaluationRepository = MoodEvaluationRepository();
 
   Future<List<Memory>> getMemoriesByUserId(final String userId) async {
     // #1 get memories
@@ -38,30 +41,26 @@ class MemoryRepository {
     return memories;
   }
 
-  Future<void> saveMemory(MemoryData memoryData, List<PendingMedia> pendingMediaList) async { // TODO add parameter assessmentScore
+  Future<void> saveMemory(
+    MemoryData memoryData,
+    List<PendingMedia> pendingMediaList,
+    MoodEvaluationData moodEvaluation
+  ) async {
     await DatabaseManager.instance.database.then((db) {
-      // #0 start transaction
       db.transaction((transaction) async {
         try {
-          // #1 save memory
           _memoryDao.insertMemory(
             Memory(
               data: memoryData
             ),
             transaction
           );
-
           for (var pendingMedia in pendingMediaList) {
-            // #2 save media in the media storage and save it in the database
             final Media media = await _mediaStorageService.saveMedia(pendingMedia);
-
-            // #3 save media in the database
             await _mediaDao.insertMedia(media, transaction);
           }
-
-          // TODO: await _assessmentDao.insertAssessment(...);
+          await _moodEvaluationRepository.saveMoodEvaluationDone(moodEvaluation, transaction);
         } catch (e) {
-          // # 0 roll back transaction
           dev.log(e.toString());
           rethrow;
         }
