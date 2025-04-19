@@ -3,18 +3,20 @@ part of 'memory_bloc.dart';
 @immutable
 sealed class MemoryEvent {}
 
-final class LoadMemoriesByUserId extends MemoryEvent {
+final class LoadMemories extends MemoryEvent {
   final String userId;
   final MemoryOrderType orderType;
   final int? year;
   final int? month;
+  final int? nLastDays;
 
-  LoadMemoriesByUserId(
+  LoadMemories(
     {
       required this.userId,
       required this.orderType,
       this.year,
-      this.month
+      this.month,
+      this.nLastDays
     }
   );
 }

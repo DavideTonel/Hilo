@@ -5,11 +5,12 @@ import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/data/db/dao/media_dao.dart';
 import 'package:roadsyouwalked_app/data/db/dao/memory_dao.dart';
 import 'package:roadsyouwalked_app/data/repository/memory_repository.dart';
-import 'package:roadsyouwalked_app/model/assessment/mood_evaluation.dart';
+import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale.dart';
 import 'package:roadsyouwalked_app/model/media/media_type.dart';
 import 'package:roadsyouwalked_app/model/media/pending_media.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_core_data.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_data.dart';
+import 'package:roadsyouwalked_app/model/memory/memory_data/memory_evaluation_data.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:developer' as dev;
 
@@ -31,7 +32,7 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
           creatorId: state.creatorId,
           description: event.description,
           mediaList: state.mediaList,
-          moodEvaluationScore: state.moodEvaluationScore
+          evaluationResultData: state.evaluationResultData
         )
       );
     });
@@ -57,7 +58,7 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         creatorId: creatorId, 
         description: state.description, 
         mediaList: state.mediaList,
-        moodEvaluationScore: state.moodEvaluationScore
+        evaluationResultData: state.evaluationResultData
       )
     );
   }
@@ -88,7 +89,7 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         creatorId: state.creatorId,
         description: state.description,
         mediaList: [...state.mediaList, newPendingMedia],
-        moodEvaluationScore: state.moodEvaluationScore
+        evaluationResultData: state.evaluationResultData
       )
     );
   }
@@ -98,7 +99,7 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
     Emitter<NewMemoryState> emit
   ) async {
     try {
-      if (state.moodEvaluationScore == null) {
+      if (state.evaluationResultData == null) {
         throw IncompleteMemoryException("Missing mood evaluation");
       }
       if (
@@ -115,17 +116,14 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
             creatorId: state.creatorId!,
             timestamp: timestamp,
             description: state.description
+          ),
+          evaluation: MemoryEvaluationData(
+            evaluationScaleId: state.evaluationResultData!.evaluationScaleId,
+            evaluationResult: state.evaluationResultData!.result
           )
         ), 
         state.mediaList,
-        MoodEvaluationData(
-          core: MoodEvaluationCoreData(
-            id: state.memoryId!,
-            creatorId: state.creatorId!,
-            timestamp: timestamp
-          ),
-          score: state.moodEvaluationScore!
-        )
+        state.evaluationResultData!.singleItemScores
       );
       emit(
         NewMemorySaveSuccess()
@@ -138,7 +136,7 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
           creatorId: state.creatorId,
           description: state.description,
           mediaList: state.mediaList,
-          moodEvaluationScore: state.moodEvaluationScore,
+          evaluationResultData: state.evaluationResultData,
           errorMessage: e.message
         )
       );
@@ -160,7 +158,7 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         creatorId: state.creatorId,
         description: state.description,
         mediaList: state.mediaList,
-        moodEvaluationScore: event.moodEvaluationScore
+        evaluationResultData: event.evaluationResultData
       )
     );
   }

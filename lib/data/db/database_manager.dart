@@ -15,7 +15,7 @@ class DatabaseManager {
 
   Future<Database> initializeDB() async {
     return openDatabase(
-      join(await getDatabasesPath(), "uni_test_5.db"),
+      join(await getDatabasesPath(), "uni_test_6.db"),
       version: 1,
       onCreate: (db, version) async {
         await db.execute(
@@ -35,8 +35,11 @@ class DatabaseManager {
               creatorId TEXT NOT NULL,
               timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
               description TEXT,
+              evaluationScaleId TEXT NOT NULL,
+              resultJson TEXT NOT NULL,
               PRIMARY KEY (id, creatorId),
-              FOREIGN KEY (creatorId) REFERENCES User(username) ON DELETE CASCADE
+              FOREIGN KEY (creatorId) REFERENCES User(username) ON DELETE CASCADE,
+              FOREIGN KEY (evaluationScaleId) REFERENCES Evaluation_Scale(id)
             );
           """
         );
@@ -69,59 +72,32 @@ class DatabaseManager {
           """
             CREATE TABLE Evaluation_Scale_Item (
               id TEXT NOT NULL,
-              scaleId TEXT NOT NULL,
+              evaluationScaleId TEXT NOT NULL,
               label TEXT NOT NULL,
               minValue INTEGER NOT NULL,
               maxValue INTEGER NOT NULL,
               affectType TEXT CHECK (affectType IN ('positive', 'negative')),
-              PRIMARY KEY (id, scaleId),
-              FOREIGN KEY (scaleId) REFERENCES Evaluation_Scale(id) ON DELETE CASCADE,
+              PRIMARY KEY (id, evaluationScaleId),
+              FOREIGN KEY (evaluationScaleId) REFERENCES Evaluation_Scale(id) ON DELETE CASCADE,
               CHECK (minValue < maxValue)
             );
           """
         );
         await db.execute(
           """
-            CREATE TABLE Evaluation (
-              id TEXT NOT NULL,
+            CREATE TABLE Evaluation_Result_Item (
+              memoryId TEXT NOT NULL,
               creatorId TEXT NOT NULL,
-              scaleId TEXT NOT NULL,
-              timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-              PRIMARY KEY (id, creatorId),
-              FOREIGN KEY (creatorId) REFERENCES User(username) ON DELETE CASCADE,
-              FOREIGN KEY (scaleId) REFERENCES Evaluation_Scale(id)
-            );
-          """
-        );
-        await db.execute(
-          """
-            CREATE TABLE Evaluation_Result (
-              evaluationId TEXT NOT NULL,
-              creatorId TEXT NOT NULL,
-              label TEXT NOT NULL,
-              value INTEGER NOT NULL,
-              PRIMARY KEY (evaluationId, creatorId, label),
-              FOREIGN KEY (evaluationId, creatorId) REFERENCES Evaluation(id, creatorId) ON DELETE CASCADE
-            );
-          """
-        );
-        await db.execute(
-          """
-            CREATE TABLE Item_In_Evaluation (
-              evaluationId TEXT NOT NULL,
-              creatorId TEXT NOT NULL,
-              scaleId TEXT NOT NULL,
-              scaleItemId TEXT NOT NULL,
+              evaluationScaleItemId TEXT NOT NULL,
+              evaluationScaleId TEXT NOT NULL,
               score INTEGER NOT NULL,
-              PRIMARY KEY (evaluationId, creatorId, scaleId, scaleItemId),
-              FOREIGN KEY (evaluationId) REFERENCES Evaluation(id),
-              FOREIGN KEY (creatorId) REFERENCES User(username),
-              FOREIGN KEY (scaleId) REFERENCES Evaluation_Scale(id),
-              FOREIGN KEY (scaleItemId, scaleId) REFERENCES Evaluation_Scale_Item(id, scaleId)
+              PRIMARY KEY (memoryId, creatorId, evaluationScaleItemId, evaluationScaleId),
+              FOREIGN KEY (memoryId, creatorId) REFERENCES Memory(id, creatorId) ON DELETE CASCADE,
+              FOREIGN KEY (evaluationScaleItemId, evaluationScaleId) REFERENCES Evaluation_Scale_Item(id, evaluationScaleId) ON DELETE CASCADE
             );
           """
         );
-
+    
         await db.insert(
           "Evaluation_Scale",
           {
@@ -133,7 +109,7 @@ class DatabaseManager {
           "Evaluation_Scale_Item",
           {
             "id": "1",
-            "scaleId": "panas_sf",
+            "evaluationScaleId": "panas_sf",
             "label": "Interested",
             "minValue": 1,
             "maxValue": 5,
@@ -144,7 +120,7 @@ class DatabaseManager {
           "Evaluation_Scale_Item",
           {
             "id": "2",
-            "scaleId": "panas_sf",
+            "evaluationScaleId": "panas_sf",
             "label": "Upset",         // TODO: put right items with right ids
             "minValue": 1,
             "maxValue": 5,

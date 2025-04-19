@@ -24,9 +24,9 @@ final class AddMedia extends NewMemoryEvent {
 }
 
 final class AddMoodEvaluation extends NewMemoryEvent {
-  final MoodEvaluationScoreData moodEvaluationScore;
+  final EvaluationResultData evaluationResultData;
 
-  AddMoodEvaluation({required this.moodEvaluationScore});
+  AddMoodEvaluation({required this.evaluationResultData});
 }
 
 final class SetDescription extends NewMemoryEvent {

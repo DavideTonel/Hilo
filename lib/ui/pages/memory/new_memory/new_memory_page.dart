@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/bloc/memory/new_memory/new_memory_bloc.dart';
-import 'package:roadsyouwalked_app/bloc/mood_evaluation_bloc/mood_evaluation_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/evaluation_bloc/evaluation_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 import 'package:roadsyouwalked_app/ui/pages/memory/new_memory/new_memory_input_page.dart';
-import 'package:roadsyouwalked_app/ui/pages/mood_evaluation/mood_evaluation_page.dart';
+import 'package:roadsyouwalked_app/ui/pages/evaluation/evaluation_page.dart';
 
 class NewMemoryPage extends StatefulWidget {
   const NewMemoryPage({super.key});
@@ -17,21 +18,25 @@ class NewMemoryPageState extends State<NewMemoryPage> {
   final PageController _verticalController = PageController();
 
   @override
-  Widget build(BuildContext context) { // TODO: make it better
+  Widget build(BuildContext context) {
+    // TODO: make it better
     return MultiBlocProvider(
-      providers: [  // TODO: understand if initialize camera here is better
+      providers: [
+        // TODO: understand if initialize camera here is better
         BlocProvider(
           create: (context) {
             final creatorId = context.read<UserBloc>().state.user!.username;
             return NewMemoryBloc()..add(Initialize(creatorId: creatorId));
           },
         ),
-        BlocProvider(   // TODO: understand if wrapper is better
-          create: (_) => MoodEvaluationBloc()..add(GetDefaultEvaluationScale()),
-        )
+        BlocProvider(
+          // TODO: understand if wrapper is better
+          create: (_) => EvaluationBloc()..add(GetDefaultEvaluationScale()),
+        ),
       ],
       child: Builder(
         builder: (context) {
+          final GoRouter router = GoRouter.of(context);
           return BlocListener<NewMemoryBloc, NewMemoryState>(
             listener: (context, state) {
               switch (state) {
@@ -40,9 +45,7 @@ class NewMemoryPageState extends State<NewMemoryPage> {
                     SnackBar(
                       content: Text(
                         state.errorMessage ?? "Error saving memory",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                        style: TextStyle(color: Colors.white),
                       ),
                       backgroundColor: const Color.fromARGB(255, 159, 23, 14),
                       duration: Duration(seconds: 3),
@@ -50,9 +53,16 @@ class NewMemoryPageState extends State<NewMemoryPage> {
                   );
                   break;
                 case NewMemorySaveSuccess _:
-                  // TODO: add memory saved snackbar
-                  // TODO: update memories, maybe with one onSaveComplete() as a page attribute
-                  // TODO: go to home
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        "Memory saved successefully!",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: const Color.fromARGB(255, 2, 146, 22),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
                   break;
                 default:
               }
@@ -77,11 +87,20 @@ class NewMemoryPageState extends State<NewMemoryPage> {
                     );
                   },
                 ),
-                MoodEvaluationPage(), // TODO: add onEvaluationCompleted
+                EvaluationPage(
+                  onEvaluationCompleted: (evaluationResultData) {
+                    context.read<NewMemoryBloc>().add(
+                      AddMoodEvaluation(
+                        evaluationResultData: evaluationResultData,
+                      ),
+                    );
+                  },
+                ),
                 Scaffold(
                   body: Center(
                     child: MaterialButton(
-                      onPressed: () => context.read<NewMemoryBloc>().add(SaveMemory()),
+                      onPressed:
+                          () => context.read<NewMemoryBloc>().add(SaveMemory()),
                       child: Text("Save memory"),
                     ),
                   ),

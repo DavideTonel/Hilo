@@ -1,6 +1,5 @@
 import 'package:roadsyouwalked_app/data/db/database_manager.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
-import 'package:roadsyouwalked_app/model/memory/memory_data/memory_core_data.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_data.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -19,9 +18,24 @@ class MemoryDao {
         whereArgs: [userId],
         orderBy: "timestamp DESC"
       ).then((res) => res.map((map) => Memory(
-        data: MemoryData(
-          core: MemoryCoreData.fromMap(map),
-        )
+        data: MemoryData.fromMap(map)
+      )).toList());
+    } catch (e) {
+      dev.log(e.toString());
+      return [];
+    }
+  }
+
+  Future<List<Memory>> getMemoriesByUserIdFromDate(final String userId, final DateTime fromDate) async {
+    try {
+      final db = await _dbManager.database;
+      return await db.query(
+        "Memory",
+        where: "creatorId = ? AND timestamp >= ?",
+        whereArgs: [userId, fromDate.toIso8601String()],
+        orderBy: "timestamp ASC"
+      ).then((res) => res.map((map) => Memory(
+        data: MemoryData.fromMap(map)
       )).toList());
     } catch (e) {
       dev.log(e.toString());
@@ -38,9 +52,7 @@ class MemoryDao {
         whereArgs: [userId, year, month],
         orderBy: "timestamp ASC"
       ).then((res) => res.map((map) => Memory(
-        data: MemoryData(
-          core: MemoryCoreData.fromMap(map),
-        )
+        data: MemoryData.fromMap(map)
       )).toList());
     } catch (e) {
       dev.log(e.toString());

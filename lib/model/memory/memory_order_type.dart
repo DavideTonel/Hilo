@@ -1,3 +1,5 @@
 enum MemoryOrderType {
-  timeline, calendar
+  timeline,
+  byMonth,
+  lastNDays
 }

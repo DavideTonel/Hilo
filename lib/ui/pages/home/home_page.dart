@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
@@ -7,107 +8,145 @@ import 'package:roadsyouwalked_app/ui/components/home/add_memory_action_button.d
 import 'package:roadsyouwalked_app/ui/components/home/home_app_bar.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/calendar_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/feed_page.dart';
+import 'package:roadsyouwalked_app/ui/pages/statistics/statistics_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadInitialMemories();
+  }
+
+  MemoryOrderType _getMemoryOrderTypeFromIndex(final int index) {
+    switch (index) {
+      case 0:
+        return MemoryOrderType.timeline;
+      case 1:
+        return MemoryOrderType.byMonth;
+      case 2:
+        return MemoryOrderType.lastNDays;
+      default:
+        return MemoryOrderType.timeline;
+    }
+  }
+
+  Future<void> _loadInitialMemories() async {
+    final userId = context.read<UserBloc>().state.user?.username;
+    if (userId != null) {
+      context.read<MemoryBloc>().add(
+        LoadMemories(
+          userId: userId,
+          orderType: MemoryOrderType.timeline,
+        ),
+      );
+    }
+  }
+
+  Future<void> _loadMemoriesIfNeeded(int index, String userId) async {
+    if (index != 0 && index != 1 && index != 2) return;
+
+    final memoryBloc = context.read<MemoryBloc>();
+    final completer = Completer<void>();
+    final subscription = memoryBloc.stream.listen((state) {
+      if (state is MemoriesLoaded) {
+        completer.complete();
+      }
+    });
+
+    memoryBloc.add(LoadMemories(
+      userId: userId,
+      orderType: _getMemoryOrderTypeFromIndex(index),
+      month: memoryBloc.state.month,
+      year: memoryBloc.state.year,
+    ));
+
+    await completer.future;
+    await subscription.cancel();
+  }
+
+  void _onDestinationSelected(int index) async {
+    final userId = context.read<UserBloc>().state.user?.username;
+    if (userId == null) return;
+
+    await _loadMemoriesIfNeeded(index, userId);
+
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var navBarIndex = 0;
+    final userId = context.read<UserBloc>().state.user?.username;
 
-    PreferredSizeWidget? scaffoldAppBar = HomeAppBar();
-    Widget scaffoldBody = FeedPage();
-    Widget? floatingActionButton = AddMemoryActionButton();
-
-    const List<Widget> navigationBardestinations = [
-      NavigationDestination(
-        icon: Icon(Icons.home_outlined),
-        selectedIcon: Icon(Icons.home),
-        label: "Home",
-      ),
-      NavigationDestination(
-        icon: Icon(Icons.calendar_month_outlined),
-        selectedIcon: Icon(Icons.calendar_month),
-        label: "Calendar",
-      ),
-      NavigationDestination(
-        icon: Icon(Icons.insert_chart_outlined_outlined),
-        selectedIcon: Icon(Icons.insert_chart),
-        label: "Statistics",
-      ),
-    ];
-
-    return BlocConsumer<MemoryBloc, MemoryState>(
-      listener: (context, state) {
-        switch (state.orderType) {
-          case MemoryOrderType.timeline:
-            navBarIndex = 0;
-            scaffoldAppBar = HomeAppBar();
-            scaffoldBody = FeedPage();
-            floatingActionButton = AddMemoryActionButton();
-            break;
-          case MemoryOrderType.calendar:
-            navBarIndex = 1;
-            scaffoldAppBar = AppBar();
-            scaffoldBody = CalendarPage(
-              memories: state.memories,
-              month: state.month,
-              year: state.year,
-              onPrevPressed: () {
-                context.read<MemoryBloc>().add(
-                  SetTime(
-                    userId: context.read<UserBloc>().state.user!.username,
-                    month: state.month - 1
-                  )
-                );
-              },
-              onNextPressed: () {
-                context.read<MemoryBloc>().add(
-                  SetTime(
-                    userId: context.read<UserBloc>().state.user!.username,
-                    month: state.month + 1
-                  )
-                );
-              },
-            );
-            floatingActionButton = null;
-            break;
-        }
-      },
-      builder: (context, state) {
-        return Scaffold(
-          appBar: scaffoldAppBar,
-          body: scaffoldBody,
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: navBarIndex,
-            onDestinationSelected: (value) {
-              switch (value) {
-                case 0:
-                  context.read<MemoryBloc>().add(
-                    LoadMemoriesByUserId(
-                      userId: context.read<UserBloc>().state.user!.username,
-                      orderType: MemoryOrderType.timeline
-                    )
-                  );
-                  break;
-                case 1:
-                  context.read<MemoryBloc>().add(
-                    LoadMemoriesByUserId(
-                      userId: context.read<UserBloc>().state.user!.username,
-                      orderType: MemoryOrderType.calendar,
-                      year: state.year,
-                      month: state.month
-                    )
-                  );
-                  break;
-                default:
+    final List<Widget> pages = [
+      const FeedPage(key: PageStorageKey('feed')),
+      BlocBuilder<MemoryBloc, MemoryState>(
+        builder: (context, state) {
+          return CalendarPage(
+            key: const PageStorageKey('calendar'),
+            memories: state.memories,
+            month: state.month,
+            year: state.year,
+            onPrevPressed: () {
+              if (userId != null) {
+                context.read<MemoryBloc>().add(SetTime(
+                  userId: userId,
+                  month: state.month - 1,
+                ));
               }
             },
-            destinations: navigationBardestinations,
+            onNextPressed: () {
+              if (userId != null) {
+                context.read<MemoryBloc>().add(SetTime(
+                  userId: userId,
+                  month: state.month + 1,
+                ));
+              }
+            },
+          );
+        },
+      ),
+      StatisticsPage(),
+    ];
+
+    return Scaffold(
+      appBar: _selectedIndex == 0 ? const HomeAppBar() : null,
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: pages,
+      ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: _onDestinationSelected,
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+            label: "Home",
           ),
-          floatingActionButton: floatingActionButton
-        );
-      },
+          NavigationDestination(
+            icon: Icon(Icons.calendar_month_outlined),
+            selectedIcon: Icon(Icons.calendar_month),
+            label: "Calendar",
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.insert_chart_outlined_outlined),
+            selectedIcon: Icon(Icons.insert_chart),
+            label: "Statistics",
+          ),
+        ],
+      ),
+      floatingActionButton: _selectedIndex == 0 ? const AddMemoryActionButton() : null,
     );
   }
 }
