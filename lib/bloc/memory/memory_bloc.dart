@@ -12,7 +12,11 @@ class MemoryBloc extends Bloc<MemoryEvent, MemoryState> {
 
   MemoryBloc(this._memoryRepository)
     : super(
-        MemoryInitial(year: DateTime.now().year, month: DateTime.now().month),
+        MemoryInitial(
+          year: DateTime.now().year,
+          month: DateTime.now().month,
+          lastNDays: 7
+        ),
       ) {
     on<LoadMemories>(onLoadMemories);
     on<SetTime>(onSetTime);
@@ -35,10 +39,17 @@ class MemoryBloc extends Bloc<MemoryEvent, MemoryState> {
             event.month ?? DateTime.now().month,
           );
           break;
+        case MemoryOrderType.byYear:
+          memories = await _memoryRepository.getMemoriesByUserIdAndTime(
+            event.userId,
+            event.year ?? DateTime.now().year,
+            event.month ?? DateTime.now().month,
+          );
+          break;
         case MemoryOrderType.lastNDays:
           memories = await _memoryRepository.getMemoriesByUserIdFromDate(
             event.userId,
-            DateTime.now().subtract(Duration(days: event.nLastDays ?? 7)),
+            DateTime.now().subtract(Duration(days: event.lastNDays ?? 7)),
           );
           break;
       }
@@ -48,6 +59,7 @@ class MemoryBloc extends Bloc<MemoryEvent, MemoryState> {
           orderType: event.orderType,
           year: event.year ?? state.year,
           month: event.month ?? state.month,
+          lastNDays: event.lastNDays ?? state.lastNDays
         ),
       );
     } catch (e) {
@@ -57,6 +69,7 @@ class MemoryBloc extends Bloc<MemoryEvent, MemoryState> {
           orderType: event.orderType,
           year: event.year ?? state.year,
           month: event.month ?? state.month,
+          lastNDays: event.lastNDays ?? state.lastNDays
         ),
       );
     }
@@ -65,6 +78,9 @@ class MemoryBloc extends Bloc<MemoryEvent, MemoryState> {
   Future<void> onSetTime(SetTime event, Emitter<MemoryState> emit) async {
     int month = event.month ?? state.month;
     int year = event.year ?? state.year;
+    
+    // TODO: make it better
+    // TODO: check year not < 0
     if (state.month == 1 && event.month == 0) {
       month = 12;
       year = state.year - 1;
@@ -72,7 +88,7 @@ class MemoryBloc extends Bloc<MemoryEvent, MemoryState> {
       month = 1;
       year = state.year + 1;
     }
-
+    
     await onLoadMemories(
       LoadMemories(
         userId: event.userId,

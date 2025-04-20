@@ -60,6 +60,23 @@ class MemoryDao {
     }
   }
 
+  Future<List<Memory>> getMemoriesByUserIdInYear(final String userId, final String year) async {
+    try {
+      final db = await _dbManager.database;
+      return await db.query(
+        "Memory",
+        where: "creatorId = ? AND strftime('%Y', timestamp) = ?",
+        whereArgs: [userId, year],
+        orderBy: "timestamp ASC"
+      ).then((res) => res.map((map) => Memory(
+        data: MemoryData.fromMap(map)
+      )).toList());
+    } catch (e) {
+      dev.log(e.toString());
+      return [];
+    }
+  }
+
   Future<bool> insertMemory(final Memory memory, Transaction? transaction) async {
     try {
       final controller = transaction ?? await _dbManager.database;

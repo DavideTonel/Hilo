@@ -10,6 +10,8 @@ import 'package:roadsyouwalked_app/ui/pages/home/calendar_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/feed_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/statistics/statistics_page.dart';
 
+import 'dart:developer' as dev;
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -20,6 +22,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
+  static const Map<int, MemoryOrderType> _orderTypeMap = {
+    0: MemoryOrderType.timeline,
+    1: MemoryOrderType.byMonth,
+    2: MemoryOrderType.lastNDays
+  };
+
   @override
   void initState() {
     super.initState();
@@ -27,17 +35,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   MemoryOrderType _getMemoryOrderTypeFromIndex(final int index) {
-    switch (index) {
-      case 0:
-        return MemoryOrderType.timeline;
-      case 1:
-        return MemoryOrderType.byMonth;
-      case 2:
-        return MemoryOrderType.lastNDays;
-      default:
-        return MemoryOrderType.timeline;
-    }
-  }
+    return _orderTypeMap[index] ?? MemoryOrderType.timeline;
+  }  
 
   Future<void> _loadInitialMemories() async {
     final userId = context.read<UserBloc>().state.user?.username;
@@ -62,9 +61,11 @@ class _HomePageState extends State<HomePage> {
       }
     });
 
+    dev.log("MemoryOrderType: ${_getMemoryOrderTypeFromIndex(index)}");
+
     memoryBloc.add(LoadMemories(
       userId: userId,
-      orderType: _getMemoryOrderTypeFromIndex(index),
+      orderType: _getMemoryOrderTypeFromIndex(index), // Qui mi si resetta ogni volta 
       month: memoryBloc.state.month,
       year: memoryBloc.state.year,
     ));
@@ -116,7 +117,9 @@ class _HomePageState extends State<HomePage> {
           );
         },
       ),
-      StatisticsPage(),
+      StatisticsPage(
+        key: const PageStorageKey("statistics")
+      ),
     ];
 
     return Scaffold(
@@ -125,6 +128,7 @@ class _HomePageState extends State<HomePage> {
         index: _selectedIndex,
         children: pages,
       ),
+      floatingActionButton: _selectedIndex == 0 ? const AddMemoryActionButton() : null,
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: _onDestinationSelected,
@@ -146,7 +150,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      floatingActionButton: _selectedIndex == 0 ? const AddMemoryActionButton() : null,
     );
   }
 }

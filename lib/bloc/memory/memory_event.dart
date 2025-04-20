@@ -8,7 +8,7 @@ final class LoadMemories extends MemoryEvent {
   final MemoryOrderType orderType;
   final int? year;
   final int? month;
-  final int? nLastDays;
+  final int? lastNDays;
 
   LoadMemories(
     {
@@ -16,7 +16,7 @@ final class LoadMemories extends MemoryEvent {
       required this.orderType,
       this.year,
       this.month,
-      this.nLastDays
+      this.lastNDays
     }
   );
 }

@@ -73,6 +73,26 @@ class MemoryRepository {
     return memories;
   }
 
+  Future<List<Memory>> getMemoriesByUserIdInYear(
+    final String userId,
+    final int year,
+  ) async {
+    final String yearString = year.toString();
+
+    List<Memory> memories = await _memoryDao.getMemoriesByUserIdInYear(
+      userId,
+      yearString
+    );
+    for (var memory in memories) {
+      List<Media> mediaList = await _mediaDao.getMediaByMemoryId(
+        memory.data.core.id,
+        memory.data.core.creatorId,
+      );
+      memory.mediaList = mediaList;
+    }
+    return memories;
+  }
+
   Future<void> saveMemory(
     MemoryData memoryData,
     List<PendingMedia> pendingMediaList,

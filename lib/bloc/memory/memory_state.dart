@@ -6,6 +6,7 @@ sealed class MemoryState {
   final MemoryOrderType orderType;
   final int year;
   final int month;
+  final int lastNDays;
 
 
   const MemoryState(
@@ -13,7 +14,8 @@ sealed class MemoryState {
       required this.memories,
       required this.orderType,
       required this.year,
-      required this.month
+      required this.month,
+      required this.lastNDays
     }
   );
 }
@@ -25,6 +27,7 @@ final class MemoryInitial extends MemoryState {
       super.orderType = MemoryOrderType.timeline,
       required super.year,
       required super.month,
+      required super.lastNDays
     }
   );
 }
@@ -35,7 +38,8 @@ final class MemoriesLoaded extends MemoryState {
       required super.memories,
       required super.orderType,
       required super.year,
-      required super.month
+      required super.month,
+      required super.lastNDays
     }
   );
 } 
