@@ -3,7 +3,7 @@ import 'package:roadsyouwalked_app/data/db/dao/memory_dao.dart';
 import 'package:roadsyouwalked_app/data/db/database_manager.dart';
 import 'package:roadsyouwalked_app/data/repository/evaluation_repository.dart';
 import 'package:roadsyouwalked_app/data/storage/media_storage_service.dart';
-import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale.dart';
+import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_item.dart';
 import 'package:roadsyouwalked_app/model/media/media.dart';
 import 'package:roadsyouwalked_app/model/media/pending_media.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_data.dart';

@@ -1,5 +1,7 @@
 import 'package:roadsyouwalked_app/data/db/database_manager.dart';
+import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_item.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale.dart';
+import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale_item.dart';
 
 import 'dart:developer' as dev;
 

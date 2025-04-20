@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/evaluation_bloc/evaluation_bloc.dart';
-import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale.dart';
+import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_data.dart';
+import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale_item.dart';
 
 class EvaluationPage extends StatelessWidget {
   final Function(EvaluationResultData evaluationResultData) onEvaluationCompleted;

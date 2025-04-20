@@ -1,6 +1,6 @@
-import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale.dart';
+import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale_item.dart';
 
-class MoodEvaluationHelper {  // TODO: make singleton
+class EvaluationHelper {  // TODO: make singleton
   Map<String, double> calculareResultsFromScores(final Map<EvaluationScaleItem, int?> scores) {
     if (scores.keys.any((item) => item.affectType == null)) {
       return {

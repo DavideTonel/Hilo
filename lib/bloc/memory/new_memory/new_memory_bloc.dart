@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/data/db/dao/media_dao.dart';
 import 'package:roadsyouwalked_app/data/db/dao/memory_dao.dart';
 import 'package:roadsyouwalked_app/data/repository/memory_repository.dart';
-import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale.dart';
+import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_data.dart';
 import 'package:roadsyouwalked_app/model/media/media_type.dart';
 import 'package:roadsyouwalked_app/model/media/pending_media.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_core_data.dart';

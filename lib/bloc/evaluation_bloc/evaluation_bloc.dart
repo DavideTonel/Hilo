@@ -1,7 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/data/repository/evaluation_repository.dart';
+import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_data.dart';
+import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_item.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale.dart';
+import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale_item.dart';
 import 'package:roadsyouwalked_app/model/evaluation/mood_evaluation_helper.dart';
 
 part 'evaluation_event.dart';
@@ -42,7 +45,7 @@ class EvaluationBloc extends Bloc<EvaluationEvent, EvaluationState> {
     newScores[event.item] = event.score;
 
     if (newScores.values.every((value) => value != null)) {
-      final Map<String, double> results = MoodEvaluationHelper().calculareResultsFromScores(newScores);
+      final Map<String, double> results = EvaluationHelper().calculareResultsFromScores(newScores);
       emit(
         EvaluationCompleted(
           scale: state.scale,
