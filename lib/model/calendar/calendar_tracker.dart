@@ -74,4 +74,8 @@ class CalendarTracker {
       ..._gapDaysNextCurrentMonth,
     ];
   }
+
+  List<CalendarDay> getDaysCurrentMonth() {
+    return _generateDaysInMonth();
+  }
 }

@@ -6,13 +6,15 @@ sealed class NewMemoryState {
   final String? creatorId;
   final String? description;
   final List<PendingMedia> mediaList;
+  final EvaluationResultData? evaluationResultData;
 
   const NewMemoryState(
     {
       required this.memoryId,
       required this.creatorId,
       required this.description,
-      required this.mediaList
+      required this.mediaList,
+      required this.evaluationResultData
     }
   );
 }
@@ -23,7 +25,8 @@ final class NewMemoryInitial extends NewMemoryState {
       super.memoryId,
       super.creatorId,
       super.description,
-      super.mediaList = const []
+      super.mediaList = const [],
+      super.evaluationResultData
     }
   );
 
@@ -31,13 +34,15 @@ final class NewMemoryInitial extends NewMemoryState {
     final String? newMemoryId,
     final String? newCreatorId,
     final String? newDescription,
-    final List<PendingMedia>? newMediaList
+    final List<PendingMedia>? newMediaList,
+    final EvaluationResultData? newEvaluationResultData
   ) {
     return NewMemoryInProgress(
       memoryId: newMemoryId ?? memoryId,
       creatorId: newCreatorId ?? creatorId,
       description: newDescription ?? description,
-      mediaList: newMediaList ?? mediaList
+      mediaList: newMediaList ?? mediaList,
+      evaluationResultData: newEvaluationResultData ?? evaluationResultData
     );
   }
 }
@@ -48,7 +53,8 @@ final class NewMemoryInProgress extends NewMemoryState {
       required super.memoryId,
       required super.creatorId,
       required super.description,
-      required super.mediaList
+      required super.mediaList,
+      required super.evaluationResultData
     }
   );
 
@@ -56,13 +62,15 @@ final class NewMemoryInProgress extends NewMemoryState {
     final String? newMemoryId,
     final String? newCreatorId,
     final String? newDescription,
-    final List<PendingMedia>? newMediaList
+    final List<PendingMedia>? newMediaList,
+    final EvaluationResultData? newEvaluationResultData
   ) {
     return NewMemoryInProgress(
       memoryId: newMemoryId ?? memoryId,
       creatorId: newCreatorId ?? creatorId,
       description: newDescription ?? description,
-      mediaList: newMediaList ?? mediaList
+      mediaList: newMediaList ?? mediaList,
+      evaluationResultData: newEvaluationResultData ?? evaluationResultData
     );
   }
 }
@@ -73,7 +81,8 @@ final class NewMemorySaveSuccess extends NewMemoryState {
       super.memoryId,
       super.creatorId,
       super.description,
-      super.mediaList = const []
+      super.mediaList = const [],
+      super.evaluationResultData
     }
   );
 }
@@ -87,6 +96,7 @@ final class NewMemorySaveFailure extends NewMemoryState {
       super.creatorId,
       super.description,
       super.mediaList = const [],
+      super.evaluationResultData,
       this.errorMessage
     }
   );

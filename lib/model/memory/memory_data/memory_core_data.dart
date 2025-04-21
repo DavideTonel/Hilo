@@ -27,7 +27,7 @@ class MemoryCoreData {
       id: map["id"] as String,
       creatorId: map["creatorId"] as String,
       timestamp: map["timestamp"] as String,
-      description: map["description"] as String
+      description: map["description"] as String?
     );
   }
 }

@@ -23,7 +23,7 @@ class AuthenticationPage extends StatelessWidget {
     userBloc.stream.listen((state) {
       if (state is UserLoaded) {
         memoriesBloc.add(
-          LoadMemoriesByUserId(
+          LoadMemories(
             userId: userBloc.state.user!.username,
             orderType: MemoryOrderType.timeline
           )

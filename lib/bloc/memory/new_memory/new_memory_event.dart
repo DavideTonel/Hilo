@@ -23,6 +23,12 @@ final class AddMedia extends NewMemoryEvent {
   );
 }
 
+final class AddMoodEvaluation extends NewMemoryEvent {
+  final EvaluationResultData evaluationResultData;
+
+  AddMoodEvaluation({required this.evaluationResultData});
+}
+
 final class SetDescription extends NewMemoryEvent {
   final String description;
 

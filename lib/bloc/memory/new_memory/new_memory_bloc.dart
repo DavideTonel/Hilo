@@ -5,10 +5,12 @@ import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/data/db/dao/media_dao.dart';
 import 'package:roadsyouwalked_app/data/db/dao/memory_dao.dart';
 import 'package:roadsyouwalked_app/data/repository/memory_repository.dart';
+import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_data.dart';
 import 'package:roadsyouwalked_app/model/media/media_type.dart';
 import 'package:roadsyouwalked_app/model/media/pending_media.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_core_data.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_data.dart';
+import 'package:roadsyouwalked_app/model/memory/memory_data/memory_evaluation_data.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:developer' as dev;
 
@@ -29,11 +31,13 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
           memoryId: state.memoryId,
           creatorId: state.creatorId,
           description: event.description,
-          mediaList: state.mediaList
+          mediaList: state.mediaList,
+          evaluationResultData: state.evaluationResultData
         )
       );
     });
     on<SaveMemory>(onSaveMemory);
+    on<AddMoodEvaluation>(onAddMoodEvaluation);
   }
 
   Future<void> onInitialize(
@@ -53,7 +57,8 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         memoryId: memoryId, 
         creatorId: creatorId, 
         description: state.description, 
-        mediaList: state.mediaList
+        mediaList: state.mediaList,
+        evaluationResultData: state.evaluationResultData
       )
     );
   }
@@ -83,7 +88,8 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         memoryId: state.memoryId,
         creatorId: state.creatorId,
         description: state.description,
-        mediaList: [...state.mediaList, newPendingMedia]
+        mediaList: [...state.mediaList, newPendingMedia],
+        evaluationResultData: state.evaluationResultData
       )
     );
   }
@@ -93,22 +99,31 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
     Emitter<NewMemoryState> emit
   ) async {
     try {
+      if (state.evaluationResultData == null) {
+        throw IncompleteMemoryException("Missing mood evaluation");
+      }
       if (
         (state.description == null || state.description!.isEmpty) &&
         state.mediaList.isEmpty
       ) {
         throw IncompleteMemoryException("Missing description or one media");
       }
+      final timestamp = DateTime.now().toIso8601String();
       await _memoryRepository.saveMemory(
         MemoryData(
           core: MemoryCoreData(
             id: state.memoryId!,
             creatorId: state.creatorId!,
-            timestamp: DateTime.now().toIso8601String(),
+            timestamp: timestamp,
             description: state.description
+          ),
+          evaluation: MemoryEvaluationData(
+            evaluationScaleId: state.evaluationResultData!.evaluationScaleId,
+            evaluationResult: state.evaluationResultData!.result
           )
         ), 
-        state.mediaList
+        state.mediaList,
+        state.evaluationResultData!.singleItemScores
       );
       emit(
         NewMemorySaveSuccess()
@@ -121,6 +136,7 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
           creatorId: state.creatorId,
           description: state.description,
           mediaList: state.mediaList,
+          evaluationResultData: state.evaluationResultData,
           errorMessage: e.message
         )
       );
@@ -131,8 +147,24 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
       );
     }
   }
+
+  void onAddMoodEvaluation(
+    AddMoodEvaluation event,
+    Emitter<NewMemoryState> emit
+  ) {
+    emit(
+      NewMemoryInProgress(
+        memoryId: state.memoryId,
+        creatorId: state.creatorId,
+        description: state.description,
+        mediaList: state.mediaList,
+        evaluationResultData: event.evaluationResultData
+      )
+    );
+  }
 }
 
+// TODO: move in another file
 class IncompleteMemoryException implements Exception {
   final String message;
   IncompleteMemoryException([this.message = "Memory is empty"]);

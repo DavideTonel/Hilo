@@ -15,7 +15,7 @@ class DatabaseManager {
 
   Future<Database> initializeDB() async {
     return openDatabase(
-      join(await getDatabasesPath(), "uni_test_5.db"),
+      join(await getDatabasesPath(), "uni_test_6.db"),
       version: 1,
       onCreate: (db, version) async {
         await db.execute(
@@ -35,8 +35,11 @@ class DatabaseManager {
               creatorId TEXT NOT NULL,
               timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
               description TEXT,
+              evaluationScaleId TEXT NOT NULL,
+              resultJson TEXT NOT NULL,
               PRIMARY KEY (id, creatorId),
-              FOREIGN KEY (creatorId) REFERENCES User(username) ON DELETE CASCADE
+              FOREIGN KEY (creatorId) REFERENCES User(username) ON DELETE CASCADE,
+              FOREIGN KEY (evaluationScaleId) REFERENCES Evaluation_Scale(id)
             );
           """
         );
@@ -56,6 +59,73 @@ class DatabaseManager {
               )
             );
           """
+        );
+        await db.execute(
+          """
+            CREATE TABLE Evaluation_Scale (
+              id TEXT PRIMARY KEY,
+              name TEXT NOT NULL
+            );
+          """
+        );
+        await db.execute(
+          """
+            CREATE TABLE Evaluation_Scale_Item (
+              id TEXT NOT NULL,
+              evaluationScaleId TEXT NOT NULL,
+              label TEXT NOT NULL,
+              minValue INTEGER NOT NULL,
+              maxValue INTEGER NOT NULL,
+              affectType TEXT CHECK (affectType IN ('positive', 'negative')),
+              PRIMARY KEY (id, evaluationScaleId),
+              FOREIGN KEY (evaluationScaleId) REFERENCES Evaluation_Scale(id) ON DELETE CASCADE,
+              CHECK (minValue < maxValue)
+            );
+          """
+        );
+        await db.execute(
+          """
+            CREATE TABLE Evaluation_Result_Item (
+              memoryId TEXT NOT NULL,
+              creatorId TEXT NOT NULL,
+              evaluationScaleItemId TEXT NOT NULL,
+              evaluationScaleId TEXT NOT NULL,
+              score INTEGER NOT NULL,
+              PRIMARY KEY (memoryId, creatorId, evaluationScaleItemId, evaluationScaleId),
+              FOREIGN KEY (memoryId, creatorId) REFERENCES Memory(id, creatorId) ON DELETE CASCADE,
+              FOREIGN KEY (evaluationScaleItemId, evaluationScaleId) REFERENCES Evaluation_Scale_Item(id, evaluationScaleId) ON DELETE CASCADE
+            );
+          """
+        );
+    
+        await db.insert(
+          "Evaluation_Scale",
+          {
+            "id": "panas_sf",
+            "name": "PANAS Short Form",
+          }
+        );
+        await db.insert(
+          "Evaluation_Scale_Item",
+          {
+            "id": "1",
+            "evaluationScaleId": "panas_sf",
+            "label": "Interested",
+            "minValue": 1,
+            "maxValue": 5,
+            "affectType": "positive",
+          }
+        );
+        await db.insert(
+          "Evaluation_Scale_Item",
+          {
+            "id": "2",
+            "evaluationScaleId": "panas_sf",
+            "label": "Upset",         // TODO: put right items with right ids
+            "minValue": 1,
+            "maxValue": 5,
+            "affectType": "negative",
+          }
         );
       }
     );
