@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/bloc/memory/new_memory/new_memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/evaluation_bloc/evaluation_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/position/position_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 import 'package:roadsyouwalked_app/ui/pages/memory/new_memory/new_memory_input_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/evaluation/evaluation_page.dart';
+
+import 'dart:developer' as dev;
 
 class NewMemoryPage extends StatefulWidget {
   const NewMemoryPage({super.key});
@@ -32,6 +35,11 @@ class NewMemoryPageState extends State<NewMemoryPage> {
         BlocProvider(
           // TODO: understand if wrapper is better
           create: (_) => EvaluationBloc()..add(GetDefaultEvaluationScale()),
+        ),
+        BlocProvider(
+          create: (context) {
+            return PositionBloc()..add(Init());
+          },
         ),
       ],
       child: Builder(
@@ -97,12 +105,38 @@ class NewMemoryPageState extends State<NewMemoryPage> {
                   },
                 ),
                 Scaffold(
-                  body: Center(
-                    child: MaterialButton(
-                      onPressed:
+                  body: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      BlocConsumer<PositionBloc, PositionState>(
+                        listener: (context, state) {
+                          switch (state) {
+                            case PositionLoaded _:
+                              dev.log("Position loaded: ${state.position!.latitude}, ${state.position!.longitude}");
+                              context.read<NewMemoryBloc>().add(AddPosition(
+                                position: state.position!
+                              ));
+                              break;
+                            default:
+                          }
+                        },
+                        builder: (context, state) {
+                          final String latitude = state.position?.latitude.toString() ?? "";
+                          final String longitude = state.position?.longitude.toString() ?? "";
+                          return MaterialButton(
+                            onPressed: () => context.read<PositionBloc>().add(GetPosition()),
+                            child: Text("lat: $latitude, lon: $longitude"),
+                          );
+                        },
+                      ),
+                      SizedBox(height: 100,),
+                      MaterialButton(
+                        onPressed:
                           () => context.read<NewMemoryBloc>().add(SaveMemory()),
-                      child: Text("Save memory"),
-                    ),
+                        child: Text("Save memory"),
+                      ),
+                    ]
                   ),
                 ),
               ],

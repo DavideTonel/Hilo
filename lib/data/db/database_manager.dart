@@ -15,7 +15,7 @@ class DatabaseManager {
 
   Future<Database> initializeDB() async {
     return openDatabase(
-      join(await getDatabasesPath(), "uni_test_6.db"),
+      join(await getDatabasesPath(), "uni_test_7.db"),
       version: 1,
       onCreate: (db, version) async {
         await db.execute(
@@ -37,6 +37,8 @@ class DatabaseManager {
               description TEXT,
               evaluationScaleId TEXT NOT NULL,
               resultJson TEXT NOT NULL,
+              latitude REAL,
+              longitude REAL,
               PRIMARY KEY (id, creatorId),
               FOREIGN KEY (creatorId) REFERENCES User(username) ON DELETE CASCADE,
               FOREIGN KEY (evaluationScaleId) REFERENCES Evaluation_Scale(id)

@@ -29,6 +29,12 @@ final class AddMoodEvaluation extends NewMemoryEvent {
   AddMoodEvaluation({required this.evaluationResultData});
 }
 
+final class AddPosition extends NewMemoryEvent {
+  final PositionData position;
+
+  AddPosition({required this.position});
+}
+
 final class SetDescription extends NewMemoryEvent {
   final String description;
 

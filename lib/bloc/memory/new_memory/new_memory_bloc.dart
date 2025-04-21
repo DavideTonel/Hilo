@@ -6,11 +6,13 @@ import 'package:roadsyouwalked_app/data/db/dao/media_dao.dart';
 import 'package:roadsyouwalked_app/data/db/dao/memory_dao.dart';
 import 'package:roadsyouwalked_app/data/repository/memory_repository.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_data.dart';
+import 'package:roadsyouwalked_app/model/location/i_position_service.dart';
 import 'package:roadsyouwalked_app/model/media/media_type.dart';
 import 'package:roadsyouwalked_app/model/media/pending_media.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_core_data.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_data.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_evaluation_data.dart';
+import 'package:roadsyouwalked_app/model/memory/memory_position_data.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:developer' as dev;
 
@@ -32,12 +34,14 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
           creatorId: state.creatorId,
           description: event.description,
           mediaList: state.mediaList,
-          evaluationResultData: state.evaluationResultData
+          evaluationResultData: state.evaluationResultData,
+          positionData: state.positionData
         )
       );
     });
     on<SaveMemory>(onSaveMemory);
     on<AddMoodEvaluation>(onAddMoodEvaluation);
+    on<AddPosition>(onAddPosition);
   }
 
   Future<void> onInitialize(
@@ -58,7 +62,8 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         creatorId: creatorId, 
         description: state.description, 
         mediaList: state.mediaList,
-        evaluationResultData: state.evaluationResultData
+        evaluationResultData: state.evaluationResultData,
+        positionData: state.positionData
       )
     );
   }
@@ -89,7 +94,8 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         creatorId: state.creatorId,
         description: state.description,
         mediaList: [...state.mediaList, newPendingMedia],
-        evaluationResultData: state.evaluationResultData
+        evaluationResultData: state.evaluationResultData,
+        positionData: state.positionData
       )
     );
   }
@@ -120,10 +126,14 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
           evaluation: MemoryEvaluationData(
             evaluationScaleId: state.evaluationResultData!.evaluationScaleId,
             evaluationResult: state.evaluationResultData!.result
-          )
+          ),
+          position: state.positionData != null ? MemoryPositionData(
+            latitude: state.positionData!.latitude,
+            longitude: state.positionData!.longitude
+          ) : null
         ), 
         state.mediaList,
-        state.evaluationResultData!.singleItemScores
+        state.evaluationResultData!.singleItemScores,
       );
       emit(
         NewMemorySaveSuccess()
@@ -137,6 +147,7 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
           description: state.description,
           mediaList: state.mediaList,
           evaluationResultData: state.evaluationResultData,
+          positionData: state.positionData,
           errorMessage: e.message
         )
       );
@@ -158,7 +169,24 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         creatorId: state.creatorId,
         description: state.description,
         mediaList: state.mediaList,
-        evaluationResultData: event.evaluationResultData
+        evaluationResultData: event.evaluationResultData,
+        positionData: state.positionData
+      )
+    );
+  }
+
+  void onAddPosition(
+    AddPosition event,
+    Emitter<NewMemoryState> emit
+  ) {
+    emit(
+      NewMemoryInProgress(
+        memoryId: state.memoryId,
+        creatorId: state.creatorId,
+        description: state.description,
+        mediaList: state.mediaList,
+        evaluationResultData: state.evaluationResultData,
+        positionData: event.position
       )
     );
   }
