@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/bloc/authentication/login/login_bloc.dart';
@@ -6,13 +6,16 @@ import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 
 import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
+import 'package:roadsyouwalked_app/ui/components/input/confirm_button_widget.dart';
+import 'package:roadsyouwalked_app/ui/components/input/labeled_checkbox_widget.dart';
+import 'package:roadsyouwalked_app/ui/components/input/text_input_widget.dart';
+import 'package:roadsyouwalked_app/ui/constants/app_spacing.dart';
 
 // [ ] should be a statefull widget to manage the text field controllers?
 class LoginInfoPage extends StatelessWidget {
   final TextEditingController _usernameTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
   
-
   LoginInfoPage({super.key});
 
   void _onLoginGranted(BuildContext context) {
@@ -55,6 +58,8 @@ class LoginInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
         switch (state) {
@@ -68,48 +73,52 @@ class LoginInfoPage extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text("Roads You Walked Logo"),
-            TextField(
-              controller: _usernameTextController,
-              decoration: InputDecoration(
-                labelText: 'Username',
-                border: OutlineInputBorder(),
+        return Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text("Roads You Walked Logo"),
+              const SizedBox(height: AppSpacingConstants.xxl),
+              TextInputWidget(
+                textController: _usernameTextController,
+                labelText: "Username"
               ),
-            ),
-            TextField(
-              controller: _passwordTextController,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
+              const SizedBox(height: AppSpacingConstants.xs),
+              TextInputWidget(
+                textController: _passwordTextController,
+                labelText: "Password",
+                obscureText: true,
               ),
-              obscureText: true,
-            ),
-            Checkbox(
-              value: state.rememberUser,
-              onChanged: (value) => context.read<LoginBloc>().add(SetRememberUser(value!))
-            ),
-            ElevatedButton(
-              onPressed: () {
-                context.read<LoginBloc>().add(
-                  LoginRequest(
-                    _usernameTextController.text,
-                    _passwordTextController.text
-                  )
-                );
-              },
-              child: Text('Login'),
-            ),
-            TextButton(
-              onPressed: () {
-                GoRouter.of(context).push("/auth/signup");
-              },
-              child: Text('Haven\'t you got an account? Sign up'),
-            ),
-          ],
+              const SizedBox(height: AppSpacingConstants.sm),
+              LabeledCheckboxWidget(
+                label: "Remember me",
+                value: state.rememberUser,
+                onChanged: (value) => context.read<LoginBloc>().add(SetRememberUser(value!))
+              ),
+              const SizedBox(height: AppSpacingConstants.xl),
+              ConfirmButtonWidget(
+                width: size.width * 0.70,  
+                label: "Login",
+                onPressed: () {
+                  context.read<LoginBloc>().add(
+                    LoginRequest(
+                      _usernameTextController.text,
+                      _passwordTextController.text
+                    )
+                  );
+                }
+              ),
+              const SizedBox(height: AppSpacingConstants.md),
+              TextButton(
+                onPressed: () {
+                  GoRouter.of(context).push("/auth/signup");
+                },
+                child: Text('Haven\'t you got an account? Sign up'),
+              ),
+            ],
+          ),
         );
       },
     );

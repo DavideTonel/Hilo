@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/bloc/authentication/signup/signup_bloc.dart';
+import 'package:roadsyouwalked_app/ui/components/input/confirm_button_widget.dart';
+import 'package:roadsyouwalked_app/ui/components/input/text_input_widget.dart';
+import 'package:roadsyouwalked_app/ui/constants/app_spacing.dart';
 
 class SignupInfoPage extends StatelessWidget {
   final TextEditingController _firstNameTextController = TextEditingController();
@@ -14,11 +17,12 @@ class SignupInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return BlocConsumer<SignupBloc, SignupState>(
       listener: (context, state) {
         switch (state) {
           case SignupSuccess _:
-            dev.log("signup success in ui, go to login");
             GoRouter.of(context).pop();
             break;
           case SignupFailure _:
@@ -39,63 +43,62 @@ class SignupInfoPage extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _firstNameTextController,
-              decoration: InputDecoration(
-                labelText: 'First name',
-                border: OutlineInputBorder(),
+        return Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextInputWidget(
+                textController: _firstNameTextController,
+                labelText: "First name"
               ),
-            ),
-            TextField(
-              controller: _lastNameTextController,
-              decoration: InputDecoration(
-                labelText: 'Last name',
-                border: OutlineInputBorder(),
+              const SizedBox(height: AppSpacingConstants.xs),
+              TextInputWidget(
+                textController: _lastNameTextController,
+                labelText: "Last name"
               ),
-            ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Birthdate',
-                border: OutlineInputBorder(),
+              const SizedBox(height: AppSpacingConstants.xs),
+              // TODO: use a date picker
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'Birthdate',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            TextField(
-              controller: _usernameTextController,
-              onChanged: (value) => context.read<SignupBloc>().add(
-                UsernameCheckRequest(_usernameTextController.text)
+              const SizedBox(height: AppSpacingConstants.xs),
+              TextInputWidget(
+                textController: _usernameTextController,
+                labelText: "Username",
+                onChanged: (value) => context.read<SignupBloc>().add(
+                  UsernameCheckRequest(_usernameTextController.text)
+                ),
+                isValid: state.validUsername || _usernameTextController.text.isEmpty,
+                errorText: state.validUsername ? null : "Username already taken",
               ),
-              decoration: InputDecoration(
-                labelText: 'Username',
-                border: OutlineInputBorder(),
-                errorText: state.validUsername || _usernameTextController.text.isEmpty ? null : "Username already taken",
+              const SizedBox(height: AppSpacingConstants.xs),
+              TextInputWidget(
+                textController: _passwordTextController,
+                labelText: "Password",
+                obscureText: true,
               ),
-            ),
-            TextField(
-              controller: _passwordTextController,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
+              const SizedBox(height: AppSpacingConstants.xl),
+              ConfirmButtonWidget(
+                width: size.width * 0.70,
+                onPressed: () {
+                  context.read<SignupBloc>().add(
+                    SignupRequest(
+                      _firstNameTextController.text,
+                      _lastNameTextController.text,
+                      _usernameTextController.text,
+                      _passwordTextController.text,
+                    )
+                  );
+                },
+                label: "Signup",
               ),
-              obscureText: true,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                context.read<SignupBloc>().add(
-                  SignupRequest(
-                    _firstNameTextController.text,
-                    _lastNameTextController.text,
-                    _usernameTextController.text,
-                    _passwordTextController.text,
-                  )
-                );
-              },
-              child: Text('Sign up'),
-            ),
-          ],
+            ],
+          ),
         );
       }
     );
