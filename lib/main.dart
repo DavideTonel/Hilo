@@ -1,14 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:roadsyouwalked_app/api/firebase_api.dart';
 import 'package:roadsyouwalked_app/bloc/authentication/auth_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 import 'package:roadsyouwalked_app/data/repository/memory_repository.dart';
 import 'package:roadsyouwalked_app/data/repository/user_repository.dart';
+import 'package:roadsyouwalked_app/firebase_options.dart';
 import 'package:roadsyouwalked_app/navigation/app_router.dart';
 
 // TODO: how to create only ona UserRepository to all blocs?
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseApi().initNotifications();
   runApp(const MyApp());
 }
 
@@ -20,7 +26,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => AuthBloc(UserRepository())..add(CheckAutoLogin())),
         BlocProvider(create: (context) => MemoryBloc(MemoryRepository())),
-        BlocProvider(create: (context) => UserBloc(UserRepository()))
+        BlocProvider(create: (context) => UserBloc(UserRepository())),
       ],
       child: MyAppWithRouter()
     );

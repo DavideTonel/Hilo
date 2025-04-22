@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "698546848122",
+    "project_id": "roadsyouwalked",
+    "storage_bucket": "roadsyouwalked.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698546848122:android:050e03a1f450aca02316c3",
+        "android_client_info": {
+          "package_name": "com.example.roadsyouwalked_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACyaJhDgwPjQJQhdQaJX7C8NgXZmLMHcQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
