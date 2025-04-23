@@ -5,11 +5,15 @@ import 'package:roadsyouwalked_app/ui/components/calendar/days/calendar_day_widg
 
 class CalendarWidget extends StatelessWidget {
   final Map<CalendarDay, List<Memory>> memoryMap;
+  final double itemHeight;
+  final double itemWidth;
 
   const CalendarWidget(
     {
       super.key,
-      required this.memoryMap
+      required this.memoryMap,
+      this.itemHeight = 90,
+      this.itemWidth = 45
     }
   );
 
@@ -28,6 +32,8 @@ class CalendarWidget extends StatelessWidget {
         CalendarDayWidget(
           day: entries[i].key,
           memories: entries[i].value,
+          height: itemHeight,
+          width: itemWidth,
         )
       );
     }

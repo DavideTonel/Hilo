@@ -9,23 +9,27 @@ import 'package:roadsyouwalked_app/ui/components/calendar/days/calendar_day_imag
 class CalendarDayWidget extends StatelessWidget {
   final CalendarDay day;
   final List<Memory> memories;
+  final double height;
+  final double width;
 
   const CalendarDayWidget(
     {
       super.key,
       required this.day,
-      required this.memories
+      required this.memories,
+      this.height = 90,
+      this.width = 45
     }
   );
 
   @override
   Widget build(BuildContext context) {
     if (memories.any((memory) => memory.mediaList.any((media) => media.type == MediaType.image))) { // TODO: create widget wrapper for media
-      return CalendarDayImageWidget(day: day, memories: memories);
+      return CalendarDayImageWidget(day: day, memories: memories, height: height, width: width);
     } else if (memories.isNotEmpty) {
-      return CalendarDayBasicWidget(day: day, memories: memories);
+      return CalendarDayBasicWidget(day: day, memories: memories, height: height, width: width);
     } else {
-      return CalendarDayEmptyWidget(day: day);
+      return CalendarDayEmptyWidget(day: day, height: height, width: width);
     }
   }
 }

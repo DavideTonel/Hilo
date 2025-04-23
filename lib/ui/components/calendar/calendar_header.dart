@@ -5,16 +5,26 @@ import 'package:roadsyouwalked_app/ui/components/calendar/calendar_week_day_head
 
 class CalendarHeader extends StatelessWidget {
   final List<CalendarDay> days;
+  final double itemHeight;
+  final double itemWidth;
+
   const CalendarHeader(
     {
       super.key,
-      required this.days
+      required this.days,
+      this.itemHeight = 90,
+      this.itemWidth = 45
     }
   );
 
   @override
   Widget build(BuildContext context) {
-    final weekDays = days.take(7).map((day) => CalendarWeekDayHeader(weekDayName: DateFormat('EEE').format(day.date)));
+    final weekDays = days.take(7).map((day) => CalendarWeekDayHeader(
+        weekDayName: DateFormat('EEE').format(day.date),
+        height: itemHeight,
+        width: itemWidth,
+      ),
+    );
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,

@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   static const Map<int, MemoryOrderType> _orderTypeMap = {
     0: MemoryOrderType.timeline,
     1: MemoryOrderType.byMonth,
-    2: MemoryOrderType.lastNDays
+    2: MemoryOrderType.lastNDays,
   };
 
   @override
@@ -36,16 +36,13 @@ class _HomePageState extends State<HomePage> {
 
   MemoryOrderType _getMemoryOrderTypeFromIndex(final int index) {
     return _orderTypeMap[index] ?? MemoryOrderType.timeline;
-  }  
+  }
 
   Future<void> _loadInitialMemories() async {
     final userId = context.read<UserBloc>().state.user?.username;
     if (userId != null) {
       context.read<MemoryBloc>().add(
-        LoadMemories(
-          userId: userId,
-          orderType: MemoryOrderType.timeline,
-        ),
+        LoadMemories(userId: userId, orderType: MemoryOrderType.timeline),
       );
     }
   }
@@ -63,12 +60,16 @@ class _HomePageState extends State<HomePage> {
 
     dev.log("MemoryOrderType: ${_getMemoryOrderTypeFromIndex(index)}");
 
-    memoryBloc.add(LoadMemories(
-      userId: userId,
-      orderType: _getMemoryOrderTypeFromIndex(index), // Qui mi si resetta ogni volta 
-      month: memoryBloc.state.month,
-      year: memoryBloc.state.year,
-    ));
+    memoryBloc.add(
+      LoadMemories(
+        userId: userId,
+        orderType: _getMemoryOrderTypeFromIndex(
+          index,
+        ),
+        month: memoryBloc.state.month,
+        year: memoryBloc.state.year,
+      ),
+    );
 
     await completer.future;
     await subscription.cancel();
@@ -91,44 +92,15 @@ class _HomePageState extends State<HomePage> {
 
     final List<Widget> pages = [
       const FeedPage(key: PageStorageKey('feed')),
-      BlocBuilder<MemoryBloc, MemoryState>(
-        builder: (context, state) {
-          return CalendarPage(
-            key: const PageStorageKey('calendar'),
-            memories: state.memories,
-            month: state.month,
-            year: state.year,
-            onPrevPressed: () {
-              if (userId != null) {
-                context.read<MemoryBloc>().add(SetTime(
-                  userId: userId,
-                  month: state.month - 1,
-                ));
-              }
-            },
-            onNextPressed: () {
-              if (userId != null) {
-                context.read<MemoryBloc>().add(SetTime(
-                  userId: userId,
-                  month: state.month + 1,
-                ));
-              }
-            },
-          );
-        },
-      ),
-      StatisticsPage(
-        key: const PageStorageKey("statistics")
-      ),
+      const CalendarPage(key: PageStorageKey('calendar')),
+      const StatisticsPage(key: PageStorageKey("statistics")),
     ];
 
     return Scaffold(
-      appBar: _selectedIndex == 0 ? const HomeAppBar() : null,
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: pages,
-      ),
-      floatingActionButton: _selectedIndex == 0 ? const AddMemoryActionButton() : null,
+      appBar: _selectedIndex == 0 ? const HomeAppBar() : AppBar(),
+      body: IndexedStack(index: _selectedIndex, children: pages),
+      floatingActionButton:
+          _selectedIndex == 0 ? const AddMemoryActionButton() : null,
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: _onDestinationSelected,

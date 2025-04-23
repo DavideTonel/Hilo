@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
 import 'package:roadsyouwalked_app/ui/components/statistics/bar_chart/year_evaluation_bar_chart_widget.dart';
 import 'package:roadsyouwalked_app/ui/components/statistics/line_chart/year_evaluation_line_chart_widget.dart';
-import 'package:roadsyouwalked_app/ui/components/statistics/period_controller_widget.dart';
+import 'package:roadsyouwalked_app/ui/components/controller/period_controller_widget.dart';
 
 class YearStatisticsPage extends StatelessWidget {
   final List<Memory> memories;

@@ -6,19 +6,27 @@ import 'package:roadsyouwalked_app/model/memory/memory.dart';
 class CalendarDayBasicWidget extends StatelessWidget {
   final CalendarDay day;
   final List<Memory> memories;
+  final double height;
+  final double width;
 
-  const CalendarDayBasicWidget({super.key, required this.day, required this.memories});
+  const CalendarDayBasicWidget({
+    super.key,
+    required this.day,
+    required this.memories,
+    required this.height,
+    required this.width,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(2.0),
       child: Container(
-        height: 90,
-        width: 45,
+        height: height,
+        width: width,
         decoration: BoxDecoration(
           color: Colors.blue,
-          borderRadius: BorderRadius.circular(8)
+          borderRadius: BorderRadius.circular(8),
         ),
         clipBehavior: Clip.antiAlias,
         child: Stack(
@@ -28,7 +36,10 @@ class CalendarDayBasicWidget extends StatelessWidget {
             Container(
               height: 90,
               width: 45,
-              color: day.gapType == CalendarDayGapType.currentMonth ? Colors.blue : Colors.grey,
+              color:
+                  day.gapType == CalendarDayGapType.currentMonth
+                      ? Colors.blue
+                      : Colors.grey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -41,14 +52,11 @@ class CalendarDayBasicWidget extends StatelessWidget {
                 day.date.day.toString(),
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.white
+                  color: Colors.white,
                 ),
-              )
+              ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Icon(Icons.notes)
-            ),
+            Align(alignment: Alignment.bottomCenter, child: Icon(Icons.notes)),
             Align(
               alignment: Alignment.topRight,
               child: Text(
@@ -56,12 +64,12 @@ class CalendarDayBasicWidget extends StatelessWidget {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 10,
-                  color: Colors.white
+                  color: Colors.white,
                 ),
-              )
-            )
+              ),
+            ),
           ],
-        )
+        ),
       ),
     );
   }
