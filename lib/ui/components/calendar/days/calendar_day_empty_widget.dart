@@ -26,7 +26,7 @@ class CalendarDayEmptyWidget extends StatelessWidget {
               day.gapType == CalendarDayGapType.currentMonth
                   ? Colors.blue
                   : Colors.grey,
-          borderRadius: BorderRadius.circular(12), // Arrotonda i bordi
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

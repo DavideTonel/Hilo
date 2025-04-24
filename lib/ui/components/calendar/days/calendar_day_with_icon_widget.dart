@@ -3,16 +3,18 @@ import 'package:roadsyouwalked_app/model/calendar/calendar_day.dart';
 import 'package:roadsyouwalked_app/model/calendar/calendar_day_gap_type.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
 
-class CalendarDayBasicWidget extends StatelessWidget {
+class CalendarDayWithEmojiWidget extends StatelessWidget {
   final CalendarDay day;
   final List<Memory> memories;
+  final String emoji;
   final double height;
   final double width;
 
-  const CalendarDayBasicWidget({
+  const CalendarDayWithEmojiWidget({
     super.key,
     required this.day,
     required this.memories,
+    required this.emoji,
     required this.height,
     required this.width,
   });
@@ -56,7 +58,11 @@ class CalendarDayBasicWidget extends StatelessWidget {
                 ),
               ),
             ),
-            Align(alignment: Alignment.bottomCenter, child: Icon(Icons.notes)),
+            Align(alignment: Alignment.bottomCenter, child: Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: Text(emoji),
+            )),
+            /*
             Align(
               alignment: Alignment.topRight,
               child: Text(
@@ -68,6 +74,7 @@ class CalendarDayBasicWidget extends StatelessWidget {
                 ),
               ),
             ),
+            */
           ],
         ),
       ),
