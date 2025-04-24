@@ -8,22 +8,36 @@ class NewMemoryTextPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          TextField(
-            maxLines: 8,
-            onChanged: (value) {
-              onChangeDescription(value);
-            },
-            decoration: InputDecoration(
-              labelText: 'How are you feeling?',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+          Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  onChanged: onChangeDescription,
+                  maxLines: null,
+                  expands: true,
+                  textAlignVertical: TextAlignVertical.top,
+                  decoration: InputDecoration(
+                    labelText: "How do you feel?",
+                    alignLabelWithHint: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(
+                        
+                      ),
+                    ),
+                    contentPadding: const EdgeInsets.all(16),
+                  ),
+                  style: const TextStyle(fontSize: 16),
+                  keyboardType: TextInputType.multiline,
+                ),
               ),
-              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
             ),
-          ),
         ],
       ),
     );

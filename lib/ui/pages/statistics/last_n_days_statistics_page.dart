@@ -19,7 +19,7 @@ class LastNDaysStatisticsPage extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(5.0),
           child: LastNDayEvaluationLineChartWidget(
             memories: memories,
             fromDate: fromDate,

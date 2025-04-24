@@ -3,10 +3,10 @@ part of 'new_memory_bloc.dart';
 @immutable
 sealed class NewMemoryEvent {}
 
-final class Initialize extends NewMemoryEvent {
+final class InitNewMemory extends NewMemoryEvent {
   final String creatorId;
 
-  Initialize({required this.creatorId});
+  InitNewMemory({required this.creatorId});
 }
 
 final class AddMedia extends NewMemoryEvent {

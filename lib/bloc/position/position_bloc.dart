@@ -9,12 +9,12 @@ class PositionBloc extends Bloc<PositionEvent, PositionState> {
   final IPositionService _positionService = PositionService();
 
   PositionBloc() : super(PositionInitial()) {
-    on<Init>(onInitialize);
+    on<InitPosition>(onInitialize);
     on<GetPosition>(onGetPosition);
   }
 
   Future<void> onInitialize(
-    Init event,
+    InitPosition event,
     Emitter<PositionState> emit,
   ) async {
     await _positionService.ensureReady();

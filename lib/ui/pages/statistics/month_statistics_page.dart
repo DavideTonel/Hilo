@@ -26,28 +26,30 @@ class MonthStatisticsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        PeriodControllerWidget(
-          header: DateFormat("MMM YYYY").format(DateTime(year, month)),
-          onPreviousPressed: onPreviousPressed,
-          onNextPressed: onNextPressed,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: MonthEvaluationLineChartWidget(
-            memories: memories,
-            daysInMonth: daysInMonth,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          PeriodControllerWidget(
+            header: DateFormat("MMM yyyy").format(DateTime(year, month)),
+            onPreviousPressed: onPreviousPressed,
+            onNextPressed: onNextPressed,
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: MonthEvaluationBarChartWidget(
-            memories: memories,
-            daysInMonth: daysInMonth,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+            child: MonthEvaluationLineChartWidget(
+              memories: memories,
+              daysInMonth: daysInMonth,
+            ),
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: MonthEvaluationBarChartWidget(
+              memories: memories,
+              daysInMonth: daysInMonth,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

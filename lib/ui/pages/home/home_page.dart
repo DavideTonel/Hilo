@@ -6,6 +6,7 @@ import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
 import 'package:roadsyouwalked_app/ui/components/home/add_memory_action_button.dart';
 import 'package:roadsyouwalked_app/ui/components/home/home_app_bar.dart';
+import 'package:roadsyouwalked_app/ui/components/statistics/statistics_app_bar.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/calendar_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/feed_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/statistics/statistics_page.dart';
@@ -86,6 +87,18 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  PreferredSizeWidget? _getAppBarFromIndex(int index) {
+    switch (index) {
+      case 0:
+        return const HomeAppBar();
+      case 1:
+        return AppBar();
+      case 2:
+        return StatisticsAppBar();
+      default:
+        return null;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final userId = context.read<UserBloc>().state.user?.username;
@@ -97,7 +110,7 @@ class _HomePageState extends State<HomePage> {
     ];
 
     return Scaffold(
-      appBar: _selectedIndex == 0 ? const HomeAppBar() : AppBar(),
+      appBar:_getAppBarFromIndex(_selectedIndex),
       body: IndexedStack(index: _selectedIndex, children: pages),
       floatingActionButton:
           _selectedIndex == 0 ? const AddMemoryActionButton() : null,

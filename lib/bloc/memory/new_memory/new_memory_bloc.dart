@@ -25,7 +25,7 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
   final MediaDao _mediaDao = MediaDao();
 
   NewMemoryBloc() : super(NewMemoryInitial()) {
-    on<Initialize>(onInitialize);
+    on<InitNewMemory>(onInitialize);
     on<AddMedia>(onAddMedia);
     on<SetDescription>((event, emit) {
       emit(
@@ -45,7 +45,7 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
   }
 
   Future<void> onInitialize(
-    Initialize event,
+    InitNewMemory event,
     Emitter<NewMemoryState> emit
   ) async {
     final uuid = const Uuid();

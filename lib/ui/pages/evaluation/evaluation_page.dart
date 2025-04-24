@@ -4,53 +4,114 @@ import 'package:roadsyouwalked_app/bloc/evaluation_bloc/evaluation_bloc.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_data.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale_item.dart';
 
-class EvaluationPage extends StatelessWidget {
-  final Function(EvaluationResultData evaluationResultData) onEvaluationCompleted;
+class EvaluationPage extends StatefulWidget {
+  final Function(EvaluationResultData evaluationResultData)
+  onEvaluationCompleted;
 
-  const EvaluationPage({
-    super.key,
-    required this.onEvaluationCompleted,
-  });
+  const EvaluationPage({super.key, required this.onEvaluationCompleted});
+
+  @override
+  _EvaluationPageState createState() => _EvaluationPageState();
+}
+
+class _EvaluationPageState extends State<EvaluationPage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _progressAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _progressAnimation = Tween<double>(begin: 0, end: 0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: make it better
     return BlocConsumer<EvaluationBloc, EvaluationState>(
       listener: (context, state) {
-        switch (state) {
-          case EvaluationLoaded _:
-            break;
-          case EvaluationCompleted _:
-            onEvaluationCompleted(
-              state.resultData!
-            );
-            break;
-          default:
+        if (state is EvaluationCompleted) {
+          widget.onEvaluationCompleted(state.resultData!);
         }
       },
       builder: (context, state) {
         Widget body;
+        double progress = 0;
 
-        switch (state) {
-          case EvaluationInitial _:
-            body = Center(child: Text("Loading"));
-          case EvaluationLoaded _ || EvaluationInProgress _ || EvaluationCompleted _:
-            body = EvaluationWidget(
-              items: state.scale!.items,
-              scores: state.scores,
+        if (state is EvaluationInitial) {
+          body = const Center(child: Text("Loading..."));
+        } else if (state is EvaluationLoaded ||
+            state is EvaluationInProgress ||
+            state is EvaluationCompleted) {
+          final items = state.scale!.items;
+          final scores = state.scores;
+
+          final completed = scores.values.where((v) => v != null).length;
+          progress = completed / items.length;
+
+          // Update the animation progress
+          _progressAnimation = Tween<double>(
+            begin: _progressAnimation.value,
+            end: progress,
+          ).animate(
+            CurvedAnimation(
+              parent: _animationController,
+              curve: Curves.easeOut,
+            ),
+          );
+          _animationController.forward(from: 0); // Trigger the animation
+
+          body = Padding(
+            padding: const EdgeInsets.all(27.0),
+            child: EvaluationWidget(
+              items: items,
+              scores: scores,
               onUpdateScoreItem: (item, score) {
                 context.read<EvaluationBloc>().add(
                   SetScoreItem(item: item, score: score),
                 );
               },
-            );
+            ),
+          );
+        } else {
+          body = const Center(child: Text("Unexpected state"));
         }
 
         return Scaffold(
+          appBar: AppBar(
+            title: const Text("How are you?"),
+            automaticallyImplyLeading: false,
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(4),
+              child: AnimatedBuilder(
+                animation: _animationController,
+                builder: (context, child) {
+                  return LinearProgressIndicator(
+                    value: _progressAnimation.value,
+                    backgroundColor: Colors.grey.shade300,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).colorScheme.primary,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
           body: body,
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 }
 
@@ -68,27 +129,58 @@ class EvaluationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ...items.map((item) {
-          final currentValue = scores[item];
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(item.label),
-              Slider(
-                value: (currentValue ?? item.minValue).toDouble(),
-                min: item.minValue.toDouble(),
-                max: item.maxValue.toDouble(),
-                divisions: item.maxValue - item.minValue,
-                label: (currentValue ?? item.minValue).toString(),
-                onChanged: (value) {
-                  onUpdateScoreItem(item, value.toInt());
-                },
-              ),
-            ],
+    List<Widget> evaluationItems =
+        items.map((item) {
+          final currentValue = scores[item] ?? item.minValue;
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: EvaluationItemWidget(
+              item: item,
+              currentValue: currentValue.toDouble(),
+              onUpdateScoreItem: onUpdateScoreItem,
+            ),
           );
-        }),
+        }).toList();
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [...evaluationItems],
+    );
+  }
+}
+
+class EvaluationItemWidget extends StatelessWidget {
+  final EvaluationScaleItem item;
+  final double currentValue;
+  final Function(EvaluationScaleItem item, int score) onUpdateScoreItem;
+
+  const EvaluationItemWidget({
+    super.key,
+    required this.item,
+    required this.currentValue,
+    required this.onUpdateScoreItem,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          item.label,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        Slider(
+          value: currentValue.toDouble(),
+          min: item.minValue.toDouble(),
+          max: item.maxValue.toDouble(),
+          divisions: item.maxValue - item.minValue,
+          label: currentValue.toString(),
+          onChanged: (value) {
+            onUpdateScoreItem(item, value.toInt());
+          },
+        ),
       ],
     );
   }

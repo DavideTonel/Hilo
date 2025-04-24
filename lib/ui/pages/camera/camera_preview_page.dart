@@ -15,7 +15,7 @@ class CameraPreviewPage extends StatelessWidget {
       body: CameraPreviewWidget(cameraManager: cameraManager),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 20.0),
+        padding: const EdgeInsets.only(bottom: 25.0),
         child: CameraButton(onPressed: onCameraTap),
       ),
     );

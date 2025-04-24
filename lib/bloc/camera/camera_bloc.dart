@@ -9,7 +9,7 @@ part 'camera_state.dart';
 
 class CameraBloc extends Bloc<CameraEvent, CameraState> {
   CameraBloc() : super(CameraInitial()) {
-    on<InitializeCamera>(onInitializeCamera);
+    on<InitCamera>(onInitializeCamera);
     on<DisposeCamera>(onDisposeCamera);
     on<TakePhoto>(onTakePhoto);
     on<AcceptMedia>((event, emit) {
@@ -23,7 +23,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
   }
 
   Future<void> onInitializeCamera(
-    InitializeCamera event,
+    InitCamera event,
     Emitter<CameraState> emit
   ) async {
     await state.cameraManager.getAvailableCameras().then((cameras) async {

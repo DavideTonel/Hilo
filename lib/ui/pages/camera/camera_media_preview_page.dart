@@ -34,11 +34,14 @@ class CameraMediaPreviewPage extends StatelessWidget {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: IconButton(
-        onPressed: () {
-          return onSaveMedia(media, null, MediaType.image);
-        },
-        icon: Icon(Icons.check_box,size: 80,)
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: IconButton(
+          onPressed: () {
+            return onSaveMedia(media, null, MediaType.image);
+          },
+          icon: Icon(Icons.check_box,size: 80,)
+        ),
       ),
     );
   }

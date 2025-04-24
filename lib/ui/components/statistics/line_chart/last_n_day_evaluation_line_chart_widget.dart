@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
+import 'package:roadsyouwalked_app/ui/constants/app_spacing.dart';
 
 class LastNDayEvaluationLineChartWidget extends StatelessWidget {
   final List<Memory> memories;
@@ -66,88 +67,125 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
       memories,
     );
 
-    return AspectRatio(
-      aspectRatio: 1.7,
-      child: LineChart(
-        LineChartData(
-          maxY: 25,
-          minY: 0,
-          minX: lastNMidnights.first.x,
-          maxX: lastNMidnights.last.x,
-          lineBarsData: [
-            LineChartBarData(
-              show: false,
-              spots: lastNMidnights,
-              dotData: FlDotData(show: true),
-            ),
-            ...spotsGroupByLabel.entries.map((entry) {
-              return LineChartBarData(
-                spots: entry.value,
-                isCurved: true,
-                preventCurveOverShooting: true,
-                dotData: FlDotData(show: true),
-                color: entry.key == "positive" ? Colors.green : Colors.red,
-                barWidth: 1,
-                belowBarData: BarAreaData(
-                  show: true,
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.transparent,
-                      entry.key == "positive" ? Colors.green : Colors.red,
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            Text("Mood Flow"),
+            const SizedBox(height: AppSpacingConstants.md),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: AspectRatio(
+                aspectRatio: 1.7,
+                child: LineChart(
+                  LineChartData(
+                    maxY: 25.8,
+                    minY: 0,
+                    minX: lastNMidnights.first.x,
+                    maxX: lastNMidnights.last.x,
+                    lineBarsData: [
+                      LineChartBarData(
+                        show: false,
+                        spots: lastNMidnights,
+                        dotData: FlDotData(show: true),
+                      ),
+                      ...spotsGroupByLabel.entries.map((entry) {
+                        final isPositive = entry.key == "positive";
+                        final color =
+                            isPositive
+                                ? const Color(0xFF8FD6B7)
+                                : const Color(0xFFEF9A9A);
+                        return LineChartBarData(
+                          spots: entry.value,
+                          isCurved: true,
+                          preventCurveOverShooting: true,
+                          barWidth: 3,
+                          isStrokeCapRound: true,
+                          dotData: FlDotData(show: false),
+                          color: color,
+                          belowBarData: BarAreaData(
+                            show: true,
+                            gradient: LinearGradient(
+                              colors: [
+                                color.withAlpha(50),
+                                Colors.transparent,
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                          ),
+                        );
+                      }),
                     ],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
+                    titlesData: FlTitlesData(
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          reservedSize: 28,
+                          showTitles: true,
+                          interval: Duration(days: 1).inMilliseconds.toDouble(),
+                          getTitlesWidget: (value, meta) {
+                            // Needed to avoid fl_chart bug wich creates two times the first label with an offset
+                            if (DateTime.fromMillisecondsSinceEpoch(
+                                  value.toInt(),
+                                ).difference(
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                    lastNMidnights.first.x.toInt(),
+                                  ),
+                                ) <
+                                Duration(hours: 1)) {
+                              return const SizedBox.shrink();
+                            }
+                            final label = DateFormat('dd').format(
+                              DateTime.fromMillisecondsSinceEpoch(
+                                value.floor(),
+                              ),
+                            );
+                            return Text(
+                              label,
+                              style: const TextStyle(fontSize: 12),
+                            );
+                          },
+                        ),
+                      ),
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          reservedSize: 35,
+                          showTitles: true,
+                          interval: 1,
+                          getTitlesWidget: (value, meta) {
+                            if (value == 1) {
+                              return Text(
+                                "Low",
+                                style: const TextStyle(fontSize: 12),
+                              );
+                            } else if (value == 25) {
+                              return Text(
+                                "High",
+                                style: const TextStyle(fontSize: 12),
+                              );
+                            } else {
+                              return SizedBox.shrink();
+                            }
+                          },
+                        ),
+                      ),
+                      topTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      rightTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                    ),
+                    gridData: FlGridData(show: false),
+                    borderData: FlBorderData(
+                      border: Border(left: BorderSide(), bottom: BorderSide()),
+                    ),
                   ),
                 ),
-              );
-            }),
+              ),
+            ),
           ],
-          titlesData: FlTitlesData(
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                interval: Duration(days: 1).inMilliseconds.toDouble(),
-                getTitlesWidget: (value, meta) {
-                  // Needed to avoid fl_chart bug wich creates two times the first label with an offset
-                  if (DateTime.fromMillisecondsSinceEpoch(
-                        value.toInt(),
-                      ).difference(
-                        DateTime.fromMillisecondsSinceEpoch(
-                          lastNMidnights.first.x.toInt(),
-                        ),
-                      ) <
-                      Duration(hours: 1)) {
-                    return const SizedBox.shrink();
-                  }
-                  final label = DateFormat(
-                    'dd MMM',
-                  ).format(DateTime.fromMillisecondsSinceEpoch(value.floor()));
-                  return Text(label, style: const TextStyle(fontSize: 12));
-                },
-              ),
-            ),
-            leftTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                interval: 1,
-                getTitlesWidget: (value, meta) {
-                  if (value == 1) {
-                    return Text("Low", style: const TextStyle(fontSize: 12));
-                  } else if (value == 25) {
-                    return Text("High", style: const TextStyle(fontSize: 12));
-                  } else {
-                    return SizedBox.shrink();
-                  }
-                },
-              ),
-            ),
-            topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          ),
-          gridData: FlGridData(show: false),
-          borderData: FlBorderData(
-            border: Border(left: BorderSide(), bottom: BorderSide()),
-          ),
         ),
       ),
     );
