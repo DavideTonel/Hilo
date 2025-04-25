@@ -1,88 +1,156 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
+import 'package:roadsyouwalked_app/ui/constants/app_spacing.dart';
 
 class YearEvaluationBarChartWidget extends StatelessWidget {
   final List<Memory> memories;
-  final int year;
 
-  const YearEvaluationBarChartWidget({
-    super.key,
-    required this.memories,
-    required this.year,
-  });
+  const YearEvaluationBarChartWidget({super.key, required this.memories});
 
-  Map<int, int> _countMemoriesPerMonth(List<Memory> memories, int year) {
-    final Map<int, int> memoryCount = {for (var i = 1; i <= 12; i++) i: 0};
-    for (final memory in memories) {
-      final memoryMonth = DateTime.parse(memory.data.core.timestamp).month;
-      memoryCount[memoryMonth] = memoryCount[memoryMonth]! + 1;
+  Map<int, Map<String, double>> _groupAveragesByMonth(List<Memory> memories) {
+  final Map<int, Map<String, List<double>>> grouped = {};
+
+  for (final memory in memories) {
+    final timestamp = DateTime.parse(memory.data.core.timestamp);
+    final month = timestamp.month;
+
+    final result = memory.data.evaluation.evaluationResult;
+    if (!grouped.containsKey(month)) {
+      grouped[month] = {};
     }
-    return memoryCount;
+
+    result.forEach((label, value) {
+      grouped[month]!.putIfAbsent(label, () => []).add(value);
+    });
   }
 
-  List<BarChartGroupData> _generateBarGroups(Map<int, int> monthlyCounts) {
-    final sortedKeys = monthlyCounts.keys.toList()..sort();
+  final Map<int, Map<String, double>> monthlyAverages = {};
 
-    return List.generate(sortedKeys.length, (index) {
-      final month = sortedKeys[index];
-      final count = monthlyCounts[month]!;
+  for (int month = 1; month <= 12; month++) {
+    final labelMap = grouped[month];
+    monthlyAverages[month] = {
+      "positive": 0.0,
+      "negative": 0.0,
+    };
+    if (labelMap != null) {
+      labelMap.forEach((label, values) {
+        final avg = values.reduce((a, b) => a + b) / values.length;
+        monthlyAverages[month]![label] = avg;
+      });
+    }
+  }
 
-      return BarChartGroupData(
-        x: index,
-        barRods: [
-          BarChartRodData(toY: count.toDouble(), color: Colors.blue, width: 16),
-        ],
-      );
-    });
+  return monthlyAverages;
+}
+
+  List<BarChartGroupData> _buildBars(
+    Map<int, Map<String, double>> monthlyAverages,
+  ) {
+    final barGroups = <BarChartGroupData>[];
+
+    for (int month = 1; month <= 12; month++) {
+      final data = monthlyAverages[month];
+      if (data != null) {
+        final positive = data['positive'] ?? 0;
+        final negative = data['negative'] ?? 0;
+
+        barGroups.add(
+          BarChartGroupData(
+            x: month,
+            barRods: [
+              BarChartRodData(
+                toY: positive,
+                color: const Color(0xFF8FD6B7),
+                width: 8,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              BarChartRodData(
+                toY: negative,
+                color: const Color(0xFFEF9A9A),
+                width: 8,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ],
+            barsSpace: 4,
+          ),
+        );
+      }
+    }
+
+    return barGroups;
   }
 
   @override
   Widget build(BuildContext context) {
-    final Map<int, int> dailyCounts = _countMemoriesPerMonth(memories, year);
-    final List<BarChartGroupData> barGroups = _generateBarGroups(dailyCounts);
+    final averagesByMonth = _groupAveragesByMonth(memories);
+    final barGroups = _buildBars(averagesByMonth);
 
-    return AspectRatio(
-      aspectRatio: 1.7,
+    return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: BarChart(
-          BarChartData(
-            barGroups: barGroups,
-            borderData: FlBorderData(
-              border: Border(left: BorderSide(), bottom: BorderSide()),
-            ),
-            titlesData: FlTitlesData(
-              leftTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  reservedSize: 28,
-                  interval: 1,
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            const Text("Mood Bars"),
+            const SizedBox(height: AppSpacingConstants.md),
+            SizedBox(
+              height: 300,
+              child: BarChart(
+                BarChartData(
+                  maxY: 25.8,
+                  minY: 0,
+                  barGroups: barGroups,
+                  titlesData: FlTitlesData(
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          if (value >= 1 && value <= 12) {
+                            return Text(
+                              value.floor().toString(),
+                              style: const TextStyle(fontSize: 12),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
+                        reservedSize: 28,
+                      ),
+                    ),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 35,
+                        interval: 1,
+                        getTitlesWidget: (value, meta) {
+                          if (value == 1) {
+                            return const Text("Low", style: TextStyle(fontSize: 12));
+                          } else if (value == 25) {
+                            return const Text("High", style: TextStyle(fontSize: 12));
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        },
+                      ),
+                    ),
+                    rightTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    topTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                  ),
+                  gridData: FlGridData(show: false),
+                  borderData: FlBorderData(
+                    border: const Border(
+                      bottom: BorderSide(),
+                      left: BorderSide(),
+                    ),
+                  ),
+                  barTouchData: BarTouchData(enabled: true),
                 ),
               ),
-              bottomTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  getTitlesWidget: (value, meta) {
-                    final index = value.toInt() + 1;
-                    return Text("$index", style: const TextStyle(fontSize: 10));
-                  },
-                  interval: 1,
-                ),
-              ),
-              rightTitles: AxisTitles(
-                sideTitles: SideTitles(showTitles: false),
-              ),
-              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
             ),
-            gridData: FlGridData(show: false),
-            maxY:
-                (dailyCounts.values.fold(
-                  0,
-                  (max, e) => e > max ? e : max,
-                )).toDouble() +
-                1,
-          ),
+          ],
         ),
       ),
     );

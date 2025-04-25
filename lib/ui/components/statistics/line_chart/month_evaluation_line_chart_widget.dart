@@ -64,7 +64,7 @@ class MonthEvaluationLineChartWidget extends StatelessWidget {
     List<FlSpot> spotsDaysInMonth = _getDaysForXAxis(daysInMonth);
     Map<String, List<FlSpot>> spotsGroupByLabel = _getSpotsGroupByLabel(memories);
 
-    final double chartWidth = daysInMonth.length * 20.0;
+    final double chartWidth = daysInMonth.length * 23.0;
 
     return Card(
       child: Padding(

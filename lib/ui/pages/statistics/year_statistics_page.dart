@@ -20,22 +20,24 @@ class YearStatisticsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        PeriodControllerWidget(
-          header: year.toString(),
-          onPreviousPressed: onPreviousPressed,
-          onNextPressed: onNextPressed,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: YearEvaluationLineChartWidget(memories: memories, year: year),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: YearEvaluationBarChartWidget(memories: memories, year: year),
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          PeriodControllerWidget(
+            header: year.toString(),
+            onPreviousPressed: onPreviousPressed,
+            onNextPressed: onNextPressed,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: YearEvaluationLineChartWidget(memories: memories),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: YearEvaluationBarChartWidget(memories: memories),
+          ),
+        ],
+      ),
     );
   }
 }

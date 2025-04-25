@@ -14,104 +14,115 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
     required this.daysInMonth,
   });
 
-  Map<int, int> _countMemoriesPerDay(
-    List<Memory> memories,
-    List<CalendarDay> daysInMonth,
-  ) {
-    final Map<int, int> countMap = {
-      for (final day in daysInMonth) day.date.day: 0,
-    };
+  Map<int, Map<String, double>> _getAveragedValuesByDay(List<Memory> memories) {
+    final Map<int, Map<String, List<double>>> tempGrouped = {};
 
-    for (var memory in memories) {
-      final dayKey = DateTime.parse(memory.data.core.timestamp).day;
-      if (countMap.containsKey(dayKey)) {
-        countMap[dayKey] = (countMap[dayKey] ?? 0) + 1;
+    for (final memory in memories) {
+      final timestamp = DateTime.parse(memory.data.core.timestamp);
+      final day = timestamp.day;
+
+      for (final entry in memory.data.evaluation.evaluationResult.entries) {
+        final label = entry.key;
+        final value = entry.value;
+        if (value == null) continue;
+
+        tempGrouped.putIfAbsent(day, () => {});
+        tempGrouped[day]!.putIfAbsent(label, () => []);
+        tempGrouped[day]![label]!.add(value);
       }
     }
-    return countMap;
+
+    final Map<int, Map<String, double>> result = {};
+    for (final dayEntry in tempGrouped.entries) {
+      final Map<String, double> labelAverages = {};
+      for (final labelEntry in dayEntry.value.entries) {
+        final values = labelEntry.value;
+        final average = values.reduce((a, b) => a + b) / values.length;
+        labelAverages[labelEntry.key] = average;
+      }
+      result[dayEntry.key] = labelAverages;
+    }
+
+    return result;
   }
 
-  List<BarChartGroupData> _generateBarGroups(Map<int, int> dailyCounts) {
-    final sortedKeys = dailyCounts.keys.toList()..sort();
+  List<BarChartGroupData> _getBarGroups(Map<int, Map<String, double>> dataByDay) {
+    final List<BarChartGroupData> barGroups = [];
 
-    return List.generate(sortedKeys.length, (index) {
-      final day = sortedKeys[index];
-      final count = dailyCounts[day]!;
+    for (final day in daysInMonth.map((e) => e.date.day)) {
+      final labelValues = dataByDay[day] ?? {};
+      final isPositive = labelValues.containsKey('positive');
+      final isNegative = labelValues.containsKey('negative');
 
-      return BarChartGroupData(
-        x: day,
-        barRods: [
-          BarChartRodData(toY: count.toDouble(), color: Colors.blue, width: 12),
-        ],
+      final List<BarChartRodData> rods = [];
+
+      if (isPositive) {
+        rods.add(
+          BarChartRodData(
+            toY: labelValues['positive']!,
+            color: const Color(0xFF8FD6B7),
+            width: 6,
+            borderRadius: BorderRadius.circular(4),
+          ),
+        );
+      }
+
+      if (isNegative) {
+        rods.add(
+          BarChartRodData(
+            toY: labelValues['negative']!,
+            color: const Color(0xFFEF9A9A),
+            width: 6,
+            borderRadius: BorderRadius.circular(4),
+          ),
+        );
+      }
+
+      barGroups.add(
+        BarChartGroupData(
+          x: day,
+          barRods: rods,
+          barsSpace: 4,
+        ),
       );
-    });
+    }
+
+    return barGroups;
   }
 
   @override
   Widget build(BuildContext context) {
-    final dailyCounts = _countMemoriesPerDay(memories, daysInMonth);
-    final barGroups = _generateBarGroups(dailyCounts);
-    final chartWidth = daysInMonth.length * 20.0;
-    final maxCount = (dailyCounts.values.isEmpty
-            ? 1
-            : dailyCounts.values.reduce((a, b) => a > b ? a : b)) +
-        1;
+    final Map<int, Map<String, double>> averagedData = _getAveragedValuesByDay(memories);
+    final List<BarChartGroupData> barGroups = _getBarGroups(averagedData);
+    final double chartWidth = daysInMonth.length * 23.0;
 
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Memories This Month", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const Text("Mood Bars"),
             const SizedBox(height: AppSpacingConstants.md),
             SizedBox(
               height: 250,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Asse Y allineato tramite BarChart "dummy"
-                  SizedBox(
-                    width: 50,
-                    child: BarChart(
-                      BarChartData(
-                        maxY: maxCount.toDouble(),
-                        minY: 0,
-                        titlesData: FlTitlesData(
-                          leftTitles: AxisTitles(
-                            sideTitles: SideTitles(
-                              showTitles: true,
-                              interval: 1,
-                              reservedSize: 40,
-                              getTitlesWidget: (value, meta) {
-                                return SizedBox(
-                                  height: 250 / maxCount,
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(right: 4),
-                                      child: Text(
-                                        value.toInt().toString(),
-                                        style: const TextStyle(fontSize: 10),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                          bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  const SizedBox(
+                    width: 40,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("High", style: TextStyle(fontSize: 12)),
+                        Spacer(),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 20.0),
+                          child: Text("Low", style: TextStyle(fontSize: 12)),
                         ),
-                        gridData: FlGridData(show: true, drawVerticalLine: false),
-                        barGroups: [], // Nessuna barra
-                        borderData: FlBorderData(show: false),
-                      ),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  // Grafico scrollabile con barre
+                  const SizedBox(width: 10),
                   Expanded(
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
@@ -119,37 +130,40 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
                         width: chartWidth,
                         child: BarChart(
                           BarChartData(
-                            maxY: maxCount.toDouble(),
+                            maxY: 25.8,
                             minY: 0,
                             barGroups: barGroups,
                             titlesData: FlTitlesData(
-                              leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                              rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                              leftTitles: AxisTitles(
+                                sideTitles: SideTitles(showTitles: false),
+                              ),
+                              topTitles: AxisTitles(
+                                sideTitles: SideTitles(showTitles: false),
+                              ),
+                              rightTitles: AxisTitles(
+                                sideTitles: SideTitles(showTitles: false),
+                              ),
                               bottomTitles: AxisTitles(
                                 sideTitles: SideTitles(
                                   showTitles: true,
-                                  interval: 1,
                                   reservedSize: 28,
                                   getTitlesWidget: (value, meta) {
-                                    return Padding(
-                                      padding: const EdgeInsets.only(top: 4),
-                                      child: Text(
-                                        value.toInt().toString(),
-                                        style: const TextStyle(fontSize: 10),
-                                      ),
+                                    return Text(
+                                      value.toInt().toString(),
+                                      style: const TextStyle(fontSize: 12),
                                     );
                                   },
                                 ),
                               ),
                             ),
-                            gridData: FlGridData(show: true, drawVerticalLine: false),
+                            gridData: FlGridData(show: false),
                             borderData: FlBorderData(
                               border: const Border(
+                                left: BorderSide(),
                                 bottom: BorderSide(),
-                                left: BorderSide(), // opzionale
                               ),
                             ),
+                            barTouchData: BarTouchData(enabled: false),
                           ),
                         ),
                       ),
