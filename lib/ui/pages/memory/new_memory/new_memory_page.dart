@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/bloc/camera/camera_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/new_memory/new_memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/evaluation_bloc/evaluation_bloc.dart';
@@ -8,8 +7,7 @@ import 'package:roadsyouwalked_app/bloc/position/position_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 import 'package:roadsyouwalked_app/ui/pages/memory/new_memory/new_memory_input_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/evaluation/evaluation_page.dart';
-
-import 'dart:developer' as dev;
+import 'package:roadsyouwalked_app/ui/pages/memory/new_memory/new_memoy_confirm_page.dart';
 
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -110,46 +108,7 @@ class NewMemoryPageState extends State<NewMemoryPage> {
                         );
                       },
                     ),
-                    Scaffold(
-                      body: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          BlocConsumer<PositionBloc, PositionState>(
-                            listener: (context, state) {
-                              if (state is PositionLoaded) {
-                                dev.log(
-                                  "Position loaded: ${state.position!.latitude}, ${state.position!.longitude}",
-                                );
-                                context.read<NewMemoryBloc>().add(
-                                  AddPosition(position: state.position!),
-                                );
-                              }
-                            },
-                            builder: (context, state) {
-                              final latitude =
-                                  state.position?.latitude.toString() ?? "";
-                              final longitude =
-                                  state.position?.longitude.toString() ?? "";
-                              return MaterialButton(
-                                onPressed:
-                                    () => context.read<PositionBloc>().add(
-                                      GetPosition(),
-                                    ),
-                                child: Text("lat: $latitude, lon: $longitude"),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 100),
-                          MaterialButton(
-                            onPressed:
-                                () =>
-                                    context.read<NewMemoryBloc>().add(SaveMemory()),
-                            child: const Text("Save memory"),
-                          ),
-                        ],
-                      ),
-                    ),
+                    NewMemoyConfirmPage(),
                   ],
                 ),
                 Align(

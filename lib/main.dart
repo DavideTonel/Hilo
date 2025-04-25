@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:roadsyouwalked_app/api/firebase_api.dart';
 import 'package:roadsyouwalked_app/bloc/authentication/auth_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
@@ -9,12 +10,19 @@ import 'package:roadsyouwalked_app/data/repository/memory_repository.dart';
 import 'package:roadsyouwalked_app/data/repository/user_repository.dart';
 import 'package:roadsyouwalked_app/firebase_options.dart';
 import 'package:roadsyouwalked_app/navigation/app_router.dart';
+import 'dart:developer' as dev;
 
 // TODO: how to create only ona UserRepository to all blocs?
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseApi().initNotifications();
+
+  const accessToken = String.fromEnvironment('ACCESS_TOKEN');
+
+  dev.log("Mapbox token: $accessToken");
+  MapboxOptions.setAccessToken(accessToken);
+
   runApp(const MyApp());
 }
 
