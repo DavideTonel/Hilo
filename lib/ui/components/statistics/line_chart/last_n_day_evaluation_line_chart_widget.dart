@@ -72,7 +72,13 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            Text("Mood Flow"),
+            Text(
+              "Mood Flow",
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+            ),
             const SizedBox(height: AppSpacingConstants.md),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -143,7 +149,10 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
                             );
                             return Text(
                               label,
-                              style: const TextStyle(fontSize: 12),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).colorScheme.onPrimaryContainer
+                              ),
                             );
                           },
                         ),
@@ -157,12 +166,18 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
                             if (value == 1) {
                               return Text(
                                 "Low",
-                                style: const TextStyle(fontSize: 12),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Theme.of(context).colorScheme.onPrimaryContainer
+                                ),
                               );
                             } else if (value == 25) {
                               return Text(
                                 "High",
-                                style: const TextStyle(fontSize: 12),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Theme.of(context).colorScheme.onPrimaryContainer
+                                ),
                               );
                             } else {
                               return SizedBox.shrink();
@@ -179,7 +194,14 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
                     ),
                     gridData: FlGridData(show: false),
                     borderData: FlBorderData(
-                      border: Border(left: BorderSide(), bottom: BorderSide()),
+                      border: Border(
+                        left: BorderSide(
+                          color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
+                        bottom: BorderSide(
+                          color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        )
+                      ),
                     ),
                   ),
                 ),

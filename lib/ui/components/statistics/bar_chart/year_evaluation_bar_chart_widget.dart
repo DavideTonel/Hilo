@@ -9,40 +9,37 @@ class YearEvaluationBarChartWidget extends StatelessWidget {
   const YearEvaluationBarChartWidget({super.key, required this.memories});
 
   Map<int, Map<String, double>> _groupAveragesByMonth(List<Memory> memories) {
-  final Map<int, Map<String, List<double>>> grouped = {};
+    final Map<int, Map<String, List<double>>> grouped = {};
 
-  for (final memory in memories) {
-    final timestamp = DateTime.parse(memory.data.core.timestamp);
-    final month = timestamp.month;
+    for (final memory in memories) {
+      final timestamp = DateTime.parse(memory.data.core.timestamp);
+      final month = timestamp.month;
 
-    final result = memory.data.evaluation.evaluationResult;
-    if (!grouped.containsKey(month)) {
-      grouped[month] = {};
-    }
+      final result = memory.data.evaluation.evaluationResult;
+      if (!grouped.containsKey(month)) {
+        grouped[month] = {};
+      }
 
-    result.forEach((label, value) {
-      grouped[month]!.putIfAbsent(label, () => []).add(value);
-    });
-  }
-
-  final Map<int, Map<String, double>> monthlyAverages = {};
-
-  for (int month = 1; month <= 12; month++) {
-    final labelMap = grouped[month];
-    monthlyAverages[month] = {
-      "positive": 0.0,
-      "negative": 0.0,
-    };
-    if (labelMap != null) {
-      labelMap.forEach((label, values) {
-        final avg = values.reduce((a, b) => a + b) / values.length;
-        monthlyAverages[month]![label] = avg;
+      result.forEach((label, value) {
+        grouped[month]!.putIfAbsent(label, () => []).add(value);
       });
     }
-  }
 
-  return monthlyAverages;
-}
+    final Map<int, Map<String, double>> monthlyAverages = {};
+
+    for (int month = 1; month <= 12; month++) {
+      final labelMap = grouped[month];
+      monthlyAverages[month] = {"positive": 0.0, "negative": 0.0};
+      if (labelMap != null) {
+        labelMap.forEach((label, values) {
+          final avg = values.reduce((a, b) => a + b) / values.length;
+          monthlyAverages[month]![label] = avg;
+        });
+      }
+    }
+
+    return monthlyAverages;
+  }
 
   List<BarChartGroupData> _buildBars(
     Map<int, Map<String, double>> monthlyAverages,
@@ -91,10 +88,16 @@ class YearEvaluationBarChartWidget extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            const Text("Mood Bars"),
+            Text(
+              "Mood Bars",
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+            ),
             const SizedBox(height: AppSpacingConstants.md),
-            SizedBox(
-              height: 300,
+            AspectRatio(
+              aspectRatio: 1.7,
               child: BarChart(
                 BarChartData(
                   maxY: 25.8,
@@ -108,7 +111,13 @@ class YearEvaluationBarChartWidget extends StatelessWidget {
                           if (value >= 1 && value <= 12) {
                             return Text(
                               value.floor().toString(),
-                              style: const TextStyle(fontSize: 12),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimaryContainer,
+                              ),
                             );
                           }
                           return const SizedBox.shrink();
@@ -123,9 +132,27 @@ class YearEvaluationBarChartWidget extends StatelessWidget {
                         interval: 1,
                         getTitlesWidget: (value, meta) {
                           if (value == 1) {
-                            return const Text("Low", style: TextStyle(fontSize: 12));
+                            return Text(
+                              "Low",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimaryContainer,
+                              ),
+                            );
                           } else if (value == 25) {
-                            return const Text("High", style: TextStyle(fontSize: 12));
+                            return Text(
+                              "High",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimaryContainer,
+                              ),
+                            );
                           } else {
                             return const SizedBox.shrink();
                           }
@@ -141,9 +168,13 @@ class YearEvaluationBarChartWidget extends StatelessWidget {
                   ),
                   gridData: FlGridData(show: false),
                   borderData: FlBorderData(
-                    border: const Border(
-                      bottom: BorderSide(),
-                      left: BorderSide(),
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
+                      left: BorderSide(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
                     ),
                   ),
                   barTouchData: BarTouchData(enabled: true),

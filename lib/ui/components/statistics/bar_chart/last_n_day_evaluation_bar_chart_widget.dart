@@ -71,7 +71,13 @@ class LastNDayEvaluationBarChartWidget extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            const Text("Mood Bars"),
+            Text(
+              "Mood Bars",
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+            ),
             const SizedBox(height: AppSpacingConstants.md),
             AspectRatio(
               aspectRatio: 1.7,
@@ -110,7 +116,13 @@ class LastNDayEvaluationBarChartWidget extends StatelessWidget {
                           final index = value.toInt();
                           if (index < 0 || index >= midnights.length) return const SizedBox.shrink();
                           final label = DateFormat('dd').format(midnights[index]);
-                          return Text(label, style: const TextStyle(fontSize: 12));
+                          return Text(
+                            label,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Theme.of(context).colorScheme.onPrimaryContainer
+                            ),
+                        );
                         },
                       ),
                     ),
@@ -121,9 +133,21 @@ class LastNDayEvaluationBarChartWidget extends StatelessWidget {
                         interval: 1,
                         getTitlesWidget: (value, meta) {
                           if (value == 1) {
-                            return const Text("Low", style: TextStyle(fontSize: 12));
+                            return Text(
+                              "Low",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).colorScheme.onPrimaryContainer
+                              ),
+                            );
                           } else if (value == 25) {
-                            return const Text("High", style: TextStyle(fontSize: 12));
+                            return Text(
+                              "High",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).colorScheme.onPrimaryContainer
+                              ),
+                            );
                           } else {
                             return const SizedBox.shrink();
                           }
@@ -134,9 +158,13 @@ class LastNDayEvaluationBarChartWidget extends StatelessWidget {
                     rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
                   ),
                   borderData: FlBorderData(
-                    border: const Border(
-                      left: BorderSide(),
-                      bottom: BorderSide(),
+                    border: Border(
+                      left: BorderSide(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
+                      bottom: BorderSide(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
                     ),
                   ),
                   gridData: FlGridData(show: false),

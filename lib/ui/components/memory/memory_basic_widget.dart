@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
 import 'package:roadsyouwalked_app/ui/components/footer/date_footer_widget.dart';
-import 'package:roadsyouwalked_app/ui/components/interaction/like_button_widget.dart';
 import 'package:roadsyouwalked_app/ui/constants/app_spacing.dart';
 
 class MemoryBasicWidget extends StatelessWidget {
@@ -15,43 +14,41 @@ class MemoryBasicWidget extends StatelessWidget {
     final date = DateFormat(
       'dd/MM/yyyy   HH:mm',
     ).format(DateTime.parse(memory.data.core.timestamp));
-    return Container(
-      color: Colors.blueGrey,
+    return Card(
+      color: Theme.of(context).colorScheme.primaryContainer.withAlpha(120),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacingConstants.xs),
+            padding: const EdgeInsets.only(
+              top: AppSpacingConstants.xs,
+              left: AppSpacingConstants.sm,
+              right: AppSpacingConstants.sm,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: AppSpacingConstants.sm,
-                    right: AppSpacingConstants.sm
-                  ),
-                  child: LikeButtonWidget(
-                    onPressed: () {},
-                  ),
-                ),
                 Row(
                   children: [
                     Text(
                       memory.data.core.description!,
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(180),
+                      ),
                     ),
                   ],
                 ),
               ],
             ),
-          ), 
+          ),
           Padding(
             padding: const EdgeInsets.only(
-              left: AppSpacingConstants.md,
+              left: AppSpacingConstants.sm,
               top: AppSpacingConstants.xs,
-              bottom: AppSpacingConstants.xs
+              bottom: AppSpacingConstants.xxs,
             ),
-            child: DateFooterWidget(date: date)
+            child: DateFooterWidget(date: date, color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(100)),
           ),
         ],
       ),

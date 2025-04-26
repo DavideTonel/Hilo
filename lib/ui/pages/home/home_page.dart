@@ -110,11 +110,13 @@ class _HomePageState extends State<HomePage> {
     ];
 
     return Scaffold(
+      extendBody: true,
       appBar:_getAppBarFromIndex(_selectedIndex),
       body: IndexedStack(index: _selectedIndex, children: pages),
       floatingActionButton:
           _selectedIndex == 0 ? const AddMemoryActionButton() : null,
       bottomNavigationBar: NavigationBar(
+        height: 68,
         selectedIndex: _selectedIndex,
         onDestinationSelected: _onDestinationSelected,
         destinations: const [

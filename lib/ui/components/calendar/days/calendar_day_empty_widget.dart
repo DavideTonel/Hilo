@@ -24,14 +24,21 @@ class CalendarDayEmptyWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color:
               day.gapType == CalendarDayGapType.currentMonth
-                  ? Colors.blue
-                  : Colors.grey,
+                  ? Theme.of(context).colorScheme.primaryFixedDim.withAlpha(90)
+                  : Theme.of(context).colorScheme.primaryContainer.withAlpha(90),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [Text(day.date.day.toString())],
+          children: [
+            Text(
+              day.date.day.toString(),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimaryContainer
+              ),
+            )
+          ],
         ),
       ),
     );

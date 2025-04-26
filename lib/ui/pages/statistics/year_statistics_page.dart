@@ -29,11 +29,11 @@ class YearStatisticsPage extends StatelessWidget {
             onNextPressed: onNextPressed,
           ),
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
             child: YearEvaluationLineChartWidget(memories: memories),
           ),
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
             child: YearEvaluationBarChartWidget(memories: memories),
           ),
         ],

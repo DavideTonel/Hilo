@@ -27,7 +27,6 @@ class CalendarDayWithEmojiWidget extends StatelessWidget {
         height: height,
         width: width,
         decoration: BoxDecoration(
-          color: Colors.blue,
           borderRadius: BorderRadius.circular(8),
         ),
         clipBehavior: Clip.antiAlias,
@@ -40,8 +39,8 @@ class CalendarDayWithEmojiWidget extends StatelessWidget {
               width: width,
               color:
                   day.gapType == CalendarDayGapType.currentMonth
-                      ? Colors.blue
-                      : Colors.grey,
+                      ? Theme.of(context).colorScheme.primaryFixedDim.withAlpha(90)
+                      : Theme.of(context).colorScheme.primaryContainer.withAlpha(90),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,9 +51,9 @@ class CalendarDayWithEmojiWidget extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 day.date.day.toString(),
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
                 ),
               ),
             ),

@@ -25,11 +25,7 @@ class MonthEvaluationLineChartWidget extends StatelessWidget {
 
     for (final memory in memories) {
       final timestamp = DateTime.parse(memory.data.core.timestamp);
-      final date = DateTime(
-        timestamp.year,
-        timestamp.month,
-        timestamp.day,
-      );
+      final date = DateTime(timestamp.year, timestamp.month, timestamp.day);
       groupedByDay.putIfAbsent(date, () => []).add(memory);
     }
     final Set<String> allLabels = {
@@ -42,11 +38,12 @@ class MonthEvaluationLineChartWidget extends StatelessWidget {
       final day = entry.key;
       final memoriesOfDay = entry.value;
       for (final label in allLabels) {
-        final values = memoriesOfDay
-            .map((m) => m.data.evaluation.evaluationResult[label])
-            .where((v) => v != null)
-            .cast<double>()
-            .toList();
+        final values =
+            memoriesOfDay
+                .map((m) => m.data.evaluation.evaluationResult[label])
+                .where((v) => v != null)
+                .cast<double>()
+                .toList();
 
         if (values.isNotEmpty) {
           final average = values.reduce((a, b) => a + b) / values.length;
@@ -62,7 +59,9 @@ class MonthEvaluationLineChartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<FlSpot> spotsDaysInMonth = _getDaysForXAxis(daysInMonth);
-    Map<String, List<FlSpot>> spotsGroupByLabel = _getSpotsGroupByLabel(memories);
+    Map<String, List<FlSpot>> spotsGroupByLabel = _getSpotsGroupByLabel(
+      memories,
+    );
 
     final double chartWidth = daysInMonth.length * 23.0;
 
@@ -71,10 +70,16 @@ class MonthEvaluationLineChartWidget extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            const Text("Mood Flow"),
+            Text(
+              "Mood Flow",
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+            ),
             const SizedBox(height: AppSpacingConstants.md),
-            SizedBox(
-              height: 250,
+            AspectRatio(
+              aspectRatio: 1.7,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -82,17 +87,35 @@ class MonthEvaluationLineChartWidget extends StatelessWidget {
                     width: 40,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text("High", style: TextStyle(fontSize: 12)),
+                      children: [
+                        Text(
+                          "High",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color:
+                                Theme.of(
+                                  context,
+                                ).colorScheme.onPrimaryContainer,
+                          ),
+                        ),
                         Spacer(),
                         Padding(
                           padding: EdgeInsets.only(bottom: 20.0),
-                          child: Text("Low", style: TextStyle(fontSize: 12)),
+                          child: Text(
+                            "Low",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimaryContainer,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 2),
                   Expanded(
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
@@ -112,9 +135,10 @@ class MonthEvaluationLineChartWidget extends StatelessWidget {
                               ),
                               ...spotsGroupByLabel.entries.map((entry) {
                                 final isPositive = entry.key == "positive";
-                                final color = isPositive
-                                    ? const Color(0xFF8FD6B7)
-                                    : const Color(0xFFEF9A9A);
+                                final color =
+                                    isPositive
+                                        ? const Color(0xFF8FD6B7)
+                                        : const Color(0xFFEF9A9A);
                                 return LineChartBarData(
                                   spots: entry.value,
                                   isCurved: true,
@@ -148,7 +172,13 @@ class MonthEvaluationLineChartWidget extends StatelessWidget {
                                       value <= spotsDaysInMonth.last.x
                                           ? value.toInt().toString()
                                           : "",
-                                      style: const TextStyle(fontSize: 12),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.onPrimaryContainer,
+                                      ),
                                     );
                                   },
                                 ),
@@ -156,16 +186,28 @@ class MonthEvaluationLineChartWidget extends StatelessWidget {
                               leftTitles: AxisTitles(
                                 sideTitles: SideTitles(showTitles: false),
                               ),
-                              topTitles:
-                                  AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                              rightTitles:
-                                  AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                              topTitles: AxisTitles(
+                                sideTitles: SideTitles(showTitles: false),
+                              ),
+                              rightTitles: AxisTitles(
+                                sideTitles: SideTitles(showTitles: false),
+                              ),
                             ),
                             gridData: FlGridData(show: false),
                             borderData: FlBorderData(
-                              border: const Border(
-                                left: BorderSide(),
-                                bottom: BorderSide(),
+                              border: Border(
+                                left: BorderSide(
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimaryContainer,
+                                ),
+                                bottom: BorderSide(
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimaryContainer,
+                                ),
                               ),
                             ),
                           ),

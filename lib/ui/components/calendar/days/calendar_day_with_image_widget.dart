@@ -54,7 +54,7 @@ class CalendarDayWithImageWidget extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 day.date.day.toString(),
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),

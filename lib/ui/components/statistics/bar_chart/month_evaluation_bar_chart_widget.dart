@@ -46,7 +46,9 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
     return result;
   }
 
-  List<BarChartGroupData> _getBarGroups(Map<int, Map<String, double>> dataByDay) {
+  List<BarChartGroupData> _getBarGroups(
+    Map<int, Map<String, double>> dataByDay,
+  ) {
     final List<BarChartGroupData> barGroups = [];
 
     for (final day in daysInMonth.map((e) => e.date.day)) {
@@ -78,13 +80,7 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
         );
       }
 
-      barGroups.add(
-        BarChartGroupData(
-          x: day,
-          barRods: rods,
-          barsSpace: 4,
-        ),
-      );
+      barGroups.add(BarChartGroupData(x: day, barRods: rods, barsSpace: 4));
     }
 
     return barGroups;
@@ -92,7 +88,9 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<int, Map<String, double>> averagedData = _getAveragedValuesByDay(memories);
+    final Map<int, Map<String, double>> averagedData = _getAveragedValuesByDay(
+      memories,
+    );
     final List<BarChartGroupData> barGroups = _getBarGroups(averagedData);
     final double chartWidth = daysInMonth.length * 23.0;
 
@@ -101,28 +99,52 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            const Text("Mood Bars"),
+            Text(
+              "Mood Bars",
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+            ),
             const SizedBox(height: AppSpacingConstants.md),
-            SizedBox(
-              height: 250,
+            AspectRatio(
+              aspectRatio: 1.7,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     width: 40,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("High", style: TextStyle(fontSize: 12)),
+                        Text(
+                          "High",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color:
+                                Theme.of(
+                                  context,
+                                ).colorScheme.onPrimaryContainer,
+                          ),
+                        ),
                         Spacer(),
                         Padding(
                           padding: EdgeInsets.only(bottom: 20.0),
-                          child: Text("Low", style: TextStyle(fontSize: 12)),
+                          child: Text(
+                            "Low",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimaryContainer,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 2),
                   Expanded(
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
@@ -150,7 +172,13 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
                                   getTitlesWidget: (value, meta) {
                                     return Text(
                                       value.toInt().toString(),
-                                      style: const TextStyle(fontSize: 12),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.onPrimaryContainer,
+                                      ),
                                     );
                                   },
                                 ),
@@ -158,9 +186,19 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
                             ),
                             gridData: FlGridData(show: false),
                             borderData: FlBorderData(
-                              border: const Border(
-                                left: BorderSide(),
-                                bottom: BorderSide(),
+                              border: Border(
+                                left: BorderSide(
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimaryContainer,
+                                ),
+                                bottom: BorderSide(
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimaryContainer,
+                                ),
                               ),
                             ),
                             barTouchData: BarTouchData(enabled: false),

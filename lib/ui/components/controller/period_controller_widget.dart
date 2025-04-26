@@ -18,11 +18,7 @@ class PeriodControllerWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.yellow,
-            borderRadius: BorderRadius.circular(12), // Arrotonda i bordi
-          ),
+        Card(
           child: Row(
             children: [
               IconButton(

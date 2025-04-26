@@ -20,7 +20,7 @@ class CalendarWeekDayHeader extends StatelessWidget {
         height: height,
         width: width,
         decoration: BoxDecoration(
-          color: Colors.yellow,
+          color: Theme.of(context).colorScheme.secondaryContainer,
           borderRadius: BorderRadius.circular(12), // Arrotonda i bordi
         ),
         child: Column(

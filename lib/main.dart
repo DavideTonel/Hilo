@@ -12,6 +12,8 @@ import 'package:roadsyouwalked_app/firebase_options.dart';
 import 'package:roadsyouwalked_app/navigation/app_router.dart';
 import 'dart:developer' as dev;
 
+import 'package:roadsyouwalked_app/ui/theme/app_theme.dart';
+
 // TODO: how to create only ona UserRepository to all blocs?
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,6 +50,7 @@ class MyAppWithRouter extends StatelessWidget {
   Widget build(BuildContext context) {
     final appRouter = AppRouter();
     return MaterialApp.router(
+      theme: AppTheme.lightTheme,      
       routerConfig: appRouter.router,
       title: "Roads You Walked",
     );

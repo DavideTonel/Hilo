@@ -58,86 +58,128 @@ class YearEvaluationLineChartWidget extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            const Text("Mood Flow"),
+            Text(
+              "Mood Flow",
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+            ),
             const SizedBox(height: AppSpacingConstants.md),
-            SizedBox(
-              height: 250,
-              child: LineChart(
-                LineChartData(
-                  maxY: 25.8,
-                  minY: 0,
-                  minX: 1,
-                  maxX: 12,
-                  lineBarsData:
-                      spotsGroupByLabel.entries.map((entry) {
-                        final isPositive = entry.key == "positive";
-                        final color =
-                            isPositive
-                                ? const Color(0xFF8FD6B7)
-                                : const Color(0xFFEF9A9A);
-                        return LineChartBarData(
-                          spots: entry.value,
-                          isCurved: true,
-                          preventCurveOverShooting: true,
-                          barWidth: 3,
-                          dotData: FlDotData(show: false),
-                          color: color,
-                          isStrokeCapRound: true,
-                          belowBarData: BarAreaData(
-                            show: true,
-                            gradient: LinearGradient(
-                              colors: [color.withAlpha(50), Colors.transparent],
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: AspectRatio(
+                aspectRatio: 1.7,
+                child: LineChart(
+                  LineChartData(
+                    maxY: 25.8,
+                    minY: 0,
+                    minX: 1,
+                    maxX: 12,
+                    lineBarsData:
+                        spotsGroupByLabel.entries.map((entry) {
+                          final isPositive = entry.key == "positive";
+                          final color =
+                              isPositive
+                                  ? const Color(0xFF8FD6B7)
+                                  : const Color(0xFFEF9A9A);
+                          return LineChartBarData(
+                            spots: entry.value,
+                            isCurved: true,
+                            preventCurveOverShooting: true,
+                            barWidth: 3,
+                            dotData: FlDotData(show: false),
+                            color: color,
+                            isStrokeCapRound: true,
+                            belowBarData: BarAreaData(
+                              show: true,
+                              gradient: LinearGradient(
+                                colors: [
+                                  color.withAlpha(50),
+                                  Colors.transparent,
+                                ],
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                              ),
                             ),
-                          ),
-                        );
-                      }).toList(),
-                  titlesData: FlTitlesData(
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        reservedSize: 30,
-                        showTitles: true,
-                        interval: 1,
-                        getTitlesWidget: (value, meta) {
-                          if (value >= 1 && value <= 12) {
-                            return Text(
-                              value.floor().toString(),
-                              style: const TextStyle(fontSize: 12),
-                            );
-                          }
-                          return const Text('');
-                        },
+                          );
+                        }).toList(),
+                    titlesData: FlTitlesData(
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          reservedSize: 30,
+                          showTitles: true,
+                          interval: 1,
+                          getTitlesWidget: (value, meta) {
+                            if (value >= 1 && value <= 12) {
+                              return Text(
+                                value.floor().toString(),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimaryContainer,
+                                ),
+                              );
+                            }
+                            return const Text('');
+                          },
+                        ),
+                      ),
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 35,
+                          interval: 1,
+                          getTitlesWidget: (value, meta) {
+                            if (value == 1) {
+                              return Text(
+                                "Low",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimaryContainer,
+                                ),
+                              );
+                            } else if (value == 25) {
+                              return Text(
+                                "High",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimaryContainer,
+                                ),
+                              );
+                            } else {
+                              return const SizedBox.shrink();
+                            }
+                          },
+                        ),
+                      ),
+                      topTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      rightTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
                       ),
                     ),
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        reservedSize: 35,
-                        interval: 1,
-                        getTitlesWidget: (value, meta) {
-                          if (value == 1) {
-                            return const Text("Low", style: TextStyle(fontSize: 12));
-                          } else if (value == 25) {
-                            return const Text("High", style: TextStyle(fontSize: 12));
-                          } else {
-                            return const SizedBox.shrink();
-                          }
-                        },
+                    gridData: FlGridData(show: false),
+                    borderData: FlBorderData(
+                      border: Border(
+                        left: BorderSide(
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
+                        bottom: BorderSide(
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
                       ),
-                    ),
-                    topTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    rightTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                  ),
-                  gridData: FlGridData(show: false),
-                  borderData: FlBorderData(
-                    border: const Border(
-                      left: BorderSide(),
-                      bottom: BorderSide(),
                     ),
                   ),
                 ),
