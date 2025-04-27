@@ -8,27 +8,30 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      elevation: 0,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: const Icon(
-              Icons.person
+      titleSpacing: 0,
+      leading: Builder(
+        builder:
+            (context) => IconButton(
+              icon: Icon(
+                Icons.person,
+                size: 33,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
             ),
-          ),
-          Text(
-            title,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
-            ),
-          ),
-        ],
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 22,
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
+        ),
       ),
       centerTitle: false,
+      elevation: 0,
     );
   }
 

@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
 import 'package:roadsyouwalked_app/ui/components/home/add_memory_action_button.dart';
 import 'package:roadsyouwalked_app/ui/components/home/home_app_bar.dart';
 import 'package:roadsyouwalked_app/ui/components/statistics/statistics_app_bar.dart';
+import 'package:roadsyouwalked_app/ui/constants/app_spacing.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/calendar_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/feed_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/statistics/statistics_page.dart';
@@ -64,9 +67,7 @@ class _HomePageState extends State<HomePage> {
     memoryBloc.add(
       LoadMemories(
         userId: userId,
-        orderType: _getMemoryOrderTypeFromIndex(
-          index,
-        ),
+        orderType: _getMemoryOrderTypeFromIndex(index),
         month: memoryBloc.state.month,
         year: memoryBloc.state.year,
       ),
@@ -99,6 +100,7 @@ class _HomePageState extends State<HomePage> {
         return null;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
@@ -109,7 +111,74 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       extendBody: true,
-      appBar:_getAppBarFromIndex(_selectedIndex),
+      appBar: _getAppBarFromIndex(_selectedIndex),
+      drawer: Drawer(
+        child: Column(
+          children: [
+            SizedBox(height: AppSpacingConstants.xxl),
+            ListTile(
+              leading: Icon(
+                Icons.person,
+                size: 35,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+              title: Text(
+                "iTunas",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                )
+              ),
+              subtitle: Text(
+                "Go to your profile",
+                style: TextStyle(
+                  fontSize: 11,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(150),
+                ),
+              ),
+              onTap: () {
+                GoRouter.of(context).push("/home/profile");
+              },
+            ),
+            const Divider(
+              height: 1,
+              thickness: 1,
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.looks,
+                size: 32,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+              title: Text(
+                "Appearance",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+              ),
+              onTap: () {
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.settings,
+                size: 32,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+              title: Text(
+                "Settings",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+              ),
+              onTap: () {
+              },
+            ),
+          ],
+        ),
+      ),
+      drawerDragStartBehavior: DragStartBehavior.start,
       body: IndexedStack(index: _selectedIndex, children: pages),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       floatingActionButton:
@@ -120,23 +189,17 @@ class _HomePageState extends State<HomePage> {
         onDestinationSelected: _onDestinationSelected,
         destinations: [
           NavigationDestination(
-            icon: Icon(
-              Icons.home_outlined,
-            ),
+            icon: Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home),
             label: "Home",
           ),
           NavigationDestination(
-            icon: Icon(
-              Icons.calendar_month_outlined,
-            ),
+            icon: Icon(Icons.calendar_month_outlined),
             selectedIcon: Icon(Icons.calendar_month),
             label: "Calendar",
           ),
           NavigationDestination(
-            icon: Icon(
-              Icons.insert_chart_outlined_outlined,
-            ),
+            icon: Icon(Icons.insert_chart_outlined_outlined),
             selectedIcon: Icon(Icons.insert_chart),
             label: "Statistics",
           ),

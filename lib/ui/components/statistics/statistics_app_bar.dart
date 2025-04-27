@@ -18,45 +18,54 @@ class StatisticsAppBar extends StatelessWidget implements PreferredSizeWidget {
       },
       builder: (context, state) {
         return AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: const Icon(Icons.person),
-              ),
-              Text(
-                "You",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-              ),
-            ],
+          titleSpacing: 0,
+          leading: Builder(
+            builder:
+                (context) => IconButton(
+                  icon: Icon(
+                    Icons.person,
+                    size: 33,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                ),
           ),
+          title: Text(
+            "You",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
+          ),
+          centerTitle: false,
+          elevation: 0,
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 110.0),
               child: ModeSelectorWidget(
-                  modes: [
-                    MemoryOrderType.lastNDays,
-                    MemoryOrderType.byMonth,
-                    MemoryOrderType.byYear,
-                  ],
-                  selectedMode: state.orderType,
-                  onSelect: (mode) {
-                    context.read<MemoryBloc>().add(
-                      LoadMemories(
-                        userId: context.read<UserBloc>().state.user!.username,
-                        orderType: mode,
-                        year: state.year,
-                        month: state.month,
-                        lastNDays: state.lastNDays,
-                      ),
-                    );
-                  },
-                ),
+                modes: [
+                  MemoryOrderType.lastNDays,
+                  MemoryOrderType.byMonth,
+                  MemoryOrderType.byYear,
+                ],
+                selectedMode: state.orderType,
+                onSelect: (mode) {
+                  context.read<MemoryBloc>().add(
+                    LoadMemories(
+                      userId: context.read<UserBloc>().state.user!.username,
+                      orderType: mode,
+                      year: state.year,
+                      month: state.month,
+                      lastNDays: state.lastNDays,
+                    ),
+                  );
+                },
+              ),
             ),
           ],
-          centerTitle: false,
         );
       },
     );
