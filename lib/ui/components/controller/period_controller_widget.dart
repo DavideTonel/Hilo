@@ -19,6 +19,8 @@ class PeriodControllerWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Card(
+          elevation: 2.0,
+          color: Theme.of(context).colorScheme.surfaceContainer,
           child: Row(
             children: [
               IconButton(
@@ -27,7 +29,13 @@ class PeriodControllerWidget extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(header, style: TextStyle(fontSize: 18)),
+                child: Text(
+                  header,
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  )
+                ),
               ),
               IconButton(
                 onPressed: onNextPressed,

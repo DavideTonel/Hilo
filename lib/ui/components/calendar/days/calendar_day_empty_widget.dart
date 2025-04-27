@@ -24,8 +24,10 @@ class CalendarDayEmptyWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color:
               day.gapType == CalendarDayGapType.currentMonth
-                  ? Theme.of(context).colorScheme.primaryFixedDim.withAlpha(90)
-                  : Theme.of(context).colorScheme.primaryContainer.withAlpha(90),
+                  ? Theme.of(context).colorScheme.primaryContainer
+                  : Theme.of(
+                    context,
+                  ).colorScheme.primaryContainer.withAlpha(85),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -35,9 +37,14 @@ class CalendarDayEmptyWidget extends StatelessWidget {
             Text(
               day.date.day.toString(),
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimaryContainer
+                color:
+                    day.gapType == CalendarDayGapType.currentMonth
+                        ? Theme.of(context).colorScheme.onPrimaryContainer
+                        : Theme.of(
+                          context,
+                        ).colorScheme.onPrimaryContainer.withAlpha(80),
               ),
-            )
+            ),
           ],
         ),
       ),

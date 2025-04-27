@@ -9,7 +9,10 @@ class CameraButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: onPressed,
-      icon: Icon(Icons.circle, size: 90.0)
+      icon: Icon(
+        Icons.circle,
+        size: 90.0
+      )
     );
   }
 }

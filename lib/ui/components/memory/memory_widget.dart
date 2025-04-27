@@ -17,7 +17,6 @@ class MemoryWidget extends StatelessWidget{
   Widget build(BuildContext context) {
     if (memory.mediaList.isNotEmpty) {
       return MemoryWithMediaWidget(memory: memory);
-      //return ImageWidget(imagePath: memory.mediaList[0].reference);
     } else {
       return MemoryBasicWidget(memory: memory);
     }

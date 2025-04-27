@@ -90,9 +90,9 @@ class _HomePageState extends State<HomePage> {
   PreferredSizeWidget? _getAppBarFromIndex(int index) {
     switch (index) {
       case 0:
-        return const HomeAppBar();
+        return const HomeAppBar(title: "Your Road");
       case 1:
-        return AppBar();
+        return const HomeAppBar(title: "Your Time");
       case 2:
         return StatisticsAppBar();
       default:
@@ -101,8 +101,6 @@ class _HomePageState extends State<HomePage> {
   }
   @override
   Widget build(BuildContext context) {
-    final userId = context.read<UserBloc>().state.user?.username;
-
     final List<Widget> pages = [
       const FeedPage(key: PageStorageKey('feed')),
       const CalendarPage(key: PageStorageKey('calendar')),
@@ -113,25 +111,32 @@ class _HomePageState extends State<HomePage> {
       extendBody: true,
       appBar:_getAppBarFromIndex(_selectedIndex),
       body: IndexedStack(index: _selectedIndex, children: pages),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       floatingActionButton:
           _selectedIndex == 0 ? const AddMemoryActionButton() : null,
       bottomNavigationBar: NavigationBar(
         height: 68,
         selectedIndex: _selectedIndex,
         onDestinationSelected: _onDestinationSelected,
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.home_outlined),
+            icon: Icon(
+              Icons.home_outlined,
+            ),
             selectedIcon: Icon(Icons.home),
             label: "Home",
           ),
           NavigationDestination(
-            icon: Icon(Icons.calendar_month_outlined),
+            icon: Icon(
+              Icons.calendar_month_outlined,
+            ),
             selectedIcon: Icon(Icons.calendar_month),
             label: "Calendar",
           ),
           NavigationDestination(
-            icon: Icon(Icons.insert_chart_outlined_outlined),
+            icon: Icon(
+              Icons.insert_chart_outlined_outlined,
+            ),
             selectedIcon: Icon(Icons.insert_chart),
             label: "Statistics",
           ),

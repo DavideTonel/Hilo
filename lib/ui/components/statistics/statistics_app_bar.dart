@@ -6,7 +6,6 @@ import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
 import 'package:roadsyouwalked_app/ui/components/statistics/mode_selector_widget.dart';
 
 class StatisticsAppBar extends StatelessWidget implements PreferredSizeWidget {
-
   const StatisticsAppBar({super.key});
 
   @override
@@ -24,8 +23,19 @@ class StatisticsAppBar extends StatelessWidget implements PreferredSizeWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: ModeSelectorWidget(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: const Icon(Icons.person),
+              ),
+              Text(
+                "You",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+              ),
+            ],
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 110.0),
+              child: ModeSelectorWidget(
                   modes: [
                     MemoryOrderType.lastNDays,
                     MemoryOrderType.byMonth,
@@ -33,20 +43,20 @@ class StatisticsAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ],
                   selectedMode: state.orderType,
                   onSelect: (mode) {
-              context.read<MemoryBloc>().add(
-                LoadMemories(
-                  userId: context.read<UserBloc>().state.user!.username,
-                  orderType: mode,
-                  year: state.year,
-                  month: state.month,
-                  lastNDays: state.lastNDays,
+                    context.read<MemoryBloc>().add(
+                      LoadMemories(
+                        userId: context.read<UserBloc>().state.user!.username,
+                        orderType: mode,
+                        year: state.year,
+                        month: state.month,
+                        lastNDays: state.lastNDays,
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
+          centerTitle: false,
         );
       },
     );

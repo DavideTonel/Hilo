@@ -11,46 +11,50 @@ class MemoryBasicWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final date = DateFormat(
-      'dd/MM/yyyy   HH:mm',
-    ).format(DateTime.parse(memory.data.core.timestamp));
+    final fullDate = DateFormat('dd/MM/yyyy   HH:mm')
+        .format(DateTime.parse(memory.data.core.timestamp));
+    final headerDate = DateFormat('dd/MM')
+        .format(DateTime.parse(memory.data.core.timestamp));
+
     return Card(
-      color: Theme.of(context).colorScheme.primaryContainer.withAlpha(120),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              top: AppSpacingConstants.xs,
-              left: AppSpacingConstants.sm,
-              right: AppSpacingConstants.sm,
-            ),
-            child: Row(
+      elevation: 0,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacingConstants.xs),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    Text(
-                      memory.data.core.description!,
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(180),
-                      ),
-                    ),
-                  ],
+                Icon(
+                  Icons.text_snippet_outlined,
+                  size: 24,
+                  weight: FontWeight.w500.value.toDouble(),
+                ),
+                SizedBox(width: 8),
+                Text(
+                  headerDate,
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                 ),
               ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: AppSpacingConstants.sm,
-              top: AppSpacingConstants.xs,
-              bottom: AppSpacingConstants.xxs,
+            const SizedBox(height: 2),
+            Text(
+              memory.data.core.description!,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+              softWrap: true,
             ),
-            child: DateFooterWidget(date: date, color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(100)),
-          ),
-        ],
+            const SizedBox(height: 2),
+            DateFooterWidget(
+              date: fullDate,
+              color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(100),
+            ),
+          ],
+        ),
       ),
     );
   }

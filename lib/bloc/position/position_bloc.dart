@@ -11,6 +11,7 @@ class PositionBloc extends Bloc<PositionEvent, PositionState> {
   PositionBloc() : super(PositionInitial()) {
     on<InitPosition>(onInitialize);
     on<GetPosition>(onGetPosition);
+    on<ClearPosition>(onClearPosition);
   }
 
   Future<void> onInitialize(
@@ -37,7 +38,7 @@ class PositionBloc extends Bloc<PositionEvent, PositionState> {
       );
     } else {
       emit(
-        PositionLoaded(
+        PositionGranted(
           permissionGranted: permissionGranted,
           serviceEnabled: serviceEnabled,
           position: null,
@@ -73,5 +74,18 @@ class PositionBloc extends Bloc<PositionEvent, PositionState> {
         )
       );
     }
+  }
+
+  void onClearPosition(
+    ClearPosition event,
+    Emitter<PositionState> emit,
+  ) {
+    emit(
+      PositionGranted(
+        permissionGranted: state.permissionGranted,
+        serviceEnabled: state.serviceEnabled,
+        position: null,
+      ),
+    );
   }
 }

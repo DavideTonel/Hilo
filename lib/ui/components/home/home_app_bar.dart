@@ -1,19 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const HomeAppBar({super.key});
+  final String title;
+
+  const HomeAppBar({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text("For you", style: TextStyle(fontSize: 20)),
-      actions: [
-        IconButton(
-          onPressed: () => GoRouter.of(context).push("/home/profile"),
-          icon: const Icon(Icons.person),
-        ),
-      ],
+      elevation: 0,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: const Icon(
+              Icons.person
+            ),
+          ),
+          Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
+          ),
+        ],
+      ),
+      centerTitle: false,
     );
   }
 

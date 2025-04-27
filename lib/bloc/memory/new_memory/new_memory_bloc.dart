@@ -42,6 +42,7 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
     on<SaveMemory>(onSaveMemory);
     on<AddMoodEvaluation>(onAddMoodEvaluation);
     on<AddPosition>(onAddPosition);
+    on<RemovePosition>(onRemovePosition);
   }
 
   Future<void> onInitialize(
@@ -179,6 +180,7 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
     AddPosition event,
     Emitter<NewMemoryState> emit
   ) {
+    dev.log("Add position");
     emit(
       NewMemoryInProgress(
         memoryId: state.memoryId,
@@ -187,6 +189,23 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         mediaList: state.mediaList,
         evaluationResultData: state.evaluationResultData,
         positionData: event.position
+      )
+    );
+  }
+
+  void onRemovePosition(
+    RemovePosition event,
+    Emitter<NewMemoryState> emit
+  ) {
+    dev.log("Remove position");
+    emit(
+      NewMemoryInProgress(
+        memoryId: state.memoryId,
+        creatorId: state.creatorId,
+        description: state.description,
+        mediaList: state.mediaList,
+        evaluationResultData: state.evaluationResultData,
+        positionData: null
       )
     );
   }

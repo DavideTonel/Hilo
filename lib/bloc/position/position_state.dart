@@ -29,6 +29,14 @@ final class PositionLoaded extends PositionState {
   });
 }
 
+final class PositionGranted extends PositionState {
+  const PositionGranted({
+    required super.permissionGranted,
+    required super.serviceEnabled,
+    super.position,
+  });
+}
+
 final class PositionDenied extends PositionState {
   const PositionDenied({
     required super.permissionGranted,

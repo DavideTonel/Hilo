@@ -176,7 +176,7 @@ class EvaluationItemWidget extends StatelessWidget {
           min: item.minValue.toDouble(),
           max: item.maxValue.toDouble(),
           divisions: item.maxValue - item.minValue,
-          label: currentValue.toString(),
+          label: currentValue.toInt().toString(),
           onChanged: (value) {
             onUpdateScoreItem(item, value.toInt());
           },

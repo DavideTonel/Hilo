@@ -6,14 +6,23 @@ class AddMemoryActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.lightBlueAccent[100],
-      child: IconButton(
-        onPressed: () => GoRouter.of(context).push("/memory/add"),    // TODO: voidcallback
-        icon: Icon(
-          Icons.add
-        )
-      )
+    return Material(
+      color: Theme.of(context).colorScheme.primary.withAlpha(245),
+      borderRadius: BorderRadius.circular(12),
+      elevation: 4,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () => GoRouter.of(context).push("/memory/add"),
+        child: SizedBox(
+          width: 56,
+          height: 56,
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 28,
+          ),
+        ),
+      ),
     );
   }
 }

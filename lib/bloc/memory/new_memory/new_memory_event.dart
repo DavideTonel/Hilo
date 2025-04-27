@@ -35,6 +35,8 @@ final class AddPosition extends NewMemoryEvent {
   AddPosition({required this.position});
 }
 
+final class RemovePosition extends NewMemoryEvent {}
+
 final class SetDescription extends NewMemoryEvent {
   final String description;
 

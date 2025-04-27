@@ -1,15 +1,18 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:roadsyouwalked_app/ui/helper/map_style_helper.dart';
 
 class PositionInMapWidget extends StatefulWidget {
   final double latitude;
   final double longitude;
+  final DateTime timestamp;
 
   const PositionInMapWidget({
     super.key,
     required this.latitude,
     required this.longitude,
+    required this.timestamp,
   });
 
   @override
@@ -53,23 +56,20 @@ class PositionInMapWidgetState extends State<PositionInMapWidget> {
     return MapWidget(
       onMapCreated: (MapboxMap map) {
         _mapboxMap = map;
-        
-        _mapboxMap.compass.updateSettings(
-          CompassSettings(enabled: false),
+
+        _mapboxMap.style.setStyleImportConfigProperty(
+          "basemap",
+          "lightPreset",
+          MapStyleHelper.instance.getLightPresetFromTime(widget.timestamp),
         );
-        _mapboxMap.scaleBar.updateSettings(
-          ScaleBarSettings(enabled: false),
-        );
-        
+
+        _mapboxMap.compass.updateSettings(CompassSettings(enabled: false));
+        _mapboxMap.scaleBar.updateSettings(ScaleBarSettings(enabled: false));
+
         _mapboxMap.setCamera(
-          CameraOptions(
-            center: center,
-            zoom: 17.5,
-            bearing: 0.0,
-            pitch: 70.0,
-          ),
+          CameraOptions(center: center, zoom: 17.5, bearing: 0.0, pitch: 70.0),
         );
-        
+
         _startRotatingCamera();
       },
       gestureRecognizers: null,

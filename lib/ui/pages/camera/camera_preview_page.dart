@@ -13,7 +13,7 @@ class CameraPreviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CameraPreviewWidget(cameraManager: cameraManager),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 25.0),
         child: CameraButton(onPressed: onCameraTap),

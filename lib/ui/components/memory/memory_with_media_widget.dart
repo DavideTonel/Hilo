@@ -19,42 +19,68 @@ class _MemoryWithMediaWidgetState extends State<MemoryWithMediaWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final date = DateFormat('dd/MM/yyyy   HH:mm').format(
-      DateTime.parse(widget.memory.data.core.timestamp),
-    );
+    final date = DateFormat(
+      'dd/MM/yyyy   HH:mm',
+    ).format(DateTime.parse(widget.memory.data.core.timestamp));
 
     return Material(
-      elevation: 1.0,
+      elevation: 0,
       type: MaterialType.card,
       color: Theme.of(context).cardColor,
-      child: InkWell(
-        onTap: null,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ImageWidget(imagePath: widget.memory.mediaList[mediaIndex].reference),
-
-            if (widget.memory.data.core.description != null) ...[
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: AppSpacingConstants.sm,
-                  right: AppSpacingConstants.sm,
-                  top: AppSpacingConstants.xs,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.image_outlined,
+                  size: 24,
+                  weight: FontWeight.w500.value.toDouble(),
                 ),
-                child: Text(widget.memory.data.core.description!),
-              ),
-            ],
-
-            Padding(
-              padding: const EdgeInsets.only(
-                left: AppSpacingConstants.sm,
-                top: AppSpacingConstants.xs,
-                bottom: AppSpacingConstants.xxs,
-              ),
-              child: DateFooterWidget(date: date),
+                const SizedBox(width: 8),
+                Text(
+                  widget.memory.data.core.creatorId,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          InkWell(
+            onTap: null,
+            child: ImageWidget(
+              imagePath: widget.memory.mediaList[mediaIndex].reference,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Column(
+              children: [
+                if (widget.memory.data.core.description != null) ...[
+                  const SizedBox(height: 2),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.memory.data.core.description!,
+                        style: const TextStyle(fontSize: 14),
+                        softWrap: true,
+                      ),
+                    ],
+                  ),
+                ],
+                const SizedBox(height: 2),
+                DateFooterWidget(date: date),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

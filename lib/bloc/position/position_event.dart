@@ -6,3 +6,5 @@ sealed class PositionEvent {}
 final class InitPosition extends PositionEvent {}
 
 final class GetPosition extends PositionEvent {}
+
+final class ClearPosition extends PositionEvent {}

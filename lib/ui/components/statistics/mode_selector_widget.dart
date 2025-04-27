@@ -19,7 +19,14 @@ class ModeSelectorWidget extends StatelessWidget {
         modes
             .map(
               (mode) => ChoiceChip(
-                label: Text(mode.value),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 0),
+                showCheckmark: false,
+                label: Text(
+                  mode.value,
+                  style: const TextStyle(
+                    fontSize: 13,
+                  ),
+                ),
                 selected: mode == selectedMode,
                 onSelected: (value) {
                   onSelect(mode);

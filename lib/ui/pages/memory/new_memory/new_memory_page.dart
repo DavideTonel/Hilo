@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/bloc/camera/camera_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/new_memory/new_memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/evaluation_bloc/evaluation_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/position/position_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
+import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
 import 'package:roadsyouwalked_app/ui/pages/memory/new_memory/new_memory_input_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/evaluation/evaluation_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/memory/new_memory/new_memoy_confirm_page.dart';
@@ -47,6 +50,7 @@ class NewMemoryPageState extends State<NewMemoryPage> {
         builder: (context) {
           return BlocListener<NewMemoryBloc, NewMemoryState>(
             listener: (context, state) {
+              final router = GoRouter.of(context);
               switch (state) {
                 case NewMemorySaveFailure _:
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -68,74 +72,86 @@ class NewMemoryPageState extends State<NewMemoryPage> {
                         style: TextStyle(color: Colors.white),
                       ),
                       backgroundColor: const Color.fromARGB(255, 2, 146, 22),
-                      duration: Duration(seconds: 2),
+                      duration: Duration(seconds: 1),
                     ),
                   );
+                  context.read<MemoryBloc>().add(
+                    LoadMemories(
+                      userId: context.read<UserBloc>().state.user!.username,
+                      orderType: MemoryOrderType.timeline,
+                    ),
+                  );
+                  Future.delayed(const Duration(seconds: 1), () {
+                    router.go("/home");
+                  });
                   break;
                 default:
               }
             },
-            child: Stack(
-              children: [
-                PageView(
-                  scrollDirection: Axis.vertical,
-                  controller: _verticalController,
-                  children: [
-                    NewMemoryInputPage(
-                      key: const PageStorageKey("new_memory_input_page"),
-                      onSaveMedia: (localFile, remoteUri, mediaType) {
-                        context.read<NewMemoryBloc>().add(
-                          AddMedia(
-                            localFile: localFile,
-                            remoteUri: remoteUri,
-                            mediaType: mediaType,
+            child: Scaffold(
+              body: Stack(
+                children: [
+                  PageView(
+                    scrollDirection: Axis.vertical,
+                    controller: _verticalController,
+                    children: [
+                      NewMemoryInputPage(
+                        key: const PageStorageKey("new_memory_input_page"),
+                        onSaveMedia: (localFile, remoteUri, mediaType) {
+                          context.read<NewMemoryBloc>().add(
+                            AddMedia(
+                              localFile: localFile,
+                              remoteUri: remoteUri,
+                              mediaType: mediaType,
+                            ),
+                          );
+                        },
+                        onChangeDescription: (description) {
+                          context.read<NewMemoryBloc>().add(
+                            SetDescription(description: description),
+                          );
+                        },
+                      ),
+                      EvaluationPage(
+                        key: const PageStorageKey("evaluation_page"),
+                        onEvaluationCompleted: (evaluationResultData) {
+                          context.read<NewMemoryBloc>().add(
+                            AddMoodEvaluation(
+                              evaluationResultData: evaluationResultData,
+                            ),
+                          );
+                        },
+                      ),
+                      NewMemoyConfirmPage(),
+                    ],
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: SmoothPageIndicator(
+                          controller: _verticalController,
+                          count: 3,
+                          axisDirection: Axis.horizontal,
+                          effect: WormEffect(
+                            dotHeight: 10,
+                            dotWidth: 10,
+                            spacing: 12,
+                            activeDotColor:
+                                Theme.of(context).colorScheme.primary,
+                            dotColor: Colors.black.withAlpha(100),
                           ),
-                        );
-                      },
-                      onChangeDescription: (description) {
-                        context.read<NewMemoryBloc>().add(
-                          SetDescription(description: description),
-                        );
-                      },
-                    ),
-                    EvaluationPage(
-                      key: const PageStorageKey("evaluation_page"),
-                      onEvaluationCompleted: (evaluationResultData) {
-                        context.read<NewMemoryBloc>().add(
-                          AddMoodEvaluation(
-                            evaluationResultData: evaluationResultData,
-                          ),
-                        );
-                      },
-                    ),
-                    NewMemoyConfirmPage(),
-                  ],
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 12),
-                    child: RotatedBox(
-                      quarterTurns: 1,
-                      child: SmoothPageIndicator(
-                        controller: _verticalController,
-                        count: 3,
-                        axisDirection: Axis.horizontal,
-                        effect: WormEffect(
-                          dotHeight: 10,
-                          dotWidth: 10,
-                          spacing: 12,
-                          activeDotColor: Theme.of(context).colorScheme.primary,
-                          dotColor: Colors.black.withAlpha(100),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
-        }
+        },
       ),
     );
   }

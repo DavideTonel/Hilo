@@ -27,7 +27,6 @@ class CalendarDayWithImageWidget extends StatelessWidget {
         height: height,
         width: width,
         decoration: BoxDecoration(
-          color: Colors.blue,
           borderRadius: BorderRadius.circular(12),
         ),
         clipBehavior: Clip.antiAlias,
@@ -60,22 +59,6 @@ class CalendarDayWithImageWidget extends StatelessWidget {
                 ),
               ),
             ),
-            /*
-            Align(    // I don't know if I like it
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 5.0),
-                child: Text(
-                  "${memories.length - 1 > 0 ? "+${memories.length - 1}" : null}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 10,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            */
           ],
         ),
       ),

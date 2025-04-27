@@ -16,12 +16,12 @@ class AppTheme {
     colorScheme: _lightColorScheme,
     scaffoldBackgroundColor: _lightColorScheme.surface,
     appBarTheme: AppBarTheme(
-      backgroundColor: _lightColorScheme.primary,
-      foregroundColor: _lightColorScheme.onPrimary,
+      backgroundColor: _lightColorScheme.surfaceContainer,
+      foregroundColor: _lightColorScheme.onPrimaryContainer,
       elevation: 0,
     ),
     navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: _lightColorScheme.primary.withAlpha(245),
+      backgroundColor: _lightColorScheme.surfaceContainer,
       indicatorColor: Colors.transparent,
       labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
       labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>((
@@ -30,13 +30,13 @@ class AppTheme {
         if (states.contains(WidgetState.selected)) {
           return TextStyle(
             fontWeight: FontWeight.w600,
-            color: _lightColorScheme.onPrimary,
+            color: _lightColorScheme.onPrimaryContainer,
             fontSize: 12,
           );
         }
         return TextStyle(
           fontWeight: FontWeight.w400,
-          color: _lightColorScheme.onPrimary.withAlpha(200),
+          color: _lightColorScheme.onPrimaryContainer.withAlpha(200),
           fontSize: 11
         );
       }),
@@ -45,23 +45,22 @@ class AppTheme {
       ) {
         if (states.contains(WidgetState.selected)) {
           return IconThemeData(
-            color: _lightColorScheme.onPrimary,
+            color: _lightColorScheme.onPrimaryContainer,
             weight: FontWeight.w600.value.toDouble(),
             size: 31,
           );
         }
         return IconThemeData(
-          color: _lightColorScheme.onPrimary.withAlpha(200),
+          color: _lightColorScheme.onPrimaryContainer.withAlpha(200),
           size: 30,
         );
       }),
-      overlayColor: WidgetStateProperty.all<Color>(
-        _lightColorScheme.primary.withAlpha(200),
-      ),
     ),
 
     textTheme: _textTheme,
     cardTheme: CardTheme(
+      //color: _lightColorScheme.surfaceContainer,
+      color: _lightColorScheme.surface,
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
