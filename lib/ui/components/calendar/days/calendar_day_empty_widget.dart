@@ -24,7 +24,7 @@ class CalendarDayEmptyWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color:
               day.gapType == CalendarDayGapType.currentMonth
-                  ? Theme.of(context).colorScheme.primaryContainer
+                  ? Theme.of(context).colorScheme.primaryContainer.withAlpha(150)
                   : Theme.of(
                     context,
                   ).colorScheme.primaryContainer.withAlpha(85),
