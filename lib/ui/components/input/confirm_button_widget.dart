@@ -24,7 +24,14 @@ class ConfirmButtonWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [Text(label)],
+          children: [
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            )
+          ],
         ),
       ),
     );

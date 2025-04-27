@@ -18,7 +18,12 @@ class LabeledCheckboxWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Checkbox(value: value, onChanged: onChanged),
-        Text(label)
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 14,
+          ),
+        )
       ],
     );
   }

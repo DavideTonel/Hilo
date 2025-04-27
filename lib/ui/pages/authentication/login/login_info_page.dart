@@ -99,7 +99,8 @@ class LoginInfoPage extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacingConstants.xl),
               ConfirmButtonWidget(
-                width: size.width * 0.70,  
+                width: size.width * 0.70,
+                height: size.height * 0.06,
                 label: "Login",
                 onPressed: () {
                   context.read<LoginBloc>().add(
@@ -115,7 +116,9 @@ class LoginInfoPage extends StatelessWidget {
                 onPressed: () {
                   GoRouter.of(context).push("/auth/signup");
                 },
-                child: Text('Haven\'t you got an account? Sign up'),
+                child: Text(
+                  "Haven't you got an account? Sign up",
+                ),
               ),
             ],
           ),

@@ -22,6 +22,9 @@ class TextInputWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      style: const TextStyle(
+        fontSize: 12,
+      ),
       controller: textController,
       onChanged: onChanged,
       decoration: InputDecoration(
