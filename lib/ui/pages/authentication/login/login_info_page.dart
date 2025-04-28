@@ -4,12 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/bloc/authentication/login/login_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
-
 import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
 import 'package:roadsyouwalked_app/ui/components/input/confirm_button_widget.dart';
 import 'package:roadsyouwalked_app/ui/components/input/labeled_checkbox_widget.dart';
 import 'package:roadsyouwalked_app/ui/components/input/text_input_widget.dart';
 import 'package:roadsyouwalked_app/ui/constants/app_spacing.dart';
+import 'dart:developer' as dev;
 
 // [ ] should be a statefull widget to manage the text field controllers?
 class LoginInfoPage extends StatelessWidget {
@@ -58,6 +58,7 @@ class LoginInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    dev.log("Rebuild login page !!!!!!!!!!!");
     final size = MediaQuery.of(context).size;
 
     return BlocConsumer<LoginBloc, LoginState>(

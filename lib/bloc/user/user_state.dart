@@ -23,3 +23,10 @@ final class UserLoaded extends UserState {
   );
 }
 
+final class UserTakingProfileImage extends UserState {
+  const UserTakingProfileImage(
+    {
+      required super.user
+    }
+  );
+}

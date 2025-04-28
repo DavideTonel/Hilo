@@ -22,3 +22,11 @@ final class UsernameCheckRequest extends SignupEvent {
 
   UsernameCheckRequest(this.username);
 }
+
+final class TakeProfileImage extends SignupEvent {}
+
+final class AddProfileImage extends SignupEvent {
+  final File? profileImage;
+
+  AddProfileImage(this.profileImage);
+}

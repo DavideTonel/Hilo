@@ -2,14 +2,13 @@ import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
 import 'package:roadsyouwalked_app/ui/components/home/add_memory_action_button.dart';
 import 'package:roadsyouwalked_app/ui/components/home/home_app_bar.dart';
+import 'package:roadsyouwalked_app/ui/components/home/home_drawer.dart';
 import 'package:roadsyouwalked_app/ui/components/statistics/statistics_app_bar.dart';
-import 'package:roadsyouwalked_app/ui/constants/app_spacing.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/calendar_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/feed_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/statistics/statistics_page.dart';
@@ -62,8 +61,6 @@ class _HomePageState extends State<HomePage> {
       }
     });
 
-    dev.log("MemoryOrderType: ${_getMemoryOrderTypeFromIndex(index)}");
-
     memoryBloc.add(
       LoadMemories(
         userId: userId,
@@ -77,25 +74,15 @@ class _HomePageState extends State<HomePage> {
     await subscription.cancel();
   }
 
-  void _onDestinationSelected(int index) async {
-    final userId = context.read<UserBloc>().state.user?.username;
-    if (userId == null) return;
-
-    await _loadMemoriesIfNeeded(index, userId);
-
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  PreferredSizeWidget? _getAppBarFromIndex(int index) {
+  PreferredSizeWidget? _getAppBarFromIndex(BuildContext context, int index) {
+    final userBloc = context.read<UserBloc>();
     switch (index) {
       case 0:
-        return const HomeAppBar(title: "Your Road");
+        return HomeAppBar(title: "Your Road", user: userBloc.state.user);
       case 1:
-        return const HomeAppBar(title: "Your Time");
+        return HomeAppBar(title: "Your Time", user: userBloc.state.user);
       case 2:
-        return StatisticsAppBar();
+        return StatisticsAppBar(user: userBloc.state.user);
       default:
         return null;
     }
@@ -103,108 +90,56 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //final userBloc = context.read<UserBloc>();
     final List<Widget> pages = [
       const FeedPage(key: PageStorageKey('feed')),
       const CalendarPage(key: PageStorageKey('calendar')),
       const StatisticsPage(key: PageStorageKey("statistics")),
     ];
 
-    return Scaffold(
-      extendBody: true,
-      appBar: _getAppBarFromIndex(_selectedIndex),
-      drawer: Drawer(
-        child: Column(
-          children: [
-            SizedBox(height: AppSpacingConstants.xxl),
-            ListTile(
-              leading: Icon(
-                Icons.person,
-                size: 35,
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
+    return BlocBuilder<UserBloc, UserState>(
+      builder: (context, state) {
+        return Scaffold(
+          extendBody: true,
+          appBar: _getAppBarFromIndex(context, _selectedIndex),
+          drawer: HomeDrawer(user: state.user),
+          drawerDragStartBehavior: DragStartBehavior.start,
+          body: IndexedStack(index: _selectedIndex, children: pages),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.miniEndFloat,
+          floatingActionButton:
+              _selectedIndex == 0 ? const AddMemoryActionButton() : null,
+          bottomNavigationBar: NavigationBar(
+            height: 68,
+            selectedIndex: _selectedIndex,
+            onDestinationSelected: (index) async {
+              if (state.user != null) {
+                await _loadMemoriesIfNeeded(index, state.user!.username);
+                setState(() {
+                  _selectedIndex = index;
+                });
+              }
+            },
+            destinations: [
+              NavigationDestination(
+                icon: Icon(Icons.home_outlined),
+                selectedIcon: Icon(Icons.home),
+                label: "Home",
               ),
-              title: Text(
-                "iTunas",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                )
+              NavigationDestination(
+                icon: Icon(Icons.calendar_month_outlined),
+                selectedIcon: Icon(Icons.calendar_month),
+                label: "Calendar",
               ),
-              subtitle: Text(
-                "Go to your profile",
-                style: TextStyle(
-                  fontSize: 11,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(150),
-                ),
+              NavigationDestination(
+                icon: Icon(Icons.insert_chart_outlined_outlined),
+                selectedIcon: Icon(Icons.insert_chart),
+                label: "Statistics",
               ),
-              onTap: () {
-                GoRouter.of(context).push("/home/profile");
-              },
-            ),
-            const Divider(
-              height: 1,
-              thickness: 1,
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.looks,
-                size: 32,
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-              ),
-              title: Text(
-                "Appearance",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                ),
-              ),
-              onTap: () {
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.settings,
-                size: 32,
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-              ),
-              title: Text(
-                "Settings",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                ),
-              ),
-              onTap: () {
-              },
-            ),
-          ],
-        ),
-      ),
-      drawerDragStartBehavior: DragStartBehavior.start,
-      body: IndexedStack(index: _selectedIndex, children: pages),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-      floatingActionButton:
-          _selectedIndex == 0 ? const AddMemoryActionButton() : null,
-      bottomNavigationBar: NavigationBar(
-        height: 68,
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: _onDestinationSelected,
-        destinations: [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
-            label: "Home",
+            ],
           ),
-          NavigationDestination(
-            icon: Icon(Icons.calendar_month_outlined),
-            selectedIcon: Icon(Icons.calendar_month),
-            label: "Calendar",
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.insert_chart_outlined_outlined),
-            selectedIcon: Icon(Icons.insert_chart),
-            label: "Statistics",
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

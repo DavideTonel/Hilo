@@ -4,13 +4,12 @@ import 'package:roadsyouwalked_app/model/authentication/user.dart';
 import 'package:sqflite/sqflite.dart';
 
 // TODO: change '' to ""
-// TODO: make dbManager private
 class UserDao {
-  final DatabaseManager dbManager = DatabaseManager.instance;
+  final DatabaseManager _dbManager = DatabaseManager.instance;
 
   Future<bool> checkUserExists(final String username, final String password) async {
     try {
-      final db = await dbManager.database;
+      final db = await _dbManager.database;
       final List<Map<String, dynamic>> result = await db.query(
         'User',
         where: 'username = ? AND password = ?',
@@ -24,7 +23,7 @@ class UserDao {
 
   Future<bool> isValidUsername(final String username) async {
     try {
-      final db = await dbManager.database;
+      final db = await _dbManager.database;
       final List<Map<String, dynamic>> result = await db.query(
         'User',
         where: 'username = ?',
@@ -38,16 +37,10 @@ class UserDao {
 
   Future<bool> createUser(final User user) async {
     try {
-      final db = await dbManager.database;
-      // TODO: user to map
+      final db = await _dbManager.database;
       await db.insert(
-        'User',
-        {
-          'username': user.username,
-          'password': user.password,
-          'firstName': user.firstName,
-          'lastName': user.lastName,
-        },
+        "User",
+        user.toMap(),
         conflictAlgorithm: ConflictAlgorithm.abort,
       );
       return true;
@@ -59,7 +52,7 @@ class UserDao {
 
   Future<List<User>> getUser(final String username, final String password) async {
     try {
-      final db = await dbManager.database;
+      final db = await _dbManager.database;
       final List<Map<String, dynamic>> result = await db.query(
         'User',
         where: 'username = ? AND password = ?',
@@ -69,6 +62,22 @@ class UserDao {
     } catch (e) {
       dev.log(e.toString());
       return [];
+    }
+  }
+
+  Future<void> updateProfileImageUser(final String username, final String? newImagePath) async {
+    try {
+      final db = await _dbManager.database;
+      await db.update(
+        "User",
+        {
+          "referenceProfileImage": newImagePath
+        },
+        where: "username = ?",
+        whereArgs: [ username ]
+      );
+    } catch (e) {
+      dev.log(e.toString());
     }
   }
 }

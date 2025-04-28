@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:developer' as dev;
 
 import 'package:roadsyouwalked_app/data/storage/private_storage.dart';
 import 'package:roadsyouwalked_app/model/media/media.dart';
@@ -17,7 +16,6 @@ class MediaStorageService {
     String reference;
 
     if (pendingMedia.localFile != null) {
-      dev.log("local source");
       sourceType = MediaSourceType.local;
       reference = await _saveFileToPrivateStorage(
         pendingMedia.id,
@@ -26,11 +24,9 @@ class MediaStorageService {
         pendingMedia.type
       );
     } else if (pendingMedia.remoteUri != null) {
-      dev.log("remote source");
       sourceType = MediaSourceType.remote;
       reference = pendingMedia.remoteUri!;
     } else {
-      dev.log("unknown source");
       throw Exception("Either localFile or remoteUri must be provided");
     }
     return Media(

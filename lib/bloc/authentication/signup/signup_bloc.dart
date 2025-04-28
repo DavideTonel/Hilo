@@ -1,4 +1,5 @@
 import 'dart:developer' as dev;
+import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/data/repository/user_repository.dart';
@@ -13,47 +14,114 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   SignupBloc(this._userRepository) : super(SignupInitial()) {
     on<SignupRequest>(onSignupRequest);
     on<UsernameCheckRequest>(onUsernameCheckRequest);
+    on<TakeProfileImage>((event, emit) {
+      emit(
+        SignupTakingProfileImage(
+          validUsername: state.validUsername,
+          profileImage: state.profileImage,
+        ),
+      );
+    });
+    on<AddProfileImage>(onAddProfileImage);
   }
 
   Future<void> onUsernameCheckRequest(
     UsernameCheckRequest event,
-    Emitter<SignupState> emit
+    Emitter<SignupState> emit,
   ) async {
     try {
       await _userRepository
-        .isValidUsername(event.username)
-        .then((res) => res ? emit(SignupLoading(validUsername: true)) : emit(SignupLoading(validUsername: false)));
+          .isValidUsername(event.username)
+          .then(
+            (res) =>
+                res
+                    ? emit(
+                      SignupLoading(
+                        validUsername: true,
+                        profileImage: state.profileImage,
+                      ),
+                    )
+                    : emit(
+                      SignupLoading(
+                        validUsername: false,
+                        profileImage: state.profileImage,
+                      ),
+                    ),
+          );
     } catch (e) {
       dev.log(e.toString());
-      emit(SignupLoading(validUsername: state.validUsername));
+      emit(
+        SignupLoading(
+          validUsername: state.validUsername,
+          profileImage: state.profileImage,
+        ),
+      );
     }
   }
 
   Future<void> onSignupRequest(
     SignupRequest event,
-    Emitter<SignupState> emit
+    Emitter<SignupState> emit,
   ) async {
     try {
-      await _userRepository.createUser(
-        User(
-          username: event.username,
-          password: event.password,
-          firstName: event.firstName,
-          lastName: event.lastName,
-        )
-        ).then((res) {
-          if (res) {
-            emit(SignupSuccess(validUsername: state.validUsername));
-            dev.log("Signup success");
-          } else {
-            emit(SignupFailure(validUsername: state.validUsername));
-            dev.log("Signup failure");
-          }
-        }
-      );
+      await _userRepository
+          .createUser(
+            User(
+              username: event.username,
+              password: event.password,
+              firstName: event.firstName,
+              lastName: event.lastName,
+              profileImagePath: state.profileImage?.path
+            ),
+          )
+          .then((res) {
+            if (res) {
+              emit(
+                SignupSuccess(
+                  validUsername: state.validUsername,
+                  profileImage: state.profileImage,
+                ),
+              );
+              dev.log("Signup success");
+            } else {
+              emit(
+                SignupFailure(
+                  validUsername: state.validUsername,
+                  profileImage: state.profileImage,
+                ),
+              );
+              dev.log("Signup failure");
+            }
+          });
     } catch (e) {
       dev.log(e.toString());
-      emit(SignupFailure(validUsername: state.validUsername));  // TODO: add error message
+      emit(
+        SignupFailure(
+          validUsername: state.validUsername,
+          profileImage: state.profileImage,
+        ),
+      ); // TODO: add error message
+    }
+  }
+
+  Future<void> onAddProfileImage(
+    AddProfileImage event,
+    Emitter<SignupState> emit,
+  ) async {
+    try {
+      emit(
+        SignupLoading(
+          validUsername: state.validUsername,
+          profileImage: event.profileImage,
+        ),
+      );
+    } catch (e) {
+      emit(
+        SignupLoading(
+          validUsername: state.validUsername,
+          profileImage: state.profileImage,
+        ),
+      );
     }
   }
 }
