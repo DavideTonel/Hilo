@@ -35,8 +35,8 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
           description: event.description,
           mediaList: state.mediaList,
           evaluationResultData: state.evaluationResultData,
-          positionData: state.positionData
-        )
+          positionData: state.positionData,
+        ),
       );
     });
     on<SaveMemory>(onSaveMemory);
@@ -47,7 +47,7 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
 
   Future<void> onInitialize(
     InitNewMemory event,
-    Emitter<NewMemoryState> emit
+    Emitter<NewMemoryState> emit,
   ) async {
     final uuid = const Uuid();
     final String creatorId = event.creatorId;
@@ -59,20 +59,17 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
 
     emit(
       NewMemoryInProgress(
-        memoryId: memoryId, 
-        creatorId: creatorId, 
-        description: state.description, 
+        memoryId: memoryId,
+        creatorId: creatorId,
+        description: state.description,
         mediaList: state.mediaList,
         evaluationResultData: state.evaluationResultData,
-        positionData: state.positionData
-      )
+        positionData: state.positionData,
+      ),
     );
   }
 
-  Future<void> onAddMedia(
-    AddMedia event,
-    Emitter<NewMemoryState> emit
-  ) async {
+  Future<void> onAddMedia(AddMedia event, Emitter<NewMemoryState> emit) async {
     final uuid = const Uuid();
     String mediaId = uuid.v4();
 
@@ -86,7 +83,7 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
       remoteUri: event.remoteUri,
       type: event.mediaType,
       memoryId: state.memoryId,
-      creatorId: state.creatorId
+      creatorId: state.creatorId,
     );
 
     emit(
@@ -96,49 +93,49 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         description: state.description,
         mediaList: [...state.mediaList, newPendingMedia],
         evaluationResultData: state.evaluationResultData,
-        positionData: state.positionData
-      )
+        positionData: state.positionData,
+      ),
     );
   }
 
   Future<void> onSaveMemory(
     SaveMemory event,
-    Emitter<NewMemoryState> emit
+    Emitter<NewMemoryState> emit,
   ) async {
     try {
       if (state.evaluationResultData == null) {
         throw IncompleteMemoryException("Missing mood evaluation");
       }
-      if (
-        (state.description == null || state.description!.isEmpty) &&
-        state.mediaList.isEmpty
-      ) {
+      if ((state.description == null || state.description!.isEmpty) &&
+          state.mediaList.isEmpty) {
         throw IncompleteMemoryException("Missing description or one media");
       }
       final timestamp = DateTime.now().toIso8601String();
+      //dev.log("lat: ${state.positionData?.latitude ?? "NULL"}, lon: ${state.positionData?.longitude ?? "NULL"},");
       await _memoryRepository.saveMemory(
         MemoryData(
           core: MemoryCoreData(
             id: state.memoryId!,
             creatorId: state.creatorId!,
             timestamp: timestamp,
-            description: state.description
+            description: state.description,
           ),
           evaluation: MemoryEvaluationData(
             evaluationScaleId: state.evaluationResultData!.evaluationScaleId,
-            evaluationResult: state.evaluationResultData!.result
+            evaluationResult: state.evaluationResultData!.result,
           ),
-          position: state.positionData != null ? MemoryPositionData(
-            latitude: state.positionData!.latitude,
-            longitude: state.positionData!.longitude
-          ) : null
-        ), 
+          position:
+              state.positionData != null
+                  ? MemoryPositionData(
+                    latitude: state.positionData!.latitude,
+                    longitude: state.positionData!.longitude,
+                  )
+                  : null,
+        ),
         state.mediaList,
         state.evaluationResultData!.singleItemScores,
       );
-      emit(
-        NewMemorySaveSuccess()
-      );
+      emit(NewMemorySaveSuccess());
     } on IncompleteMemoryException catch (e) {
       dev.log(e.toString());
       emit(
@@ -149,20 +146,18 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
           mediaList: state.mediaList,
           evaluationResultData: state.evaluationResultData,
           positionData: state.positionData,
-          errorMessage: e.message
-        )
+          errorMessage: e.message,
+        ),
       );
     } catch (e) {
       dev.log(e.toString());
-      emit(
-        NewMemorySaveFailure()
-      );
+      emit(NewMemorySaveFailure());
     }
   }
 
   void onAddMoodEvaluation(
     AddMoodEvaluation event,
-    Emitter<NewMemoryState> emit
+    Emitter<NewMemoryState> emit,
   ) {
     emit(
       NewMemoryInProgress(
@@ -171,16 +166,12 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         description: state.description,
         mediaList: state.mediaList,
         evaluationResultData: event.evaluationResultData,
-        positionData: state.positionData
-      )
+        positionData: state.positionData,
+      ),
     );
   }
 
-  void onAddPosition(
-    AddPosition event,
-    Emitter<NewMemoryState> emit
-  ) {
-    dev.log("Add position");
+  void onAddPosition(AddPosition event, Emitter<NewMemoryState> emit) {
     emit(
       NewMemoryInProgress(
         memoryId: state.memoryId,
@@ -188,16 +179,12 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         description: state.description,
         mediaList: state.mediaList,
         evaluationResultData: state.evaluationResultData,
-        positionData: event.position
-      )
+        positionData: event.position,
+      ),
     );
   }
 
-  void onRemovePosition(
-    RemovePosition event,
-    Emitter<NewMemoryState> emit
-  ) {
-    dev.log("Remove position");
+  void onRemovePosition(RemovePosition event, Emitter<NewMemoryState> emit) {
     emit(
       NewMemoryInProgress(
         memoryId: state.memoryId,
@@ -205,8 +192,8 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         description: state.description,
         mediaList: state.mediaList,
         evaluationResultData: state.evaluationResultData,
-        positionData: null
-      )
+        positionData: null,
+      ),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:roadsyouwalked_app/bloc/memory/new_memory/new_memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/position/position_bloc.dart';
 import 'package:roadsyouwalked_app/ui/constants/app_spacing.dart';
 import 'package:roadsyouwalked_app/ui/pages/map/position_in_map_page.dart';
+import 'dart:developer' as dev;
 
 class NewMemoyConfirmPage extends StatefulWidget {
   const NewMemoyConfirmPage({super.key});
@@ -13,49 +14,34 @@ class NewMemoyConfirmPage extends StatefulWidget {
 }
 
 class _NewMemoyConfirmPageState extends State<NewMemoyConfirmPage> {
-  bool _showMap = false;
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PositionBloc, PositionState>(
       listener: (context, state) {
         if (state is PositionLoaded) {
-          context.read<NewMemoryBloc>().add(
-            AddPosition(position: state.position!),
-          );
-          Future.delayed(Duration(milliseconds: 100), () {
-            setState(() => _showMap = true);
-          });
-        } else if (state is PositionGranted) {
-          context.read<NewMemoryBloc>().add(
-            RemovePosition(),
-          );
-          Future.delayed(Duration(milliseconds: 100), () {
-            setState(() => _showMap = true);
-          });
+          if (state.position != null) {
+            context.read<NewMemoryBloc>().add(
+              AddPosition(position: state.position!),
+            );
+          } else {
+            context.read<NewMemoryBloc>().add(RemovePosition());
+          }
         }
       },
       builder: (context, state) {
-        bool isPositionGranted =
-            state is PositionLoaded || state is PositionGranted;
-        bool isPositionLoaded = state is PositionLoaded;
+        bool isPositionActive = state is PositionLoaded;
+
         return Scaffold(
           body: Stack(
             children: [
-              if (state.position !=  null)
-                AnimatedOpacity(
-                  opacity: _showMap ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 2200),
-                  curve: Curves.easeInOut,
-                  child: Positioned.fill(
-                    child: PositionInMapPage(
-                      latitude: state.position!.latitude,
-                      longitude: state.position!.longitude,
-                      timestamp: DateTime.now(),
-                    ),
+              if (state.position != null)
+                Positioned.fill(
+                  child: PositionInMapPage(
+                    latitude: state.position!.latitude,
+                    longitude: state.position!.longitude,
+                    timestamp: DateTime.now(),
                   ),
                 ),
-
               Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -66,19 +52,21 @@ class _NewMemoyConfirmPageState extends State<NewMemoyConfirmPage> {
                         elevation: 2,
                       ),
                       onPressed: () {
-                        if (!isPositionGranted) {
+                        if (!isPositionActive) {
                           context.read<PositionBloc>().add(InitPosition());
                         } else {
-                          if (isPositionLoaded) {
+                          if (state.position != null) {
+                            dev.log("UI Clear position");
                             context.read<PositionBloc>().add(ClearPosition());
                           } else {
+                            dev.log("UI Get position");
                             context.read<PositionBloc>().add(GetPosition());
                           }
                         }
                       },
                       child: Text(
-                        isPositionGranted
-                            ? (isPositionLoaded
+                        isPositionActive
+                            ? (state.position != null
                                 ? "Remove position"
                                 : "Add position")
                             : "Request position",
@@ -90,8 +78,9 @@ class _NewMemoyConfirmPageState extends State<NewMemoyConfirmPage> {
                         shadowColor: Colors.black,
                         elevation: 2,
                       ),
-                      onPressed:
-                          () => context.read<NewMemoryBloc>().add(SaveMemory()),
+                      onPressed: () {
+                        context.read<NewMemoryBloc>().add(SaveMemory());
+                      },
                       child: const Text("Save memory"),
                     ),
                   ],

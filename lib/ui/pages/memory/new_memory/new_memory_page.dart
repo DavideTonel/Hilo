@@ -122,7 +122,7 @@ class NewMemoryPageState extends State<NewMemoryPage> {
                           );
                         },
                       ),
-                      NewMemoyConfirmPage(),
+                      NewMemoyConfirmPage(key: const PageStorageKey("new_memory_confirm_page")),
                     ],
                   ),
                   Align(

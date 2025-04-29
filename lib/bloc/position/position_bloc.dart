@@ -38,7 +38,7 @@ class PositionBloc extends Bloc<PositionEvent, PositionState> {
       );
     } else {
       emit(
-        PositionGranted(
+        PositionLoaded(
           permissionGranted: permissionGranted,
           serviceEnabled: serviceEnabled,
           position: null,
@@ -66,11 +66,12 @@ class PositionBloc extends Bloc<PositionEvent, PositionState> {
         )
       );
     } else {
+      final position = await _positionService.getCurrentPosition();
       emit(
         PositionLoaded(
           permissionGranted: state.permissionGranted,
           serviceEnabled: state.permissionGranted,
-          position: await _positionService.getCurrentPosition()
+          position: position
         )
       );
     }
@@ -81,7 +82,7 @@ class PositionBloc extends Bloc<PositionEvent, PositionState> {
     Emitter<PositionState> emit,
   ) {
     emit(
-      PositionGranted(
+      PositionLoaded(
         permissionGranted: state.permissionGranted,
         serviceEnabled: state.serviceEnabled,
         position: null,

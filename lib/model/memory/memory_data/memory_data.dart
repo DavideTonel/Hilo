@@ -1,6 +1,7 @@
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_core_data.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_evaluation_data.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_position_data.dart';
+import 'dart:developer' as dev;
 
 class MemoryData {
   final MemoryCoreData core;
@@ -21,7 +22,7 @@ class MemoryData {
     return MemoryData(
       core:  MemoryCoreData.fromMap(map),
       evaluation: MemoryEvaluationData.fromMap(map),
-      position: map["position"] != null ? MemoryPositionData.fromMap(map["position"]) : null
+      position: MemoryPositionData.fromMap(map)
     );
   }
 }
