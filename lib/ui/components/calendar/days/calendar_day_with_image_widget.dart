@@ -3,7 +3,6 @@ import 'package:roadsyouwalked_app/model/calendar/calendar_day.dart';
 import 'package:roadsyouwalked_app/model/media/media_type.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
 import 'package:roadsyouwalked_app/ui/components/media/image/image_widget.dart';
-import 'dart:developer' as dev;
 
 class CalendarDayWithImageWidget extends StatelessWidget {
   final CalendarDay day;

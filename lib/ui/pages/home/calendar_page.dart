@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:roadsyouwalked_app/bloc/memory/memories_detail_bloc/memories_detail_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 import 'package:roadsyouwalked_app/model/calendar/calendar_day_gap_type.dart';
@@ -39,10 +40,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
     if (userId != null) {
       context.read<MemoryBloc>().add(
-        SetTime(
-          userId: userId,
-          month: memoryState.month + delta,
-        ),
+        SetTime(userId: userId, month: memoryState.month + delta),
       );
     }
   }
@@ -73,7 +71,9 @@ class _CalendarPageState extends State<CalendarPage> {
                   header: DateFormat("MMM yyyy").format(
                     displayedMap.entries
                         .firstWhere(
-                          (entry) => entry.key.gapType == CalendarDayGapType.currentMonth,
+                          (entry) =>
+                              entry.key.gapType ==
+                              CalendarDayGapType.currentMonth,
                         )
                         .key
                         .date,

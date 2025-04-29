@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:roadsyouwalked_app/api/firebase_api.dart';
 import 'package:roadsyouwalked_app/bloc/authentication/auth_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/memory/memories_detail_bloc/memories_detail_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/settings/settings_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => MemoryBloc(MemoryRepository())),
         BlocProvider(create: (context) => UserBloc(UserRepository())),
         BlocProvider(create: (context) => SettingsBloc()..add(GetSettings())),
+        BlocProvider(create: (context) => MemoriesDetailBloc())
       ],
       child: MyAppWithRouter(),
     );

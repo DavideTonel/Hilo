@@ -3,6 +3,7 @@ import 'package:roadsyouwalked_app/ui/pages/authentication/authentication_page.d
 import 'package:roadsyouwalked_app/ui/pages/authentication/login/login_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/authentication/signup/signup_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/home_page.dart';
+import 'package:roadsyouwalked_app/ui/pages/memory/detail/memories_detail_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/memory/new_memory/new_memory_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/settings/appaerance_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/settings/settings_page.dart';
@@ -46,6 +47,10 @@ class AppRouter {
         GoRoute(
           path: "/settings/appaerance",
           builder: (context, state) => AppaerancePage()
+        ),
+        GoRoute(
+          path: "/calendar/memories",
+          builder: (context, state) => MemoriesDetailPage()
         ),
       ],
     );
