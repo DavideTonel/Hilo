@@ -4,7 +4,7 @@ class User {
   final String firstName;
   final String lastName;
   final String? profileImagePath;
-  //final DateTime birthday;
+  final String birthday;
 
   User({
     required this.username,
@@ -12,7 +12,7 @@ class User {
     required this.firstName,
     required this.lastName,
     this.profileImagePath,
-    //required this.birthday
+    required this.birthday
   });
 
   User copyWith({
@@ -28,6 +28,7 @@ class User {
       firstName: newFirstName ?? firstName,
       lastName: newLastName ?? lastName,
       profileImagePath: newProfileImagePath ?? profileImagePath,
+      birthday: birthday
     );
   }
 
@@ -38,6 +39,7 @@ class User {
       "firstName": firstName,
       "lastName": lastName,
       "referenceProfileImage": profileImagePath,
+      "birthday": birthday
     };
   }
 
@@ -48,6 +50,7 @@ class User {
       firstName: map["firstName"] as String,
       lastName: map["lastName"] as String,
       profileImagePath: map["referenceProfileImage"] as String?,
+      birthday: map["birthday"] as String
     );
   }
 }

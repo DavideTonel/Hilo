@@ -19,10 +19,12 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         SignupTakingProfileImage(
           validUsername: state.validUsername,
           profileImage: state.profileImage,
+          birthday: state.birthday
         ),
       );
     });
     on<AddProfileImage>(onAddProfileImage);
+    on<AddBirthday>(onAddBirthday);
   }
 
   Future<void> onUsernameCheckRequest(
@@ -39,12 +41,14 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
                       SignupLoading(
                         validUsername: true,
                         profileImage: state.profileImage,
+                        birthday: state.birthday
                       ),
                     )
                     : emit(
                       SignupLoading(
                         validUsername: false,
                         profileImage: state.profileImage,
+                        birthday: state.birthday
                       ),
                     ),
           );
@@ -54,6 +58,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         SignupLoading(
           validUsername: state.validUsername,
           profileImage: state.profileImage,
+          birthday: state.birthday
         ),
       );
     }
@@ -71,7 +76,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
               password: event.password,
               firstName: event.firstName,
               lastName: event.lastName,
-              profileImagePath: state.profileImage?.path
+              profileImagePath: state.profileImage?.path,
+              birthday: state.birthday!.toIso8601String()
             ),
           )
           .then((res) {
@@ -80,6 +86,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
                 SignupSuccess(
                   validUsername: state.validUsername,
                   profileImage: state.profileImage,
+                  birthday: state.birthday
                 ),
               );
               dev.log("Signup success");
@@ -88,6 +95,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
                 SignupFailure(
                   validUsername: state.validUsername,
                   profileImage: state.profileImage,
+                  birthday: state.birthday
                 ),
               );
               dev.log("Signup failure");
@@ -99,6 +107,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         SignupFailure(
           validUsername: state.validUsername,
           profileImage: state.profileImage,
+          birthday: state.birthday
         ),
       ); // TODO: add error message
     }
@@ -113,6 +122,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         SignupLoading(
           validUsername: state.validUsername,
           profileImage: event.profileImage,
+          birthday: state.birthday
         ),
       );
     } catch (e) {
@@ -120,6 +130,30 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         SignupLoading(
           validUsername: state.validUsername,
           profileImage: state.profileImage,
+          birthday: state.birthday
+        ),
+      );
+    }
+  }
+
+  Future<void> onAddBirthday(
+    AddBirthday event,
+    Emitter<SignupState> emit,
+  ) async {
+    try {
+      emit(
+        SignupLoading(
+          validUsername: state.validUsername,
+          profileImage: state.profileImage,
+          birthday: event.date
+        ),
+      );
+    } catch (e) {
+      emit(
+        SignupLoading(
+          validUsername: state.validUsername,
+          profileImage: state.profileImage,
+          birthday: state.birthday
         ),
       );
     }

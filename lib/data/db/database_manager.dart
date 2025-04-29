@@ -15,7 +15,7 @@ class DatabaseManager {
 
   Future<Database> initializeDB() async {
     return openDatabase(
-      join(await getDatabasesPath(), "uni_test_10.db"),
+      join(await getDatabasesPath(), "uni_test_11.db"),
       version: 1,
       onCreate: (db, version) async {
         await db.execute("""
@@ -33,7 +33,8 @@ class DatabaseManager {
               password TEXT NOT NULL,
               firstName TEXT NOT NULL,
               lastName TEXT NOT NULL,
-              referenceProfileImage TEXT
+              referenceProfileImage TEXT,
+              birthday DATETIME NOT NULL
             );
           """);
         await db.execute("""

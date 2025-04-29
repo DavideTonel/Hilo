@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:roadsyouwalked_app/bloc/camera/camera_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 import 'package:roadsyouwalked_app/ui/components/user/profile_image_widget.dart';
@@ -30,9 +31,10 @@ class UserProfilePage extends StatelessWidget {
             ),
           );
         } else if (state is UserLoaded) {
-          dev.log("State is not TakingPhoto");
-          dev.log("user: ${state.user != null ? "Presente" : "NULL"}");
-          dev.log("prof img: ${state.user?.profileImagePath ?? "NULL"}");
+          final String? birthday = state.user?.birthday != null
+              ? DateFormat("dd/mm/yyyy").format(DateTime.parse(state.user!.birthday))
+              : null;
+           
           page = Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: false,
@@ -95,6 +97,10 @@ class UserProfilePage extends StatelessWidget {
                   const SizedBox(height: 20),
                   _UserInfoTile(label: "First name", value: state.user?.firstName ?? "null"),
                   _UserInfoTile(label: "Last name", value: state.user?.lastName ?? "null"),
+                  _UserInfoTile(
+                    label: "Birthday",
+                    value: birthday ?? "null"
+                  ),
                   _UserInfoTile(label: "Username", value: state.user?.username ?? "null"),
                   _UserInfoTile(label: "Password", value: state.user?.password ?? "null"),
                   const SizedBox(height: 20),
@@ -138,7 +144,6 @@ class UserProfilePage extends StatelessWidget {
             body: Center(child: Text("Error")),
           );
         }
-
         return page;
       },
     );

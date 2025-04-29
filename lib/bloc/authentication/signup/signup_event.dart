@@ -30,3 +30,9 @@ final class AddProfileImage extends SignupEvent {
 
   AddProfileImage(this.profileImage);
 }
+
+final class AddBirthday extends SignupEvent {
+  final DateTime date;
+
+  AddBirthday({required this.date});
+}
