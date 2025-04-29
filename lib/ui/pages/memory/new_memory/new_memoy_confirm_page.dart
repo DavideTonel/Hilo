@@ -40,6 +40,7 @@ class _NewMemoyConfirmPageState extends State<NewMemoyConfirmPage> {
                     latitude: state.position!.latitude,
                     longitude: state.position!.longitude,
                     timestamp: DateTime.now(),
+                    animate: true,
                   ),
                 ),
               Center(

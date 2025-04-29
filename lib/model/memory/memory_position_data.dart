@@ -11,10 +11,14 @@ class MemoryPositionData {
     };
   }
 
-  factory MemoryPositionData.fromMap(Map<String, dynamic> map) {
+  static MemoryPositionData? fromMap(Map<String, dynamic> map) {
+    final lat = map["latitude"];
+    final lon = map["longitude"];
+    if (lat == null || lon == null) return null;
+
     return MemoryPositionData(
-      latitude: map["latitude"] as double,
-      longitude: map["longitude"] as double
+      latitude: lat as double,
+      longitude: lon as double,
     );
   }
 }

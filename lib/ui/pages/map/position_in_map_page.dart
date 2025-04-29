@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
@@ -9,13 +11,19 @@ import 'package:roadsyouwalked_app/ui/helper/map_style_helper.dart';
 class PositionInMapPage extends StatefulWidget {
   final double latitude;
   final double longitude;
+  final double zoom;
+  final double pitch;
   final DateTime timestamp;
+  final bool animate;
 
   const PositionInMapPage({
     super.key,
     required this.latitude,
     required this.longitude,
     required this.timestamp,
+    this.zoom = 17.6,
+    this.pitch = 70.0,
+    this.animate = false,
   });
 
   @override
@@ -46,9 +54,9 @@ class PositionInMapPageState extends State<PositionInMapPage> {
       _mapboxMap.setCamera(
         CameraOptions(
           center: center,
-          zoom: 17.6,
+          zoom: widget.zoom,
           bearing: _bearing,
-          pitch: 70.0,
+          pitch: widget.pitch,
         ),
       );
     });
@@ -56,19 +64,16 @@ class PositionInMapPageState extends State<PositionInMapPage> {
 
   @override
   Widget build(BuildContext context) {
-    String lightPreset = context.read<SettingsBloc>().state.settings!.mapStyle.value;
+    String lightPreset =
+        context.read<SettingsBloc>().state.settings!.mapStyle.value;
     if (lightPreset == MapStyle.system.value) {
-      lightPreset = MapStyleHelper.instance.getLightPresetFromTime(widget.timestamp);
+      lightPreset = MapStyleHelper.instance.getLightPresetFromTime(
+        widget.timestamp,
+      );
     }
     return MapWidget(
       onMapCreated: (MapboxMap map) {
         _mapboxMap = map;
-
-        _mapboxMap.style.setStyleImportConfigProperty(
-          "basemap",
-          "lightPreset",
-          lightPreset,
-        );
 
         _mapboxMap.compass.updateSettings(CompassSettings(enabled: false));
         _mapboxMap.scaleBar.updateSettings(ScaleBarSettings(enabled: false));
@@ -77,9 +82,31 @@ class PositionInMapPageState extends State<PositionInMapPage> {
           CameraOptions(center: center, zoom: 17.5, bearing: 0.0, pitch: 70.0),
         );
 
-        _startRotatingCamera();
+        _mapboxMap.gestures.updateSettings(
+          GesturesSettings(
+            scrollEnabled: false,
+            doubleTouchToZoomOutEnabled: false,
+            rotateEnabled: false,
+            pitchEnabled: false,
+            doubleTapToZoomInEnabled: false,
+            quickZoomEnabled: false,
+            pinchToZoomEnabled: false,
+            pinchPanEnabled: false,
+            rotateDecelerationEnabled: false,
+          ),
+        );
+
+        if (widget.animate) {
+          _startRotatingCamera();
+        }
+
+        _mapboxMap.style.setStyleImportConfigProperty(
+          "basemap",
+          "lightPreset",
+          lightPreset,
+        );
       },
-      gestureRecognizers: null,
+      gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}.toSet(),
       styleUri: MapboxStyles.STANDARD,
     );
   }

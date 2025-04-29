@@ -1,27 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:roadsyouwalked_app/model/media/media_type.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
 import 'package:roadsyouwalked_app/ui/components/footer/date_footer_widget.dart';
 import 'package:roadsyouwalked_app/ui/components/media/image/image_widget.dart';
-import 'package:roadsyouwalked_app/ui/constants/app_spacing.dart';
+import 'package:roadsyouwalked_app/ui/components/memory/basic/memory_description_widget.dart';
+import 'package:roadsyouwalked_app/ui/components/memory/basic/memory_header_widget.dart';
+import 'package:roadsyouwalked_app/ui/components/memory/basic/memory_map_widget.dart';
 
 class MemoryWithMediaWidget extends StatefulWidget {
   final Memory memory;
+  final double aspectRatio;
 
-  const MemoryWithMediaWidget({super.key, required this.memory});
+  const MemoryWithMediaWidget({
+    super.key,
+    required this.memory,
+    this.aspectRatio = 0.8
+  });
 
   @override
-  State<StatefulWidget> createState() => _MemoryWithMediaWidgetState();
+  State<MemoryWithMediaWidget> createState() => _MemoryWithMediaWidgetState();
 }
 
 class _MemoryWithMediaWidgetState extends State<MemoryWithMediaWidget> {
-  final int mediaIndex = 0;
+  bool _showMap = false;
+  late final String? imagePath;
+  late final DateTime dateTime;
+
+  @override
+  void initState() {
+    super.initState();
+    dateTime = DateTime.parse(widget.memory.data.core.timestamp);
+    imagePath =
+        widget.memory.mediaList
+            .firstWhere(
+              (media) => media.type == MediaType.image,
+              orElse: () => throw Exception("No image media found"),
+            )
+            .reference;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final date = DateFormat(
-      'dd/MM/yyyy   HH:mm',
-    ).format(DateTime.parse(widget.memory.data.core.timestamp));
+    final screenWidth = MediaQuery.of(context).size.width;
+    final imageHeight = screenWidth / widget.aspectRatio;
+
+    final hasMap = widget.memory.data.position != null;
 
     return Material(
       elevation: 0,
@@ -35,26 +58,50 @@ class _MemoryWithMediaWidgetState extends State<MemoryWithMediaWidget> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.image_outlined,
-                  size: 24,
-                  weight: FontWeight.w500.value.toDouble(),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  widget.memory.data.core.creatorId,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 15,
-                  ),
-                ),
+                MemoryHeaderWidget(iconData: Icons.image, dateTime: dateTime),
               ],
             ),
           ),
-          InkWell(
-            onTap: null,
-            child: ImageWidget(
-              imagePath: widget.memory.mediaList[mediaIndex].reference,
+          GestureDetector(
+            onTap: () {
+              setState(() => _showMap = !_showMap);
+            },
+            child: SizedBox(
+              width: screenWidth,
+              height: imageHeight,
+              child:
+                  hasMap && _showMap 
+                      ? Container(
+                        color: Colors.transparent,
+                        child: SizedBox(
+                          width: screenWidth,
+                          height: imageHeight,
+                          child: Stack(
+                            children: [
+                              MemoryMapWidget(
+                                width: screenWidth,
+                                height: imageHeight,
+                                position: widget.memory.data.position!,
+                                dateTime: dateTime,
+                                zoom: 17.0,
+                                pitch: 0.0,
+                              ),
+                              GestureDetector(
+                                behavior: HitTestBehavior.translucent,
+                                onTap: () {
+                                  setState(() => _showMap = false);
+                                },
+                                child: Container(
+                                  width: screenWidth,
+                                  height: imageHeight,
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                      : ImageWidget(imagePath: imagePath!),
             ),
           ),
           Padding(
@@ -67,16 +114,14 @@ class _MemoryWithMediaWidgetState extends State<MemoryWithMediaWidget> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        widget.memory.data.core.description!,
-                        style: const TextStyle(fontSize: 14),
-                        softWrap: true,
+                      MemoryDescriptionWidget(
+                        description: widget.memory.data.core.description!,
                       ),
                     ],
                   ),
                 ],
                 const SizedBox(height: 2),
-                DateFooterWidget(date: date),
+                DateFooterWidget(dateTime: dateTime),
               ],
             ),
           ),

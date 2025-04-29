@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
 import 'package:roadsyouwalked_app/ui/components/footer/date_footer_widget.dart';
+import 'package:roadsyouwalked_app/ui/components/memory/basic/memory_description_widget.dart';
+import 'package:roadsyouwalked_app/ui/components/memory/basic/memory_header_widget.dart';
+import 'package:roadsyouwalked_app/ui/components/memory/basic/memory_map_widget.dart';
 import 'package:roadsyouwalked_app/ui/constants/app_spacing.dart';
 
 class MemoryBasicWidget extends StatelessWidget {
@@ -11,10 +13,8 @@ class MemoryBasicWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fullDate = DateFormat('dd/MM/yyyy   HH:mm')
-        .format(DateTime.parse(memory.data.core.timestamp));
-    final headerDate = DateFormat('dd/MM')
-        .format(DateTime.parse(memory.data.core.timestamp));
+    final size = MediaQuery.of(context).size;
+    final datetime = DateTime.parse(memory.data.core.timestamp);
 
     return Card(
       elevation: 0,
@@ -23,35 +23,29 @@ class MemoryBasicWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.text_snippet_outlined,
-                  size: 24,
-                  weight: FontWeight.w500.value.toDouble(),
-                ),
-                SizedBox(width: 8),
-                Text(
-                  headerDate,
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-                ),
-              ],
+            MemoryHeaderWidget(
+              iconData: Icons.text_snippet_outlined,
+              dateTime: datetime,
             ),
-            const SizedBox(height: 2),
-            Text(
-              memory.data.core.description!,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
+            if (memory.data.position != null)
+              MemoryMapWidget(
+                width: size.width,
+                height: 200,
+                position: memory.data.position!,
+                dateTime: datetime,
+                zoom: 17,
+                pitch: 70.0,
               ),
-              softWrap: true,
+            const SizedBox(height: 2),
+            MemoryDescriptionWidget(
+              description: memory.data.core.description!,
             ),
             const SizedBox(height: 2),
             DateFooterWidget(
-              date: fullDate,
-              color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(100),
+              dateTime: datetime,
+              color: Theme.of(
+                context,
+              ).colorScheme.onPrimaryContainer.withAlpha(100),
             ),
           ],
         ),

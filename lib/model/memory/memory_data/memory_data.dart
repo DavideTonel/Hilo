@@ -1,7 +1,6 @@
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_core_data.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_evaluation_data.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_position_data.dart';
-import 'dart:developer' as dev;
 
 class MemoryData {
   final MemoryCoreData core;
