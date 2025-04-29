@@ -31,6 +31,7 @@ class UserDao {
       );
       return result.isEmpty;
     } catch (e) {
+      dev.log(e.toString());
       return false;
     }
   }

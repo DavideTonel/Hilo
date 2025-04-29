@@ -15,11 +15,19 @@ class DatabaseManager {
 
   Future<Database> initializeDB() async {
     return openDatabase(
-      join(await getDatabasesPath(), "uni_test_8.db"),
+      join(await getDatabasesPath(), "uni_test_10.db"),
       version: 1,
       onCreate: (db, version) async {
-        await db.execute(
-          """
+        await db.execute("""
+          CREATE TABLE Settings(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            themeLight TEXT NOT NULL CHECK (themeLight IN ('dark', 'light', 'system')),
+            themeSeedColor TEXT NOT NULL,
+            mapStyle TEXT NOT NULL CHECK (mapStyle IN ('dusk', 'dawn', 'day', 'night', 'system'))
+          );
+        """);
+
+        await db.execute("""
             CREATE TABLE User(
               username TEXT PRIMARY KEY,
               password TEXT NOT NULL,
@@ -27,10 +35,8 @@ class DatabaseManager {
               lastName TEXT NOT NULL,
               referenceProfileImage TEXT
             );
-          """
-        );
-        await db.execute(
-          """
+          """);
+        await db.execute("""
             CREATE TABLE Memory (
               id TEXT NOT NULL,
               creatorId TEXT NOT NULL,
@@ -44,10 +50,8 @@ class DatabaseManager {
               FOREIGN KEY (creatorId) REFERENCES User(username) ON DELETE CASCADE,
               FOREIGN KEY (evaluationScaleId) REFERENCES Evaluation_Scale(id)
             );
-          """
-        );
-        await db.execute(
-          """
+          """);
+        await db.execute("""
             CREATE TABLE Media (
               id TEXT PRIMARY KEY,
               creatorId TEXT,
@@ -61,18 +65,14 @@ class DatabaseManager {
                 (memoryId IS NULL AND creatorId IS NULL)
               )
             );
-          """
-        );
-        await db.execute(
-          """
+          """);
+        await db.execute("""
             CREATE TABLE Evaluation_Scale (
               id TEXT PRIMARY KEY,
               name TEXT NOT NULL
             );
-          """
-        );
-        await db.execute(
-          """
+          """);
+        await db.execute("""
             CREATE TABLE Evaluation_Scale_Item (
               id TEXT NOT NULL,
               evaluationScaleId TEXT NOT NULL,
@@ -84,10 +84,8 @@ class DatabaseManager {
               FOREIGN KEY (evaluationScaleId) REFERENCES Evaluation_Scale(id) ON DELETE CASCADE,
               CHECK (minValue < maxValue)
             );
-          """
-        );
-        await db.execute(
-          """
+          """);
+        await db.execute("""
             CREATE TABLE Evaluation_Result_Item (
               memoryId TEXT NOT NULL,
               creatorId TEXT NOT NULL,
@@ -98,39 +96,29 @@ class DatabaseManager {
               FOREIGN KEY (memoryId, creatorId) REFERENCES Memory(id, creatorId) ON DELETE CASCADE,
               FOREIGN KEY (evaluationScaleItemId, evaluationScaleId) REFERENCES Evaluation_Scale_Item(id, evaluationScaleId) ON DELETE CASCADE
             );
-          """
-        );
-    
-        await db.insert(
-          "Evaluation_Scale",
-          {
-            "id": "panas_sf",
-            "name": "PANAS Short Form",
-          }
-        );
-        await db.insert(
-          "Evaluation_Scale_Item",
-          {
-            "id": "1",
-            "evaluationScaleId": "panas_sf",
-            "label": "Interested",
-            "minValue": 1,
-            "maxValue": 5,
-            "affectType": "positive",
-          }
-        );
-        await db.insert(
-          "Evaluation_Scale_Item",
-          {
-            "id": "2",
-            "evaluationScaleId": "panas_sf",
-            "label": "Upset",         // TODO: put right items with right ids
-            "minValue": 1,
-            "maxValue": 5,
-            "affectType": "negative",
-          }
-        );
-      }
+          """);
+
+        await db.insert("Evaluation_Scale", {
+          "id": "panas_sf",
+          "name": "PANAS Short Form",
+        });
+        await db.insert("Evaluation_Scale_Item", {
+          "id": "1",
+          "evaluationScaleId": "panas_sf",
+          "label": "Interested",
+          "minValue": 1,
+          "maxValue": 5,
+          "affectType": "positive",
+        });
+        await db.insert("Evaluation_Scale_Item", {
+          "id": "2",
+          "evaluationScaleId": "panas_sf",
+          "label": "Upset", // TODO: put right items with right ids
+          "minValue": 1,
+          "maxValue": 5,
+          "affectType": "negative",
+        });
+      },
     );
   }
 

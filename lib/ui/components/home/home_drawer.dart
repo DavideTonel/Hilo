@@ -52,20 +52,6 @@ class HomeDrawer extends StatelessWidget {
           const Divider(height: 1, thickness: 1),
           ListTile(
             leading: Icon(
-              Icons.looks,
-              size: 32,
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
-            ),
-            title: Text(
-              "Appearance",
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-              ),
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(
               Icons.settings,
               size: 32,
               color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -76,7 +62,9 @@ class HomeDrawer extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
               ),
             ),
-            onTap: () {},
+            onTap: () {
+              router.push("/settings");
+            },
           ),
         ],
       ),

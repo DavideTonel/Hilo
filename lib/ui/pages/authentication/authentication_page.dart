@@ -14,19 +14,15 @@ class AuthenticationPage extends StatelessWidget {
     final userBloc = context.read<UserBloc>();
     final memoriesBloc = context.read<MemoryBloc>();
     final router = GoRouter.of(context);
-    userBloc.add(
-      Login(
-        username: state.username!,
-        password: state.password!,
-      )
-    );
+    
+    userBloc.add(Login(username: state.username!, password: state.password!));
     userBloc.stream.listen((state) {
       if (state is UserLoaded) {
         memoriesBloc.add(
           LoadMemories(
             userId: userBloc.state.user!.username,
-            orderType: MemoryOrderType.timeline
-          )
+            orderType: MemoryOrderType.timeline,
+          ),
         );
         router.go("/home");
       }
@@ -53,9 +49,7 @@ class AuthenticationPage extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          body: body,
-        );
+        return Scaffold(body: body);
       },
     );
   }

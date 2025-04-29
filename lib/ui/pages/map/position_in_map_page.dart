@@ -1,14 +1,17 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:roadsyouwalked_app/bloc/settings/settings_bloc.dart';
+import 'package:roadsyouwalked_app/ui/helper/map_style.dart';
 import 'package:roadsyouwalked_app/ui/helper/map_style_helper.dart';
 
-class PositionInMapWidget extends StatefulWidget {
+class PositionInMapPage extends StatefulWidget {
   final double latitude;
   final double longitude;
   final DateTime timestamp;
 
-  const PositionInMapWidget({
+  const PositionInMapPage({
     super.key,
     required this.latitude,
     required this.longitude,
@@ -16,10 +19,10 @@ class PositionInMapWidget extends StatefulWidget {
   });
 
   @override
-  PositionInMapWidgetState createState() => PositionInMapWidgetState();
+  PositionInMapPageState createState() => PositionInMapPageState();
 }
 
-class PositionInMapWidgetState extends State<PositionInMapWidget> {
+class PositionInMapPageState extends State<PositionInMapPage> {
   late MapboxMap _mapboxMap;
   Timer? _rotationTimer;
   double _bearing = 0.0;
@@ -53,6 +56,10 @@ class PositionInMapWidgetState extends State<PositionInMapWidget> {
 
   @override
   Widget build(BuildContext context) {
+    String lightPreset = context.read<SettingsBloc>().state.settings!.mapStyle.value;
+    if (lightPreset == MapStyle.system.value) {
+      lightPreset = MapStyleHelper.instance.getLightPresetFromTime(widget.timestamp);
+    }
     return MapWidget(
       onMapCreated: (MapboxMap map) {
         _mapboxMap = map;
@@ -60,7 +67,7 @@ class PositionInMapWidgetState extends State<PositionInMapWidget> {
         _mapboxMap.style.setStyleImportConfigProperty(
           "basemap",
           "lightPreset",
-          MapStyleHelper.instance.getLightPresetFromTime(widget.timestamp),
+          lightPreset,
         );
 
         _mapboxMap.compass.updateSettings(CompassSettings(enabled: false));

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/new_memory/new_memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/position/position_bloc.dart';
 import 'package:roadsyouwalked_app/ui/constants/app_spacing.dart';
-import 'package:roadsyouwalked_app/ui/pages/map/position_in_map_widget.dart';
+import 'package:roadsyouwalked_app/ui/pages/map/position_in_map_page.dart';
 
 class NewMemoyConfirmPage extends StatefulWidget {
   const NewMemoyConfirmPage({super.key});
@@ -48,7 +48,7 @@ class _NewMemoyConfirmPageState extends State<NewMemoyConfirmPage> {
                   duration: const Duration(milliseconds: 2200),
                   curve: Curves.easeInOut,
                   child: Positioned.fill(
-                    child: PositionInMapWidget(
+                    child: PositionInMapPage(
                       latitude: state.position!.latitude,
                       longitude: state.position!.longitude,
                       timestamp: DateTime.now(),
