@@ -20,6 +20,11 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
         )
       );
     });
+    on<DiscardMedia>((event, emit) {
+      emit(
+        CameraLoaded(cameraManager: state.cameraManager)
+      );
+    });
   }
 
   Future<void> onInitializeCamera(

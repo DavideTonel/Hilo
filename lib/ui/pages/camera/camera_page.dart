@@ -11,8 +11,7 @@ import 'package:roadsyouwalked_app/ui/pages/camera/camera_media_preview_page.dar
 import 'package:roadsyouwalked_app/ui/pages/camera/camera_preview_page.dart';
 
 class CameraPage extends StatelessWidget {
-  final void Function(File? localFile, String? remoteUri, MediaType mediaType)
-  onSaveMedia;
+  final void Function(File? localFile, String? remoteUri, MediaType mediaType) onSaveMedia;
 
   const CameraPage({super.key, required this.onSaveMedia});
 
@@ -30,6 +29,9 @@ class CameraPage extends StatelessWidget {
           onSaveMedia: (localFile, remoteUri, mediaType) {
             cameraBloc.add(AcceptMedia());
             return onSaveMedia(localFile, remoteUri, mediaType);
+          },
+          onDiscardMedia: () {
+            cameraBloc.add(DiscardMedia());
           },
         );
       case CameraMediaAccepted _:

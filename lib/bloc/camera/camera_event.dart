@@ -9,4 +9,6 @@ final class DisposeCamera extends CameraEvent {}
 
 final class TakePhoto extends CameraEvent {}
 
+final class DiscardMedia extends CameraEvent {}
+
 final class AcceptMedia extends CameraEvent {}
