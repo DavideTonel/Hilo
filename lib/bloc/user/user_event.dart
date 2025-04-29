@@ -11,11 +11,3 @@ final class Login extends UserEvent {
 }
 
 final class Logout extends UserEvent {}
-
-final class UpdateProfileImage extends UserEvent {
-  final File? profileImage;
-
-  UpdateProfileImage({required this.profileImage});
-}
-
-final class TakeProfileImage extends UserEvent {}
