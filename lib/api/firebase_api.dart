@@ -89,7 +89,7 @@ class FirebaseApi {
     final fCMToken = await _firebaseMessaging.getToken();
     // Log the token needed in order to get the token the first time
     // To do that initialize in the main function and call this method
-    dev.log("Token: $fCMToken"); // TODO: store somewhere safe
+    dev.log("Token: $fCMToken");
     initPushNotifications();
     initLocalNotifications();
   }

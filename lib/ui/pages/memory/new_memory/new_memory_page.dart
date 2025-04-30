@@ -26,10 +26,8 @@ class NewMemoryPageState extends State<NewMemoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: make it better
     return MultiBlocProvider(
       providers: [
-        // TODO: understand if initialize camera here is better
         BlocProvider(
           create: (context) {
             final creatorId = context.read<UserBloc>().state.user!.username;

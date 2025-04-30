@@ -13,8 +13,6 @@ import 'package:roadsyouwalked_app/ui/pages/home/calendar_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/feed_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/statistics/statistics_page.dart';
 
-import 'dart:developer' as dev;
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 

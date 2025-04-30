@@ -5,7 +5,6 @@ import 'package:sqflite/sqflite.dart';
 
 import 'dart:developer' as dev;
 
-// TODO: maybe rethrow could be useful
 class MemoryDao {
   final DatabaseManager _dbManager = DatabaseManager.instance;
 

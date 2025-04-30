@@ -16,7 +16,6 @@ import 'package:roadsyouwalked_app/navigation/app_router.dart';
 import 'package:roadsyouwalked_app/ui/helper/theme_light.dart';
 import 'dart:developer' as dev;
 
-// TODO: how to create only ona UserRepository to all blocs?
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

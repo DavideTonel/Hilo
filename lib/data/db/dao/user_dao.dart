@@ -3,7 +3,6 @@ import 'package:roadsyouwalked_app/data/db/database_manager.dart';
 import 'package:roadsyouwalked_app/model/authentication/user.dart';
 import 'package:sqflite/sqflite.dart';
 
-// TODO: change '' to ""
 class UserDao {
   final DatabaseManager _dbManager = DatabaseManager.instance;
 
@@ -11,8 +10,8 @@ class UserDao {
     try {
       final db = await _dbManager.database;
       final List<Map<String, dynamic>> result = await db.query(
-        'User',
-        where: 'username = ? AND password = ?',
+        "User",
+        where: "username = ? AND password = ?",
         whereArgs: [username, password],
       );
       return result.isNotEmpty;
@@ -25,8 +24,8 @@ class UserDao {
     try {
       final db = await _dbManager.database;
       final List<Map<String, dynamic>> result = await db.query(
-        'User',
-        where: 'username = ?',
+        "User",
+        where: "username = ?",
         whereArgs: [username],
       );
       return result.isEmpty;
@@ -55,8 +54,8 @@ class UserDao {
     try {
       final db = await _dbManager.database;
       final List<Map<String, dynamic>> result = await db.query(
-        'User',
-        where: 'username = ? AND password = ?',
+        "User",
+        where: "username = ? AND password = ?",
         whereArgs: [username, password],
       );
       return result.map((elem) => User.fromMap(elem)).toList();

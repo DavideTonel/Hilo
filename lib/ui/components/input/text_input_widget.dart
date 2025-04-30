@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// TODO: make button for secret text field with visible and not visible text value
 class TextInputWidget extends StatelessWidget {
   final TextEditingController textController;
   final String labelText;

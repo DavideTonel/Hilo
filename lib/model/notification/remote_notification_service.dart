@@ -1,8 +1,6 @@
 import 'dart:developer' as dev;
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:roadsyouwalked_app/firebase_options.dart';
 
 class RemoteNotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;

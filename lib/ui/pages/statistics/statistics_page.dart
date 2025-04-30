@@ -127,14 +127,14 @@ class MoodCharts extends StatelessWidget {
                     LineChartBarData(
                       spots: List.generate(positiveScores.length, (i) => FlSpot(i.toDouble(), positiveScores[i])),
                       isCurved: true,
-                      color: Colors.green.withOpacity(0.5),
-                      belowBarData: BarAreaData(show: true, color: Colors.green.withOpacity(0.3)),
+                      color: Colors.green.withAlpha(127),
+                      belowBarData: BarAreaData(show: true, color: Colors.green.withAlpha(75)),
                     ),
                     LineChartBarData(
                       spots: List.generate(negativeScores.length, (i) => FlSpot(i.toDouble(), negativeScores[i])),
                       isCurved: true,
-                      color: Colors.red.withOpacity(0.5),
-                      belowBarData: BarAreaData(show: true, color: Colors.red.withOpacity(0.3)),
+                      color: Colors.red.withAlpha(127),
+                      belowBarData: BarAreaData(show: true, color: Colors.red.withAlpha(75)),
                     ),
                   ],
                 ),
@@ -170,13 +170,13 @@ class MoodCharts extends StatelessWidget {
                 RadarChartData(
                   dataSets: [
                     RadarDataSet(
-                      fillColor: Colors.green.withOpacity(0.4),
+                      fillColor: Colors.green..withAlpha(127),
                       borderColor: Colors.green,
                       entryRadius: 3,
                       dataEntries: positiveScores.take(6).map((e) => RadarEntry(value: e)).toList(),
                     ),
                     RadarDataSet(
-                      fillColor: Colors.red.withOpacity(0.4),
+                      fillColor: Colors.red..withAlpha(127),
                       borderColor: Colors.red,
                       entryRadius: 3,
                       dataEntries: negativeScores.take(6).map((e) => RadarEntry(value: e)).toList(),

@@ -24,7 +24,6 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
       for (final entry in memory.data.evaluation.evaluationResult.entries) {
         final label = entry.key;
         final value = entry.value;
-        if (value == null) continue;
 
         tempGrouped.putIfAbsent(day, () => {});
         tempGrouped[day]!.putIfAbsent(label, () => []);

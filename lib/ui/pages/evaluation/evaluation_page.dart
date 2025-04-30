@@ -11,10 +11,10 @@ class EvaluationPage extends StatefulWidget {
   const EvaluationPage({super.key, required this.onEvaluationCompleted});
 
   @override
-  _EvaluationPageState createState() => _EvaluationPageState();
+  EvaluationPageState createState() => EvaluationPageState();
 }
 
-class _EvaluationPageState extends State<EvaluationPage>
+class EvaluationPageState extends State<EvaluationPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _progressAnimation;

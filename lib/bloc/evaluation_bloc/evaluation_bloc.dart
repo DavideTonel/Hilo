@@ -22,8 +22,6 @@ class EvaluationBloc extends Bloc<EvaluationEvent, EvaluationState> {
     GetDefaultEvaluationScale event,
     Emitter<EvaluationState> emit
   ) async {
-    // TODO: get last scaleId used by user
-    // TODO: add try catch if an error occours
     final EvaluationScale? scale = await _evaluationRepository.getEvaluationScaleById("panas_sf");
     final Map<EvaluationScaleItem, int?> scores = {
       for (var item in scale!.items) item : null

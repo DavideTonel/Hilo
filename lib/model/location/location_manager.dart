@@ -3,7 +3,7 @@ import 'package:location/location.dart';
 class LocationManager {
   final Location _location = Location();
 
-  Future<bool> init() async { // TODO: make it better
+  Future<bool> init() async {
     PermissionStatus status = await _location.hasPermission();
     if (status == PermissionStatus.granted || status == PermissionStatus.grantedLimited) {
       return true;
@@ -16,8 +16,6 @@ class LocationManager {
       }
     }
   }
-
-  
 
   Future<bool> isGranted() async {
     final status = await _location.hasPermission();

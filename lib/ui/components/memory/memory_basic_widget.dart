@@ -4,7 +4,6 @@ import 'package:roadsyouwalked_app/ui/components/footer/date_footer_widget.dart'
 import 'package:roadsyouwalked_app/ui/components/memory/basic/memory_description_widget.dart';
 import 'package:roadsyouwalked_app/ui/components/memory/basic/memory_header_widget.dart';
 import 'package:roadsyouwalked_app/ui/components/memory/basic/memory_map_widget.dart';
-import 'package:roadsyouwalked_app/ui/constants/app_spacing.dart';
 
 class MemoryBasicWidget extends StatelessWidget {
   final Memory memory;
