@@ -83,64 +83,67 @@ class MyAppWithRouter extends StatelessWidget {
         );
 
         final ThemeData lightTheme = ThemeData(
-  colorScheme: colorSchemeLight,
-  useMaterial3: true,
-  scaffoldBackgroundColor: const Color(0xFFF5F5F5), // fondo chiaro neutro
-  appBarTheme: AppBarTheme(
-    systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarBrightness: Brightness.dark,
-      statusBarColor: colorSchemeLight.primary,
-      systemNavigationBarColor: null
-    ),
-    backgroundColor: Colors.transparent,
-    elevation: 0,
-    centerTitle: true,
-    foregroundColor: colorSchemeLight.onSurfaceVariant,
-    iconTheme: IconThemeData(color: colorSchemeLight.onSurfaceVariant),
-    titleTextStyle: TextStyle(
-      fontSize: 20,
-      fontWeight: FontWeight.w600,
-      color: colorSchemeLight.onSurfaceVariant,
-    ),
-  ),
-  navigationBarTheme: NavigationBarThemeData(
-    backgroundColor: const Color(0xFFEDEDED),
-    indicatorColor: Colors.transparent,
-    labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-    labelTextStyle: WidgetStateProperty.all(
-      TextStyle(
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-        color: colorSchemeLight.onSurface,
-      ),
-    ),
-    iconTheme: WidgetStateProperty.resolveWith<IconThemeData>((states) {
-      final isSelected = states.contains(WidgetState.selected);
-      return IconThemeData(
-        size: isSelected ? 28 : 26,
-        color: isSelected
-            ? colorSchemeLight.primary
-            : colorSchemeLight.onSurfaceVariant,
-      );
-    }),
-  ),
-  textTheme: Typography.blackCupertino.apply(
-    bodyColor: colorSchemeLight.onSurfaceVariant,
-    displayColor: colorSchemeLight.onSurfaceVariant,
-  ),
-  drawerTheme: DrawerThemeData(
-    backgroundColor: const Color(0xFFF0F0F0),
-    elevation: 0,
-    surfaceTintColor: Colors.transparent,
-    scrimColor: Colors.black38,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topRight: Radius.circular(16),
-        bottomRight: Radius.circular(16),
-      ),
-    ),
-  ),
-);
+          colorScheme: colorSchemeLight,
+          useMaterial3: true,
+          scaffoldBackgroundColor: const Color(
+            0xFFF5F5F5,
+          ), // fondo chiaro neutro
+          appBarTheme: AppBarTheme(
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarBrightness: Brightness.dark,
+              statusBarColor: colorSchemeLight.primary,
+              systemNavigationBarColor: null,
+            ),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            centerTitle: true,
+            foregroundColor: colorSchemeLight.onSurfaceVariant,
+            iconTheme: IconThemeData(color: colorSchemeLight.onSurfaceVariant),
+            titleTextStyle: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: colorSchemeLight.onSurfaceVariant,
+            ),
+          ),
+          navigationBarTheme: NavigationBarThemeData(
+            backgroundColor: const Color(0xFFEDEDED),
+            indicatorColor: Colors.transparent,
+            labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+            labelTextStyle: WidgetStateProperty.all(
+              TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: colorSchemeLight.onSurface,
+              ),
+            ),
+            iconTheme: WidgetStateProperty.resolveWith<IconThemeData>((states) {
+              final isSelected = states.contains(WidgetState.selected);
+              return IconThemeData(
+                size: isSelected ? 28 : 26,
+                color:
+                    isSelected
+                        ? colorSchemeLight.primary
+                        : colorSchemeLight.onSurfaceVariant,
+              );
+            }),
+          ),
+          textTheme: Typography.blackCupertino.apply(
+            bodyColor: colorSchemeLight.onSurfaceVariant,
+            displayColor: colorSchemeLight.onSurfaceVariant,
+          ),
+          drawerTheme: DrawerThemeData(
+            backgroundColor: const Color(0xFFF0F0F0),
+            elevation: 0,
+            surfaceTintColor: Colors.transparent,
+            scrimColor: Colors.black38,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(16),
+                bottomRight: Radius.circular(16),
+              ),
+            ),
+          ),
+        );
 
         final ThemeData darkTheme = ThemeData(
           colorScheme: colorSchemeDark,
@@ -192,9 +195,7 @@ class MyAppWithRouter extends StatelessWidget {
             displayColor: colorSchemeDark.onSurfaceVariant,
           ),
           drawerTheme: DrawerThemeData(
-            backgroundColor: const Color(
-              0xFF1A1A1A,
-            ),
+            backgroundColor: const Color(0xFF1A1A1A),
             elevation: 0,
             surfaceTintColor: Colors.transparent,
             scrimColor: Colors.black54, // ombra dietro il drawer
