@@ -87,7 +87,7 @@ class MyAppWithRouter extends StatelessWidget {
           useMaterial3: true,
           scaffoldBackgroundColor: const Color(
             0xFFF5F5F5,
-          ), // fondo chiaro neutro
+          ),
           appBarTheme: AppBarTheme(
             systemOverlayStyle: SystemUiOverlayStyle(
               statusBarBrightness: Brightness.dark,
@@ -153,7 +153,7 @@ class MyAppWithRouter extends StatelessWidget {
             22,
             22,
             22,
-          ), // nero Spotify
+          ),
           appBarTheme: AppBarTheme(
             backgroundColor: Colors.transparent,
             elevation: 0,
@@ -169,7 +169,7 @@ class MyAppWithRouter extends StatelessWidget {
           navigationBarTheme: NavigationBarThemeData(
             backgroundColor: const Color(
               0xFF1A1A1A,
-            ).withAlpha(250), // più chiaro del background
+            ).withAlpha(250),
             indicatorColor: Colors.transparent,
             labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
             labelTextStyle: WidgetStateProperty.all(
@@ -198,7 +198,7 @@ class MyAppWithRouter extends StatelessWidget {
             backgroundColor: const Color(0xFF1A1A1A),
             elevation: 0,
             surfaceTintColor: Colors.transparent,
-            scrimColor: Colors.black54, // ombra dietro il drawer
+            scrimColor: Colors.black54,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(16),
