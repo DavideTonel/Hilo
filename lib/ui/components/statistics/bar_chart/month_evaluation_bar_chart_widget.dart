@@ -94,7 +94,12 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
     final List<BarChartGroupData> barGroups = _getBarGroups(averagedData);
     final double chartWidth = daysInMonth.length * 23.0;
 
+    final isDark = Theme.of(context).colorScheme.brightness == Brightness.dark;
+    final Color color = isDark ? const Color(0xFF1A1A1A) : Theme.of(context).colorScheme.primary.withAlpha(20);
+
     return Card(
+      elevation: isDark ? 4.0 : 0.0,
+      color: color,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -103,7 +108,6 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
               "Mood Bars",
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
               ),
             ),
             const SizedBox(height: AppSpacingConstants.md),
@@ -121,10 +125,6 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
                           "High",
                           style: TextStyle(
                             fontSize: 12,
-                            color:
-                                Theme.of(
-                                  context,
-                                ).colorScheme.onPrimaryContainer,
                           ),
                         ),
                         Spacer(),
@@ -134,10 +134,6 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
                             "Low",
                             style: TextStyle(
                               fontSize: 12,
-                              color:
-                                  Theme.of(
-                                    context,
-                                  ).colorScheme.onPrimaryContainer,
                             ),
                           ),
                         ),
@@ -174,10 +170,6 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
                                       value.toInt().toString(),
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color:
-                                            Theme.of(
-                                              context,
-                                            ).colorScheme.onPrimaryContainer,
                                       ),
                                     );
                                   },

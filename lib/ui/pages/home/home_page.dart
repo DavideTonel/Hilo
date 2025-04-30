@@ -90,7 +90,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    //final userBloc = context.read<UserBloc>();
     final List<Widget> pages = [
       const FeedPage(key: PageStorageKey('feed')),
       const CalendarPage(key: PageStorageKey('calendar')),

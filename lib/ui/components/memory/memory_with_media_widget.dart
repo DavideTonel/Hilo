@@ -14,7 +14,7 @@ class MemoryWithMediaWidget extends StatefulWidget {
   const MemoryWithMediaWidget({
     super.key,
     required this.memory,
-    this.aspectRatio = 0.8
+    this.aspectRatio = 0.8,
   });
 
   @override
@@ -49,11 +49,14 @@ class _MemoryWithMediaWidgetState extends State<MemoryWithMediaWidget> {
     return Material(
       elevation: 0,
       type: MaterialType.card,
-      color: Theme.of(context).cardColor,
+      color: Colors.transparent,
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 5.0,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,7 +73,7 @@ class _MemoryWithMediaWidgetState extends State<MemoryWithMediaWidget> {
               width: screenWidth,
               height: imageHeight,
               child:
-                  hasMap && _showMap 
+                  hasMap && _showMap
                       ? Container(
                         color: Colors.transparent,
                         child: SizedBox(
@@ -83,7 +86,7 @@ class _MemoryWithMediaWidgetState extends State<MemoryWithMediaWidget> {
                                 height: imageHeight,
                                 position: widget.memory.data.position!,
                                 dateTime: dateTime,
-                                zoom: 17.0,
+                                zoom: 15.0,
                                 pitch: 0.0,
                               ),
                               GestureDetector(
@@ -105,11 +108,15 @@ class _MemoryWithMediaWidgetState extends State<MemoryWithMediaWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            padding: EdgeInsets.only(
+              left: 12.0,
+              right: 12.0,
+              top: 4.0,
+              bottom: 0.0,
+            ),
             child: Column(
               children: [
                 if (widget.memory.data.core.description != null) ...[
-                  const SizedBox(height: 2),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -120,8 +127,13 @@ class _MemoryWithMediaWidgetState extends State<MemoryWithMediaWidget> {
                     ],
                   ),
                 ],
-                const SizedBox(height: 2),
-                DateFooterWidget(dateTime: dateTime),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    DateFooterWidget(dateTime: dateTime),
+                  ],
+                ),
               ],
             ),
           ),

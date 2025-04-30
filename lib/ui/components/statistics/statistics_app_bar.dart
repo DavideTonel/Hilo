@@ -50,10 +50,6 @@ class StatisticsAppBar extends StatelessWidget implements PreferredSizeWidget {
                           icon: Icon(
                             Icons.account_circle_outlined,
                             size: 33,
-                            color:
-                                Theme.of(
-                                  context,
-                                ).colorScheme.onPrimaryContainer,
                           ),
                           onPressed: () {
                             Scaffold.of(context).openDrawer();
@@ -65,7 +61,6 @@ class StatisticsAppBar extends StatelessWidget implements PreferredSizeWidget {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 21,
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
             ),
           ),
           centerTitle: false,

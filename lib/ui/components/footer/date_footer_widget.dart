@@ -12,7 +12,13 @@ class DateFooterWidget extends StatelessWidget {
     final date = DateFormat("dd/MM/yyyy   HH:mm",).format(dateTime);
     return Row(
       children: [
-        Text(date, style: TextStyle(fontSize: 10, color: color ?? Colors.black54)),
+        Text(
+          date,
+          style: TextStyle(
+            fontSize: 12,
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(175)
+          )
+        ),
       ],
     );
   }

@@ -93,7 +93,7 @@ class _EvaluationPageState extends State<EvaluationPage>
                 builder: (context, child) {
                   return LinearProgressIndicator(
                     value: _progressAnimation.value,
-                    backgroundColor: Colors.grey.shade300,
+                    backgroundColor: Colors.transparent,
                     valueColor: AlwaysStoppedAnimation<Color>(
                       Theme.of(context).colorScheme.primary,
                     ),

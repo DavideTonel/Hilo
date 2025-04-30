@@ -66,7 +66,12 @@ class LastNDayEvaluationBarChartWidget extends StatelessWidget {
     final midnights = _getLastNMidnights(fromDate: fromDate, lastNDays: lastNDays);
     final grouped = _getBarValuesGrouped(memories, midnights);
 
+    final isDark = Theme.of(context).colorScheme.brightness == Brightness.dark;
+    final Color color = isDark ? const Color(0xFF1A1A1A) : Theme.of(context).colorScheme.primary.withAlpha(20);
+
     return Card(
+      elevation: isDark ? 4.0 : 0.0,
+      color: color,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -75,7 +80,6 @@ class LastNDayEvaluationBarChartWidget extends StatelessWidget {
               "Mood Bars",
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
               ),
             ),
             const SizedBox(height: AppSpacingConstants.md),
@@ -120,7 +124,6 @@ class LastNDayEvaluationBarChartWidget extends StatelessWidget {
                             label,
                             style: TextStyle(
                               fontSize: 12,
-                              color: Theme.of(context).colorScheme.onPrimaryContainer
                             ),
                         );
                         },
@@ -137,7 +140,6 @@ class LastNDayEvaluationBarChartWidget extends StatelessWidget {
                               "Low",
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Theme.of(context).colorScheme.onPrimaryContainer
                               ),
                             );
                           } else if (value == 25) {
@@ -145,7 +147,6 @@ class LastNDayEvaluationBarChartWidget extends StatelessWidget {
                               "High",
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Theme.of(context).colorScheme.onPrimaryContainer
                               ),
                             );
                           } else {

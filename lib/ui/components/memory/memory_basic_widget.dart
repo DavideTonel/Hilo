@@ -16,39 +16,55 @@ class MemoryBasicWidget extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final datetime = DateTime.parse(memory.data.core.timestamp);
 
-    return Card(
+    return Material(
+      color: Colors.transparent,
       elevation: 0,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacingConstants.xs),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            MemoryHeaderWidget(
+      type: MaterialType.card,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 5.0
+            ),
+            child: MemoryHeaderWidget(
               iconData: Icons.text_snippet_outlined,
               dateTime: datetime,
             ),
-            if (memory.data.position != null)
-              MemoryMapWidget(
-                width: size.width,
-                height: 200,
-                position: memory.data.position!,
-                dateTime: datetime,
-                zoom: 17,
-                pitch: 70.0,
-              ),
-            const SizedBox(height: 2),
-            MemoryDescriptionWidget(
+          ),
+          if (memory.data.position != null)
+            MemoryMapWidget(
+              width: size.width,
+              height: 200,
+              position: memory.data.position!,
+              dateTime: datetime,
+              zoom: 17,
+              pitch: 0.0,
+            ),
+          Padding(
+            padding: EdgeInsets.only(
+              left: 12.0,
+              right: 12.0,
+              top: memory.data.position != null ? 4.0 : 0.0,
+              bottom: 0.0
+            ),
+            child: MemoryDescriptionWidget(
               description: memory.data.core.description!,
             ),
-            const SizedBox(height: 2),
-            DateFooterWidget(
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+            ),
+            child: DateFooterWidget(
               dateTime: datetime,
               color: Theme.of(
                 context,
               ).colorScheme.onPrimaryContainer.withAlpha(100),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

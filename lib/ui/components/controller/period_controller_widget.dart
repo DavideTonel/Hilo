@@ -14,13 +14,15 @@ class PeriodControllerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).colorScheme.brightness == Brightness.dark;
+    final Color color = isDark ? const Color(0xFF1A1A1A) : Theme.of(context).colorScheme.primary.withAlpha(20);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Card(
-          elevation: 2.0,
-          color: Theme.of(context).colorScheme.surfaceContainer,
+          elevation: isDark ? 2.0 : 0.0,
+          color: color,
           child: Row(
             children: [
               IconButton(
@@ -33,7 +35,6 @@ class PeriodControllerWidget extends StatelessWidget {
                   header,
                   style: TextStyle(
                     fontSize: 18,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
                   )
                 ),
               ),

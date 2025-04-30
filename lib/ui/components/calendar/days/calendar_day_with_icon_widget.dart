@@ -37,10 +37,10 @@ class CalendarDayWithEmojiWidget extends StatelessWidget {
               width: width,
               color:
                   day.gapType == CalendarDayGapType.currentMonth
-                      ? Theme.of(context).colorScheme.primaryContainer
+                      ? Theme.of(context).colorScheme.primary.withAlpha(120)
                       : Theme.of(
                         context,
-                      ).colorScheme.primaryContainer.withAlpha(85),
+                      ).colorScheme.primary.withAlpha(85),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,10 +55,10 @@ class CalendarDayWithEmojiWidget extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color:
                       day.gapType == CalendarDayGapType.currentMonth
-                          ? Theme.of(context).colorScheme.onPrimaryContainer
+                          ? Theme.of(context).colorScheme.onSurface
                           : Theme.of(
                             context,
-                          ).colorScheme.onPrimaryContainer.withAlpha(40),
+                          ).colorScheme.onSurface.withAlpha(40),
                 ),
               ),
             ),

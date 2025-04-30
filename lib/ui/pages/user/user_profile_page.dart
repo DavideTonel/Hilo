@@ -84,6 +84,8 @@ class UserProfileInfoPage extends StatelessWidget {
       );
     } else {
       return CircleAvatar(
+        backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(55),
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
         radius: 85,
         child: Icon(
           Icons.account_circle_outlined,
@@ -119,7 +121,7 @@ class UserProfileInfoPage extends StatelessWidget {
           page = Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: false,
-              title: Text("Hello ${state.user.firstName}"),
+              title: Text("Hello ${state.user.firstName}!"),
               centerTitle: false,
             ),
             body: SingleChildScrollView(
@@ -142,7 +144,6 @@ class UserProfileInfoPage extends StatelessWidget {
                         right: 8,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: theme.colorScheme.primary,
                             shape: BoxShape.circle,
                           ),
                           padding: const EdgeInsets.all(6),

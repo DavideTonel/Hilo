@@ -83,7 +83,12 @@ class YearEvaluationBarChartWidget extends StatelessWidget {
     final averagesByMonth = _groupAveragesByMonth(memories);
     final barGroups = _buildBars(averagesByMonth);
 
+    final isDark = Theme.of(context).colorScheme.brightness == Brightness.dark;
+    final Color color = isDark ? const Color(0xFF1A1A1A) : Theme.of(context).colorScheme.primary.withAlpha(20);
+
     return Card(
+      elevation: isDark ? 4.0 : 0.0,
+      color: color,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -92,7 +97,6 @@ class YearEvaluationBarChartWidget extends StatelessWidget {
               "Mood Bars",
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
               ),
             ),
             const SizedBox(height: AppSpacingConstants.md),
@@ -113,10 +117,6 @@ class YearEvaluationBarChartWidget extends StatelessWidget {
                               value.floor().toString(),
                               style: TextStyle(
                                 fontSize: 12,
-                                color:
-                                    Theme.of(
-                                      context,
-                                    ).colorScheme.onPrimaryContainer,
                               ),
                             );
                           }
@@ -136,10 +136,6 @@ class YearEvaluationBarChartWidget extends StatelessWidget {
                               "Low",
                               style: TextStyle(
                                 fontSize: 12,
-                                color:
-                                    Theme.of(
-                                      context,
-                                    ).colorScheme.onPrimaryContainer,
                               ),
                             );
                           } else if (value == 25) {
@@ -147,10 +143,6 @@ class YearEvaluationBarChartWidget extends StatelessWidget {
                               "High",
                               style: TextStyle(
                                 fontSize: 12,
-                                color:
-                                    Theme.of(
-                                      context,
-                                    ).colorScheme.onPrimaryContainer,
                               ),
                             );
                           } else {

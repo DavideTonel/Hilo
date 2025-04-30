@@ -20,7 +20,13 @@ class MemoryHeaderWidget extends StatelessWidget {
       children: [
         Icon(iconData, size: 24, weight: FontWeight.w500.value.toDouble()),
         SizedBox(width: 8),
-        Text(date, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20)),
+        Text(
+          date,
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 16
+          )
+        ),
       ],
     );
   }

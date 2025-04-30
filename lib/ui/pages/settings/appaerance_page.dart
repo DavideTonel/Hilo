@@ -82,6 +82,7 @@ class AppaerancePage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
+            centerTitle: false,
             leading: Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: Center(child: Icon(Icons.looks, size: 40,)),
@@ -90,7 +91,7 @@ class AppaerancePage extends StatelessWidget {
           ),
           body: Column(
             children: [
-              const SizedBox(height: AppSpacingConstants.lg),
+              const SizedBox(height: AppSpacingConstants.xl),
               Expanded(
                 child: ListView.builder(
                   itemCount: items.length,

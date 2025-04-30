@@ -12,13 +12,9 @@ class SettingsPage extends StatelessWidget {
         leading: Icon(
           Icons.looks,
           size: 32,
-          color: Theme.of(context).colorScheme.onPrimaryContainer,
         ),
         title: Text(
           "Appearance",
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onPrimaryContainer,
-          ),
         ),
         onTap: () {
           router.push("/settings/appaerance");

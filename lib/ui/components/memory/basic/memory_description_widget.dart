@@ -9,7 +9,7 @@ class MemoryDescriptionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       description,
-      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
       softWrap: true,
     );
   }

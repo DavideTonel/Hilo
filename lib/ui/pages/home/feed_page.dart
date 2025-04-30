@@ -10,14 +10,12 @@ class FeedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MemoryBloc, MemoryState>(
       builder: (context, state) {
-        return ListView.builder(
+        return ListView.separated(
           itemCount: state.memories.length,
-          itemBuilder: (context, i) => Padding(
-            padding: const EdgeInsets.only(bottom: 12.0),
-            child: MemoryWidget(
-              memory: state.memories[i],
-            ),
+          itemBuilder: (context, i) => MemoryWidget(
+            memory: state.memories[i],
           ),
+          separatorBuilder: (context, index) => const SizedBox(height: 20.0),
         );
       },
     );

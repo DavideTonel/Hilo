@@ -29,7 +29,8 @@ class MemoryMapWidget extends StatelessWidget {
         latitude: position.latitude,
         longitude: position.longitude,
         timestamp: dateTime,
-        zoom: 17,
+        zoom: zoom,
+        pitch: pitch,
       ),
     );
   }

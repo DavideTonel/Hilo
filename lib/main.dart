@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:roadsyouwalked_app/api/firebase_api.dart';
@@ -14,8 +15,6 @@ import 'package:roadsyouwalked_app/firebase_options.dart';
 import 'package:roadsyouwalked_app/navigation/app_router.dart';
 import 'package:roadsyouwalked_app/ui/helper/theme_light.dart';
 import 'dart:developer' as dev;
-
-import 'package:roadsyouwalked_app/ui/theme/app_theme.dart';
 
 // TODO: how to create only ona UserRepository to all blocs?
 void main() async {
@@ -44,7 +43,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => MemoryBloc(MemoryRepository())),
         BlocProvider(create: (context) => UserBloc(UserRepository())),
         BlocProvider(create: (context) => SettingsBloc()..add(GetSettings())),
-        BlocProvider(create: (context) => MemoriesDetailBloc())
+        BlocProvider(create: (context) => MemoriesDetailBloc()),
       ],
       child: MyAppWithRouter(),
     );
@@ -67,27 +66,145 @@ class MyAppWithRouter extends StatelessWidget {
         }
 
         return prevSettings.theme != currSettings.theme ||
-          prevSettings.themeSeedColor != currSettings.themeSeedColor;
+            prevSettings.themeSeedColor != currSettings.themeSeedColor;
       },
       builder: (context, state) {
         final settings = state.settings;
         final ThemeLight themeLight = settings?.theme ?? ThemeLight.system;
         final Color seedColor = settings?.themeSeedColor ?? Colors.blue;
 
-        final ThemeData lightTheme = ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: seedColor,
-            brightness: Brightness.light,
-          ),
-          useMaterial3: true,
+        final colorSchemeLight = ColorScheme.fromSeed(
+          seedColor: seedColor,
+          brightness: Brightness.light,
+        );
+        final colorSchemeDark = ColorScheme.fromSeed(
+          seedColor: seedColor,
+          brightness: Brightness.dark,
         );
 
+        final ThemeData lightTheme = ThemeData(
+  colorScheme: colorSchemeLight,
+  useMaterial3: true,
+  scaffoldBackgroundColor: const Color(0xFFF5F5F5), // fondo chiaro neutro
+  appBarTheme: AppBarTheme(
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.dark,
+      statusBarColor: colorSchemeLight.primary,
+      systemNavigationBarColor: null
+    ),
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    centerTitle: true,
+    foregroundColor: colorSchemeLight.onSurfaceVariant,
+    iconTheme: IconThemeData(color: colorSchemeLight.onSurfaceVariant),
+    titleTextStyle: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.w600,
+      color: colorSchemeLight.onSurfaceVariant,
+    ),
+  ),
+  navigationBarTheme: NavigationBarThemeData(
+    backgroundColor: const Color(0xFFEDEDED),
+    indicatorColor: Colors.transparent,
+    labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+    labelTextStyle: WidgetStateProperty.all(
+      TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: colorSchemeLight.onSurface,
+      ),
+    ),
+    iconTheme: WidgetStateProperty.resolveWith<IconThemeData>((states) {
+      final isSelected = states.contains(WidgetState.selected);
+      return IconThemeData(
+        size: isSelected ? 28 : 26,
+        color: isSelected
+            ? colorSchemeLight.primary
+            : colorSchemeLight.onSurfaceVariant,
+      );
+    }),
+  ),
+  textTheme: Typography.blackCupertino.apply(
+    bodyColor: colorSchemeLight.onSurfaceVariant,
+    displayColor: colorSchemeLight.onSurfaceVariant,
+  ),
+  drawerTheme: DrawerThemeData(
+    backgroundColor: const Color(0xFFF0F0F0),
+    elevation: 0,
+    surfaceTintColor: Colors.transparent,
+    scrimColor: Colors.black38,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topRight: Radius.circular(16),
+        bottomRight: Radius.circular(16),
+      ),
+    ),
+  ),
+);
+
         final ThemeData darkTheme = ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: seedColor,
-            brightness: Brightness.dark,
-          ),
+          colorScheme: colorSchemeDark,
           useMaterial3: true,
+          scaffoldBackgroundColor: const Color.fromARGB(
+            255,
+            22,
+            22,
+            22,
+          ), // nero Spotify
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            centerTitle: true,
+            foregroundColor: colorSchemeDark.onSurfaceVariant,
+            iconTheme: IconThemeData(color: colorSchemeDark.onSurfaceVariant),
+            titleTextStyle: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: colorSchemeDark.onSurfaceVariant,
+            ),
+          ),
+          navigationBarTheme: NavigationBarThemeData(
+            backgroundColor: const Color(
+              0xFF1A1A1A,
+            ).withAlpha(250), // più chiaro del background
+            indicatorColor: Colors.transparent,
+            labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+            labelTextStyle: WidgetStateProperty.all(
+              TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: colorSchemeDark.onSurface,
+              ),
+            ),
+            iconTheme: WidgetStateProperty.resolveWith<IconThemeData>((states) {
+              final isSelected = states.contains(WidgetState.selected);
+              return IconThemeData(
+                size: isSelected ? 28 : 26,
+                color:
+                    isSelected
+                        ? colorSchemeDark.primary
+                        : colorSchemeDark.onSurfaceVariant,
+              );
+            }),
+          ),
+          textTheme: Typography.whiteCupertino.apply(
+            bodyColor: colorSchemeDark.onSurfaceVariant,
+            displayColor: colorSchemeDark.onSurfaceVariant,
+          ),
+          drawerTheme: DrawerThemeData(
+            backgroundColor: const Color(
+              0xFF1A1A1A,
+            ),
+            elevation: 0,
+            surfaceTintColor: Colors.transparent,
+            scrimColor: Colors.black54, // ombra dietro il drawer
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(16),
+                bottomRight: Radius.circular(16),
+              ),
+            ),
+          ),
         );
 
         final ThemeMode themeMode;

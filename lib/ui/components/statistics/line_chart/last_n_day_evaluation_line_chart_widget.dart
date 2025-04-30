@@ -67,7 +67,12 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
       memories,
     );
 
+    final isDark = Theme.of(context).colorScheme.brightness == Brightness.dark;
+    final Color color = isDark ? const Color(0xFF1A1A1A) : Theme.of(context).colorScheme.primary.withAlpha(20);
+
     return Card(
+      elevation: isDark ? 4.0 : 0.0,
+      color: color,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -76,7 +81,6 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
               "Mood Flow",
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
               ),
             ),
             const SizedBox(height: AppSpacingConstants.md),
@@ -151,7 +155,6 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
                               label,
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Theme.of(context).colorScheme.onPrimaryContainer
                               ),
                             );
                           },
@@ -168,7 +171,6 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
                                 "Low",
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: Theme.of(context).colorScheme.onPrimaryContainer
                                 ),
                               );
                             } else if (value == 25) {
@@ -176,7 +178,6 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
                                 "High",
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: Theme.of(context).colorScheme.onPrimaryContainer
                                 ),
                               );
                             } else {

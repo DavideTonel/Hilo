@@ -23,45 +23,25 @@ class HomeDrawer extends StatelessWidget {
                       path: user!.profileImagePath!,
                       width: 58,
                     )
-                    : Icon(
-                      Icons.account_circle_outlined,
-                      size: 45,
-                      color: Theme.of(context).colorScheme.onPrimaryContainer,
-                    ),
+                    : Icon(Icons.account_circle_outlined, size: 45),
             title: Text(
               user?.username ?? "null",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             subtitle: Text(
               "Go to your profile",
-              style: TextStyle(
-                fontSize: 11,
-                color: Theme.of(
-                  context,
-                ).colorScheme.onPrimaryContainer.withAlpha(150),
-              ),
+              style: TextStyle(fontSize: 11),
             ),
             onTap: () {
               router.push("/home/profile");
             },
           ),
+          const SizedBox(height: 5),
           const Divider(height: 1, thickness: 1),
+          const SizedBox(height: 10),
           ListTile(
-            leading: Icon(
-              Icons.settings,
-              size: 32,
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
-            ),
-            title: Text(
-              "Settings",
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-              ),
-            ),
+            leading: Icon(Icons.settings, size: 32),
+            title: Text("Settings"),
             onTap: () {
               router.push("/settings");
             },
