@@ -66,6 +66,12 @@ class PositionBloc extends Bloc<PositionEvent, PositionState> {
         )
       );
     } else {
+      emit(
+        PositionLoading(
+          permissionGranted: state.permissionGranted,
+          serviceEnabled: state.permissionGranted,
+        )
+      );
       final position = await _positionService.getCurrentPosition();
       emit(
         PositionLoaded(

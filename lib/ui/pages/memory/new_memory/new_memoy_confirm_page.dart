@@ -4,16 +4,10 @@ import 'package:roadsyouwalked_app/bloc/memory/new_memory/new_memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/position/position_bloc.dart';
 import 'package:roadsyouwalked_app/ui/constants/app_spacing.dart';
 import 'package:roadsyouwalked_app/ui/pages/map/position_in_map_page.dart';
-import 'dart:developer' as dev;
 
-class NewMemoyConfirmPage extends StatefulWidget {
+class NewMemoyConfirmPage extends StatelessWidget {
   const NewMemoyConfirmPage({super.key});
 
-  @override
-  State<NewMemoyConfirmPage> createState() => _NewMemoyConfirmPageState();
-}
-
-class _NewMemoyConfirmPageState extends State<NewMemoyConfirmPage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PositionBloc, PositionState>(
@@ -29,7 +23,8 @@ class _NewMemoyConfirmPageState extends State<NewMemoyConfirmPage> {
         }
       },
       builder: (context, state) {
-        bool isPositionActive = state is PositionLoaded;
+        final isPositionActive = state is PositionLoaded;
+        final isLoading = state is PositionLoading;
 
         return Scaffold(
           body: Stack(
@@ -52,25 +47,27 @@ class _NewMemoyConfirmPageState extends State<NewMemoyConfirmPage> {
                         shadowColor: Colors.black,
                         elevation: 2,
                       ),
-                      onPressed: () {
-                        if (!isPositionActive) {
-                          context.read<PositionBloc>().add(InitPosition());
-                        } else {
-                          if (state.position != null) {
-                            dev.log("UI Clear position");
-                            context.read<PositionBloc>().add(ClearPosition());
-                          } else {
-                            dev.log("UI Get position");
-                            context.read<PositionBloc>().add(GetPosition());
-                          }
-                        }
-                      },
+                      onPressed: isLoading
+                          ? null
+                          : () {
+                              if (!isPositionActive) {
+                                context.read<PositionBloc>().add(InitPosition());
+                              } else {
+                                if (state.position != null) {
+                                  context.read<PositionBloc>().add(ClearPosition());
+                                } else {
+                                  context.read<PositionBloc>().add(GetPosition());
+                                }
+                              }
+                            },
                       child: Text(
-                        isPositionActive
-                            ? (state.position != null
-                                ? "Remove position"
-                                : "Add position")
-                            : "Request position",
+                        isLoading
+                            ? "Getting position..."
+                            : isPositionActive
+                                ? (state.position != null
+                                    ? "Remove position"
+                                    : "Add position")
+                                : "Request position",
                       ),
                     ),
                     const SizedBox(height: AppSpacingConstants.xl),
@@ -87,6 +84,25 @@ class _NewMemoyConfirmPageState extends State<NewMemoyConfirmPage> {
                   ],
                 ),
               ),
+              if (isLoading)
+                Positioned.fill(
+                  child: Container(
+                    color: Colors.black.withAlpha(150),
+                    child: const Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircularProgressIndicator(color: Colors.white),
+                          SizedBox(height: 12),
+                          Text(
+                            "Getting your position...",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
             ],
           ),
         );
