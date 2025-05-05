@@ -38,8 +38,8 @@ class MemoryBasicWidget extends StatelessWidget {
               height: 200,
               position: memory.data.position!,
               dateTime: datetime,
-              zoom: 17,
-              pitch: 0.0,
+              zoom: 17.2,
+              pitch: 50.0,
             ),
           Padding(
             padding: EdgeInsets.only(

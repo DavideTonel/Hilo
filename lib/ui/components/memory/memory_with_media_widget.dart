@@ -86,8 +86,8 @@ class _MemoryWithMediaWidgetState extends State<MemoryWithMediaWidget> {
                                 height: imageHeight,
                                 position: widget.memory.data.position!,
                                 dateTime: dateTime,
-                                zoom: 15.0,
-                                pitch: 0.0,
+                                zoom: 17.2,
+                                pitch: 50.0,
                               ),
                               GestureDetector(
                                 behavior: HitTestBehavior.translucent,
@@ -104,7 +104,43 @@ class _MemoryWithMediaWidgetState extends State<MemoryWithMediaWidget> {
                           ),
                         ),
                       )
-                      : ImageWidget(imagePath: imagePath!),
+                      : Stack(
+                        children: [
+                          ImageWidget(imagePath: imagePath!),
+                          if (hasMap)
+                            Positioned(
+                              top: 8,
+                              right: 8,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black45,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 4,
+                                ),
+                                child: Row(
+                                  children: const [
+                                    Icon(
+                                      Icons.map,
+                                      color: Colors.white,
+                                      size: 16,
+                                    ),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      "Map",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
             ),
           ),
           Padding(
@@ -130,9 +166,7 @@ class _MemoryWithMediaWidgetState extends State<MemoryWithMediaWidget> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    DateFooterWidget(dateTime: dateTime),
-                  ],
+                  children: [DateFooterWidget(dateTime: dateTime)],
                 ),
               ],
             ),

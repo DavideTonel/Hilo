@@ -79,7 +79,12 @@ class PositionInMapPageState extends State<PositionInMapPage> {
         _mapboxMap.scaleBar.updateSettings(ScaleBarSettings(enabled: false));
 
         _mapboxMap.setCamera(
-          CameraOptions(center: center, zoom: 17.5, bearing: 0.0, pitch: 70.0),
+          CameraOptions(
+            center: center,
+            zoom: widget.zoom,
+            bearing: 0.0,
+            pitch: widget.pitch
+          ),
         );
 
         _mapboxMap.gestures.updateSettings(
