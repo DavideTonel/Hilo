@@ -11,3 +11,5 @@ final class Login extends UserEvent {
 }
 
 final class Logout extends UserEvent {}
+
+final class CheckAutoLogin extends UserEvent {}

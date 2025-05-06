@@ -14,6 +14,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc(this._userRepository) : super(UserInitial()) {
     on<Login>(onLogin);
     on<Logout>(onLogout);
+    on<CheckAutoLogin>(onCheckAutoLogin);
   }
 
   Future<void> onLogin(
@@ -40,5 +41,32 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   ) async {
     await _userRepository.deleteAutoLoginCredentials();
     emit(UserInitial());
+  }
+
+  Future<void> onCheckAutoLogin(
+    CheckAutoLogin event,
+    Emitter<UserState> emit,
+  ) async {
+    try {
+      final map = await _userRepository.getAutoLoginCredentials();
+      if (map != null) {
+        final String username = map["username"]!;
+        final String password = map["password"]!;
+        await _userRepository
+          .checkUserExists(username, password)
+          .then((res) {
+            if (res) {
+              add(Login(username: username, password: password));
+            } else {
+              emit(UserNoAutoLogin());
+            }
+          });
+      } else {
+        emit(UserNoAutoLogin());
+      }
+    } catch (e) {
+      dev.log(e.toString());
+      emit(UserNoAutoLogin());
+    }
   }
 }

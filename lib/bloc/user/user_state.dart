@@ -22,3 +22,11 @@ final class UserLoaded extends UserState {
     }
   );
 }
+
+final class UserNoAutoLogin extends UserState {
+  const UserNoAutoLogin(
+    {
+      super.user
+    }
+  );
+}
