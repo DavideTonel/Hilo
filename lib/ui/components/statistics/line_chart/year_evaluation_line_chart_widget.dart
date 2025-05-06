@@ -38,7 +38,9 @@ class YearEvaluationLineChartWidget extends StatelessWidget {
                 .toList();
 
         if (values.isNotEmpty) {
-          final average = values.reduce((a, b) => a + b) / values.length;
+          final average = double.parse(
+            (values.reduce((a, b) => a + b) / values.length).toStringAsFixed(1),
+          );
           result[label]!.add(FlSpot(month.toDouble(), average));
         }
       }

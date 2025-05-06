@@ -79,7 +79,7 @@ class NewMemoryPageState extends State<NewMemoryPage> {
                       orderType: MemoryOrderType.timeline,
                     ),
                   );
-                  Future.delayed(const Duration(seconds: 1), () {
+                  Future.delayed(const Duration(milliseconds: 40), () {
                     router.go("/home");
                   });
                   break;
