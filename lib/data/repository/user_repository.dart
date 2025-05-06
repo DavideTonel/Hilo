@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:developer' as dev;
 import 'package:roadsyouwalked_app/data/db/dao/user_dao.dart';
 import 'package:roadsyouwalked_app/data/storage/media_storage_service.dart';
 import 'package:roadsyouwalked_app/model/authentication/user.dart';
@@ -63,7 +62,6 @@ class UserRepository {
       newPath = profileImage.reference;
     }
     await _userDao.updateProfileImageUser(username, newPath);
-    dev.log("Update fatto su repo");
   }
 
   Future<Map<String, String>?> getAutoLoginCredentials() async {

@@ -9,7 +9,6 @@ class MediaDao {
   final DatabaseManager _dbManager = DatabaseManager.instance;
 
   Future<String?> insertMedia(final Media media, final Transaction? transaction) async {
-    dev.log("media source type: ${media.sourceType.value}");
     try {
       final controller = transaction ?? await _dbManager.database;
       await controller.insert(

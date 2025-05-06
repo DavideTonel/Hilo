@@ -89,7 +89,6 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
                   birthday: state.birthday
                 ),
               );
-              dev.log("Signup success");
             } else {
               emit(
                 SignupFailure(
@@ -98,7 +97,6 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
                   birthday: state.birthday
                 ),
               );
-              dev.log("Signup failure");
             }
           });
     } catch (e) {
@@ -109,7 +107,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           profileImage: state.profileImage,
           birthday: state.birthday
         ),
-      ); // TODO: add error message
+      );
     }
   }
 

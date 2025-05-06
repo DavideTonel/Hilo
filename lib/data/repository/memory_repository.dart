@@ -18,15 +18,12 @@ class MemoryRepository {
   final _evaluationRepository = EvaluationRepository();
 
   Future<List<Memory>> getMemoriesByUserId(final String userId) async {
-    // #1 get memories
     List<Memory> memories = await _memoryDao.getMemoriesByUserId(userId);
     for (var memory in memories) {
-      // #2 get mediaList for each memory
       List<Media> mediaList = await _mediaDao.getMediaByMemoryId(
         memory.data.core.id,
         memory.data.core.creatorId,
       );
-      // #3 add mediaList to memory
       memory.mediaList = mediaList;
     }
     return memories;

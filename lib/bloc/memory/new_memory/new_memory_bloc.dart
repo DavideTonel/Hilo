@@ -111,7 +111,6 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         throw IncompleteMemoryException("Missing description or one media");
       }
       final timestamp = DateTime.now().toIso8601String();
-      //dev.log("lat: ${state.positionData?.latitude ?? "NULL"}, lon: ${state.positionData?.longitude ?? "NULL"},");
       await _memoryRepository.saveMemory(
         MemoryData(
           core: MemoryCoreData(

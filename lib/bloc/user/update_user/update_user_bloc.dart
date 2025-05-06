@@ -34,15 +34,12 @@ class UpdateUserBloc extends Bloc<UpdateUserEvent, UpdateUserState> {
     Emitter<UpdateUserState> emit,
   ) async {
     try {
-      //await _userRepository.updateProfileImage(state.user.username, event.profileImage);
-      //final User? newUser = await _userRepository.getUser(state.user.username, state.user.password);
       emit(
         UpdateUserInProgress(
           user: state.user,
           newProfileImage: event.profileImage,
         ),
       );
-      //onUpdate();
     } catch (e) {
       dev.log(e.toString());
     }

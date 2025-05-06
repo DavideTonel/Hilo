@@ -9,7 +9,6 @@ import 'package:roadsyouwalked_app/bloc/user/update_user/update_user_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 import 'package:roadsyouwalked_app/ui/components/user/profile_image_widget.dart';
 import 'package:roadsyouwalked_app/ui/pages/camera/camera_page.dart';
-import 'dart:developer' as dev;
 
 class UserProfilePage extends StatelessWidget {
   const UserProfilePage({super.key});
@@ -102,7 +101,6 @@ class UserProfileInfoPage extends StatelessWidget {
       builder: (context, state) {
         final Widget page;
         if (state is UserTakingProfileImage) {
-          dev.log("State is UserTakinProfileImage");
           page = BlocProvider(
             create: (context) => CameraBloc()..add(InitCamera()),
             child: CameraPage(

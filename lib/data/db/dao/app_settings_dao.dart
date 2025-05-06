@@ -20,7 +20,6 @@ class AppSettingsDao {
         return null;
       }
     } catch (e) {
-      dev.log("get settings error");
       dev.log(e.toString());
       return null;
     }
@@ -37,7 +36,6 @@ class AppSettingsDao {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } catch (e) {
-      dev.log("Insert settings error");
       dev.log(e.toString());
     }
   }

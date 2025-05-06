@@ -34,7 +34,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
       });
     } catch (e) {
-      emit(LoginDenied(rememberUser: state.rememberUser)); // TODO: add error message
+      emit(LoginDenied(rememberUser: state.rememberUser));
     }
   }
 }
