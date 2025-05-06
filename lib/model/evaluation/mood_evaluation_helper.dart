@@ -1,6 +1,12 @@
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale_item.dart';
 
-class EvaluationHelper {  // TODO: make singleton
+class EvaluationHelper {
+  static final EvaluationHelper _instance = EvaluationHelper._internal();
+
+  EvaluationHelper._internal();
+
+  factory EvaluationHelper() => _instance;
+
   Map<String, double> calculareResultsFromScores(final Map<EvaluationScaleItem, int?> scores) {
     if (scores.keys.any((item) => item.affectType == null)) {
       return {
@@ -16,4 +22,4 @@ class EvaluationHelper {  // TODO: make singleton
       return result;
     }
   }
-}  
+}

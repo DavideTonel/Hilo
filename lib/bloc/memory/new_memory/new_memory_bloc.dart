@@ -6,6 +6,7 @@ import 'package:roadsyouwalked_app/data/db/dao/media_dao.dart';
 import 'package:roadsyouwalked_app/data/db/dao/memory_dao.dart';
 import 'package:roadsyouwalked_app/data/repository/memory_repository.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_data.dart';
+import 'package:roadsyouwalked_app/model/exceptions/memory/incomplete_memory_exception.dart';
 import 'package:roadsyouwalked_app/model/location/i_position_service.dart';
 import 'package:roadsyouwalked_app/model/media/media_type.dart';
 import 'package:roadsyouwalked_app/model/media/pending_media.dart';
@@ -195,13 +196,4 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
       ),
     );
   }
-}
-
-// TODO: move in another file
-class IncompleteMemoryException implements Exception {
-  final String message;
-  IncompleteMemoryException([this.message = "Memory is empty"]);
-
-  @override
-  String toString() => "IncompleteMemoryException: $message";
 }

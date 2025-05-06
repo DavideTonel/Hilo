@@ -79,7 +79,6 @@ class MemoryBloc extends Bloc<MemoryEvent, MemoryState> {
     int month = event.month ?? state.month;
     int year = event.year ?? state.year;
     
-    // TODO: check year not < 0
     if (state.month == 1 && event.month == 0) {
       month = 12;
       year = state.year - 1;

@@ -103,6 +103,8 @@ class DatabaseManager {
           "id": "panas_sf",
           "name": "PANAS Short Form",
         });
+
+        // Positive affect items
         await db.insert("Evaluation_Scale_Item", {
           "id": "1",
           "evaluationScaleId": "panas_sf",
@@ -114,18 +116,78 @@ class DatabaseManager {
         await db.insert("Evaluation_Scale_Item", {
           "id": "2",
           "evaluationScaleId": "panas_sf",
-          "label": "Upset", // TODO: put right items with right ids
+          "label": "Excited",
+          "minValue": 1,
+          "maxValue": 5,
+          "affectType": "positive",
+        });
+        await db.insert("Evaluation_Scale_Item", {
+          "id": "3",
+          "evaluationScaleId": "panas_sf",
+          "label": "Strong",
+          "minValue": 1,
+          "maxValue": 5,
+          "affectType": "positive",
+        });
+        await db.insert("Evaluation_Scale_Item", {
+          "id": "4",
+          "evaluationScaleId": "panas_sf",
+          "label": "Enthusiastic",
+          "minValue": 1,
+          "maxValue": 5,
+          "affectType": "positive",
+        });
+        await db.insert("Evaluation_Scale_Item", {
+          "id": "5",
+          "evaluationScaleId": "panas_sf",
+          "label": "Inspired",
+          "minValue": 1,
+          "maxValue": 5,
+          "affectType": "positive",
+        });
+
+        // Negative affect items
+        await db.insert("Evaluation_Scale_Item", {
+          "id": "6",
+          "evaluationScaleId": "panas_sf",
+          "label": "Afraid",
+          "minValue": 1,
+          "maxValue": 5,
+          "affectType": "negative",
+        });
+        await db.insert("Evaluation_Scale_Item", {
+          "id": "7",
+          "evaluationScaleId": "panas_sf",
+          "label": "Upset",
+          "minValue": 1,
+          "maxValue": 5,
+          "affectType": "negative",
+        });
+        await db.insert("Evaluation_Scale_Item", {
+          "id": "8",
+          "evaluationScaleId": "panas_sf",
+          "label": "Hostile",
+          "minValue": 1,
+          "maxValue": 5,
+          "affectType": "negative",
+        });
+        await db.insert("Evaluation_Scale_Item", {
+          "id": "9",
+          "evaluationScaleId": "panas_sf",
+          "label": "Nervous",
+          "minValue": 1,
+          "maxValue": 5,
+          "affectType": "negative",
+        });
+        await db.insert("Evaluation_Scale_Item", {
+          "id": "10",
+          "evaluationScaleId": "panas_sf",
+          "label": "Ashamed",
           "minValue": 1,
           "maxValue": 5,
           "affectType": "negative",
         });
       },
     );
-  }
-
-  // TODO: use close method
-  Future close() async {
-    final db = await instance.database;
-    db.close();
   }
 }
