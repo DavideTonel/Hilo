@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:roadsyouwalked_app/data/repository/memory_repository.dart';
+import 'package:roadsyouwalked_app/data/repository/memory/i_memory_repository.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
 
@@ -8,7 +8,7 @@ part 'memory_event.dart';
 part 'memory_state.dart';
 
 class MemoryBloc extends Bloc<MemoryEvent, MemoryState> {
-  final MemoryRepository _memoryRepository;
+  final IMemoryRepository _memoryRepository;
 
   MemoryBloc(this._memoryRepository)
     : super(

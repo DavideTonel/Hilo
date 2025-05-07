@@ -8,7 +8,7 @@ import 'package:roadsyouwalked_app/bloc/memory/memories_detail_bloc/memories_det
 import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/settings/settings_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
-import 'package:roadsyouwalked_app/data/repository/memory_repository.dart';
+import 'package:roadsyouwalked_app/data/repository/memory/memory_repository.dart';
 import 'package:roadsyouwalked_app/data/repository/user_repository.dart';
 import 'package:roadsyouwalked_app/firebase_options.dart';
 import 'package:roadsyouwalked_app/navigation/app_router.dart';

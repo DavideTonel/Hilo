@@ -5,6 +5,7 @@ import 'package:roadsyouwalked_app/data/db/dao/memory/memory_dao.dart';
 import 'package:roadsyouwalked_app/data/db/database_manager.dart';
 import 'package:roadsyouwalked_app/data/repository/evaluation/evaluation_repository.dart';
 import 'package:roadsyouwalked_app/data/repository/evaluation/i_evaluation_repository.dart';
+import 'package:roadsyouwalked_app/data/repository/memory/i_memory_repository.dart';
 import 'package:roadsyouwalked_app/data/storage/media_storage_service.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_item.dart';
 import 'package:roadsyouwalked_app/model/media/media.dart';
@@ -15,20 +16,14 @@ import 'package:roadsyouwalked_app/model/memory/memory.dart';
 import 'dart:developer' as dev;
 
 /// A repository class for managing memory-related data.
-class MemoryRepository {
+/// A concrete implementation of [IMemoryRepository].
+class MemoryRepository extends IMemoryRepository {
   final IMemoryDao _memoryDao = MemoryDao();
   final IMediaDao _mediaDao = MediaDao();
   final _mediaStorageService = MediaStorageService();
   final IEvaluationRepository _evaluationRepository = EvaluationRepository();
 
-  /// Retrieves a list of memories for a given user ID.
-  ///
-  /// This method gets the memories and associates the corresponding
-  /// media files with each memory.
-  ///
-  /// [userId] - The ID of the user whose memories are to be retrieved.
-  ///
-  /// Returns a list of `Memory` objects with their associated media.
+  @override
   Future<List<Memory>> getMemoriesByUserId(final String userId) async {
     List<Memory> memories = await _memoryDao.getMemoriesByUserId(userId);
     for (var memory in memories) {
@@ -41,15 +36,7 @@ class MemoryRepository {
     return memories;
   }
 
-  /// Retrieves a list of memories for a given user ID from a specific date.
-  ///
-  /// This method fetches memories starting from a particular
-  /// date and associates the corresponding media files with each memory.
-  ///
-  /// [userId] - The ID of the user whose memories are to be retrieved.
-  /// [fromDate] - The starting date for fetching memories.
-  ///
-  /// Returns a list of `Memory` objects with their associated media.
+  @override
   Future<List<Memory>> getMemoriesByUserIdFromDate(
     final String userId,
     final DateTime fromDate,
@@ -68,16 +55,7 @@ class MemoryRepository {
     return memories;
   }
 
-  /// Retrieves a list of memories for a given user ID and a specific year and month.
-  ///
-  /// This method fetches memories for a specific month and year
-  /// and associates the corresponding media files with each memory.
-  ///
-  /// [userId] - The ID of the user whose memories are to be retrieved.
-  /// [year] - The year for which memories are to be fetched.
-  /// [month] - The month for which memories are to be fetched.
-  ///
-  /// Returns a list of `Memory` objects with their associated media.
+  @override
   Future<List<Memory>> getMemoriesByUserIdAndTime(
     final String userId,
     final int year,
@@ -101,15 +79,7 @@ class MemoryRepository {
     return memories;
   }
 
-  /// Retrieves a list of memories for a given user ID in a specific year.
-  ///
-  /// This method fetches memories for a specific year
-  /// and associates the corresponding media files with each memory.
-  ///
-  /// [userId] - The ID of the user whose memories are to be retrieved.
-  /// [year] - The year for which memories are to be fetched.
-  ///
-  /// Returns a list of `Memory` objects with their associated media.
+  @override
   Future<List<Memory>> getMemoriesByUserIdInYear(
     final String userId,
     final int year,
@@ -130,14 +100,7 @@ class MemoryRepository {
     return memories;
   }
 
-  /// Saves a new memory along with its associated media and evaluation result items.
-  ///
-  /// This method saves a memory along with its data.
-  /// It ensures that all related information is stored atomically.
-  ///
-  /// [memoryData] - The `MemoryData` object containing the memory details to be saved.
-  /// [pendingMediaList] - A list of `PendingMedia` objects representing the media to be saved.
-  /// [evaluationSingleItemScores] - A list of `EvaluationResultItem` objects representing the evaluation scores.
+  @override
   Future<void> saveMemory(
     MemoryData memoryData,
     List<PendingMedia> pendingMediaList,
