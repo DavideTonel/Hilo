@@ -2,6 +2,7 @@ import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_item.dart'
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale.dart';
 import 'package:sqflite/sqflite.dart';
 
+/// Interface for accessing evaluations stored in the database.
 abstract class IEvaluationDao {
   /// Inserts evaluation result items into the database.
   ///
