@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/ui/pages/authentication/authentication_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/authentication/login/login_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/authentication/signup/signup_page.dart';
+import 'package:roadsyouwalked_app/ui/pages/evaluation/export_evaluation_wrapper_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/home/home_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/memory/detail/memories_detail_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/memory/new_memory/new_memory_page.dart';
@@ -57,6 +58,12 @@ class AppRouter {
         GoRoute(
           path: "/memory/add",
           builder: (context, state) => NewMemoryPage(),
+        ),
+
+        /// Evaluations export page route.
+        GoRoute(
+          path: "/export/evaluations",
+          builder: (context, state) => ExportEvaluationWrapperPage(),
         ),
 
         /// General settings page route.

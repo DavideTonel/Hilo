@@ -1,5 +1,6 @@
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_item.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale.dart';
+import 'package:roadsyouwalked_app/model/evaluation/export/user_evaluation.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// Interface for managing evaluation-related data.
@@ -25,4 +26,11 @@ abstract class IEvaluationRepository {
   ///
   /// Returns an `EvaluationScale` object if found, or `null` if the scale is not found.
   Future<EvaluationScale?> getEvaluationScaleById(final String id);
+
+  /// Returns every evaluation a user has made in the last `lastNDays` days,
+  /// grouped by memory, with each memory’s timestamp, total score, and items.
+  Future<List<UserEvaluation>> getUserEvaluationsLastNDays(
+    String userId,
+    int lastNDays,
+  );
 }

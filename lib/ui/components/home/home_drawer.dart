@@ -40,6 +40,13 @@ class HomeDrawer extends StatelessWidget {
           const Divider(height: 1, thickness: 1),
           const SizedBox(height: 10),
           ListTile(
+            leading: Icon(Icons.import_export, size: 32),
+            title: Text("Export evaluations"),
+            onTap: () {
+              router.push("/export/evaluations");
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.settings, size: 32),
             title: Text("Settings"),
             onTap: () {
