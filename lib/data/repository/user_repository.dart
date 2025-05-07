@@ -1,5 +1,6 @@
 import 'dart:io';
-import 'package:roadsyouwalked_app/data/db/dao/user_dao.dart';
+import 'package:roadsyouwalked_app/data/db/dao/user/i_user_dao.dart';
+import 'package:roadsyouwalked_app/data/db/dao/user/user_dao.dart';
 import 'package:roadsyouwalked_app/data/storage/media_storage_service.dart';
 import 'package:roadsyouwalked_app/model/authentication/user.dart';
 import 'package:roadsyouwalked_app/data/shared_preferences/shared_preferences_manager.dart';
@@ -9,7 +10,7 @@ import 'package:roadsyouwalked_app/model/media/pending_media.dart';
 
 /// A repository class for managing user-related data and operations.
 class UserRepository {
-  final UserDao _userDao = UserDao();
+  final IUserDao _userDao = UserDao();
   final SharedPreferencesManager _sharedPreferencesManager =
       SharedPreferencesManager.instance;
   final _mediaStorageService = MediaStorageService();
