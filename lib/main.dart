@@ -66,7 +66,7 @@ class MyAppWithRouter extends StatelessWidget {
       builder: (context, state) {
         final settings = state.settings;
         final ThemeLight themeLight = settings?.theme ?? ThemeLight.system;
-        final Color seedColor = settings?.themeSeedColor ?? Colors.blue;
+        final Color seedColor = settings?.themeSeedColor ?? Colors.green;
 
         final colorSchemeLight = ColorScheme.fromSeed(
           seedColor: seedColor,
