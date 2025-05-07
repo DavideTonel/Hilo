@@ -67,7 +67,11 @@ class EvaluationPageState extends State<EvaluationPage>
           _animationController.forward(from: 0); // Trigger the animation
 
           body = Padding(
-            padding: const EdgeInsets.all(27.0),
+            padding: const EdgeInsets.only(
+              left: 28.0,
+              right: 28.0,
+              top: 5.0
+            ),
             child: EvaluationWidget(
               items: items,
               scores: scores,
@@ -169,7 +173,7 @@ class EvaluationItemWidget extends StatelessWidget {
       children: [
         Text(
           item.label,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
         ),
         Slider(
           value: currentValue.toDouble(),
