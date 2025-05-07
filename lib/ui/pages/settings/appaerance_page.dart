@@ -6,8 +6,8 @@ import 'package:roadsyouwalked_app/ui/constants/app_spacing.dart';
 import 'package:roadsyouwalked_app/ui/helper/map_style.dart';
 import 'package:roadsyouwalked_app/ui/helper/theme_light.dart';
 
-class AppaerancePage extends StatelessWidget {
-  const AppaerancePage({super.key});
+class AppearancePage extends StatelessWidget {
+  const AppearancePage({super.key});
 
   @override
   Widget build(BuildContext context) {

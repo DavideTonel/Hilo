@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:roadsyouwalked_app/model/memory/memory_position_data.dart';
+import 'package:roadsyouwalked_app/model/memory/memory_data/memory_position_data.dart';
 import 'package:roadsyouwalked_app/ui/pages/map/position_in_map_page.dart';
 
 class MemoryMapWidget extends StatelessWidget {

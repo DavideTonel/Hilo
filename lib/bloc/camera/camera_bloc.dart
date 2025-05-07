@@ -33,7 +33,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
   ) async {
     await state.cameraManager.getAvailableCameras().then((cameras) async {
       await state.cameraManager.initializeCamera(cameras.last).then((status) {
-        if (status is CameraAccessGranted) {
+        if (status == CameraAccessStatus.granted) {
           emit(CameraLoaded(cameraManager: state.cameraManager));
         } else {
           emit(CameraDenied(cameraManager: state.cameraManager));

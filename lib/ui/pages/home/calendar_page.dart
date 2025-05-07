@@ -5,7 +5,7 @@ import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 import 'package:roadsyouwalked_app/model/calendar/calendar_day_gap_type.dart';
 import 'package:roadsyouwalked_app/model/calendar/calendar_tracker.dart';
-import 'package:roadsyouwalked_app/model/media/memory_day_mapper.dart';
+import 'package:roadsyouwalked_app/model/calendar/memory_day_mapper.dart';
 import 'package:roadsyouwalked_app/ui/components/calendar/calendar_header.dart';
 import 'package:roadsyouwalked_app/ui/components/calendar/calendar_widget.dart';
 import 'package:roadsyouwalked_app/ui/components/controller/period_controller_widget.dart';

@@ -9,48 +9,72 @@ import 'package:roadsyouwalked_app/ui/pages/settings/appaerance_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/settings/settings_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/user/user_profile_page.dart';
 
+/// A routing class that defines and initializes all application routes
+/// using `GoRouter` for declarative navigation.
 class AppRouter {
+  /// The GoRouter instance used throughout the app to manage navigation.
   late final GoRouter router;
 
+  /// Initializes the application router with a set of predefined routes.
+  ///
+  /// Sets the initial location to `/auth`, guiding users first to the
+  /// authentication page.
   AppRouter() {
     router = GoRouter(
       initialLocation: "/auth",
       routes: [
+        /// Home page route.
         GoRoute(
           path: "/home",
-          builder: (context, state) => HomePage()
+          builder: (context, state) => HomePage(),
         ),
+
+        /// User profile route, accessible from the home page.
         GoRoute(
           path: "/home/profile",
-          builder: (context, state) => UserProfilePage()
+          builder: (context, state) => UserProfilePage(),
         ),
+
+        /// Base authentication route.
         GoRoute(
           path: "/auth",
-          builder: (context, state) => AuthenticationPage()
+          builder: (context, state) => AuthenticationPage(),
         ),
+
+        /// Login route under the authentication flow.
         GoRoute(
           path: "/auth/login",
-          builder: (context, state) => LoginPage()
+          builder: (context, state) => LoginPage(),
         ),
+
+        /// Signup route under the authentication flow.
         GoRoute(
           path: "/auth/signup",
-          builder: (context, state) => SignupPage()
+          builder: (context, state) => SignupPage(),
         ),
+
+        /// Route for adding a new memory.
         GoRoute(
           path: "/memory/add",
-          builder: (context, state) => NewMemoryPage()
+          builder: (context, state) => NewMemoryPage(),
         ),
+
+        /// General settings page route.
         GoRoute(
           path: "/settings",
-          builder: (context, state) => SettingsPage()
+          builder: (context, state) => SettingsPage(),
         ),
+
+        /// Appearance settings page route.
         GoRoute(
           path: "/settings/appaerance",
-          builder: (context, state) => AppaerancePage()
+          builder: (context, state) => AppearancePage(),
         ),
+
+        /// Memory detail view from the calendar.
         GoRoute(
           path: "/calendar/memories",
-          builder: (context, state) => MemoriesDetailPage()
+          builder: (context, state) => MemoriesDetailPage(),
         ),
       ],
     );

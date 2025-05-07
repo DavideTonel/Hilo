@@ -13,7 +13,7 @@ import 'package:roadsyouwalked_app/model/media/pending_media.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_core_data.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_data.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_data/memory_evaluation_data.dart';
-import 'package:roadsyouwalked_app/model/memory/memory_position_data.dart';
+import 'package:roadsyouwalked_app/model/memory/memory_data/memory_position_data.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:developer' as dev;
 
