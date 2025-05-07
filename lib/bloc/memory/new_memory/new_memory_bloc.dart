@@ -4,7 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/data/db/dao/media/i_media_dao.dart';
 import 'package:roadsyouwalked_app/data/db/dao/media/media_dao.dart';
-import 'package:roadsyouwalked_app/data/db/dao/memory_dao.dart';
+import 'package:roadsyouwalked_app/data/db/dao/memory/i_memory_dao.dart';
+import 'package:roadsyouwalked_app/data/db/dao/memory/memory_dao.dart';
 import 'package:roadsyouwalked_app/data/repository/memory_repository.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_data.dart';
 import 'package:roadsyouwalked_app/model/exceptions/memory/incomplete_memory_exception.dart';
@@ -23,7 +24,7 @@ part 'new_memory_state.dart';
 
 class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
   final MemoryRepository _memoryRepository = MemoryRepository();
-  final MemoryDao _memoryDao = MemoryDao();
+  final IMemoryDao _memoryDao = MemoryDao();
   final IMediaDao _mediaDao = MediaDao();
 
   NewMemoryBloc() : super(NewMemoryInitial()) {
