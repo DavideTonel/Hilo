@@ -1,6 +1,7 @@
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
 import 'package:sqflite/sqflite.dart';
 
+/// Interface for accessing memories stored in the database.
 abstract class IMemoryDao {
   /// Retrieves all memories associated with a specific user.
   ///
