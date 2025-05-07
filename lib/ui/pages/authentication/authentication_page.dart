@@ -11,7 +11,7 @@ class AuthenticationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget body = Center(child: Text("Auth"));
+    Widget body = Center(child: CircularProgressIndicator());
     return BlocConsumer<UserBloc, UserState>(
       listener: (context, state) {
         final router = GoRouter.of(context);
