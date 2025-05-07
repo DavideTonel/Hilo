@@ -1,11 +1,12 @@
-import 'package:roadsyouwalked_app/data/db/dao/evaluation_dao.dart';
+import 'package:roadsyouwalked_app/data/db/dao/evaluation/evaluation_dao.dart';
+import 'package:roadsyouwalked_app/data/db/dao/evaluation/i_evaluation_dao.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_item.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// A repository class for managing evaluation-related data.
 class EvaluationRepository {
-  final EvaluationDao _evaluationDao = EvaluationDao();
+  final IEvaluationDao _evaluationDao = EvaluationDao();
 
   /// Saves a list of evaluation result items associated with a specific evaluation.
   ///

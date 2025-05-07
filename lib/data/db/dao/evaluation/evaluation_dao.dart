@@ -1,3 +1,4 @@
+import 'package:roadsyouwalked_app/data/db/dao/evaluation/i_evaluation_dao.dart';
 import 'package:roadsyouwalked_app/data/db/database_manager.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_item.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale.dart';
@@ -8,21 +9,13 @@ import 'dart:developer' as dev;
 import 'package:sqflite/sqflite.dart';
 
 /// Data Access Object (DAO) class for managing evaluation-related operations in the database.
-class EvaluationDao {
+/// Concrete implementation of [IEvaluationDao] for accessing evaluations
+/// stored in a local SQLite database.
+class EvaluationDao extends IEvaluationDao {
   // Instance of the DatabaseManager for accessing the database.
   final DatabaseManager _dbManager = DatabaseManager.instance;
 
-  /// Inserts evaluation result items into the database.
-  ///
-  /// This method inserts a list of evaluation result items into the "Evaluation_Result_Item" table.
-  ///
-  /// [evaluationId] - The ID of the evaluation associated with these result items.
-  /// [creatorId] - The ID of the creator of the evaluation.
-  /// [evaluationScaleId] - The ID of the evaluation scale.
-  /// [items] - The list of `EvaluationResultItem` objects to be inserted.
-  /// [transaction] - An optional database transaction to be used for the insert operation.
-  ///
-  /// This method inserts each item into the database and ensures that any conflicts are handled by aborting the transaction.
+  @override
   Future<void> insertEvaluationItemScores(
     final String evaluationId,
     final String creatorId,
@@ -45,14 +38,7 @@ class EvaluationDao {
     }
   }
 
-  /// Retrieves an evaluation scale by its ID.
-  ///
-  /// This method queries the "Evaluation_Scale" table to fetch an evaluation scale record and
-  /// retrieves the associated items from the "Evaluation_Scale_Item" table.
-  ///
-  /// [id] - The ID of the evaluation scale to be retrieved.
-  ///
-  /// Returns the `EvaluationScale` object, or `null` if no scale is found with the provided ID.
+  @override
   Future<EvaluationScale?> getEvaluationScaleById(final String id) async {
     try {
       final db = await _dbManager.database;
