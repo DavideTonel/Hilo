@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:roadsyouwalked_app/data/db/dao/settings/app_settings_dao.dart';
 import 'package:roadsyouwalked_app/data/db/dao/settings/i_app_settings_dao.dart';
+import 'package:roadsyouwalked_app/data/repository/settings/i_settings_repository.dart';
 import 'package:roadsyouwalked_app/model/settings/app_settings.dart';
 import 'package:roadsyouwalked_app/ui/helper/map_style.dart';
 import 'package:roadsyouwalked_app/ui/helper/theme_light.dart';
 
 /// A repository class responsible for managing application settings.
-class SettingsRepository {
+/// A concrete implementation of [ISettingsRepository].
+class SettingsRepository extends ISettingsRepository {
   final IAppSettingsDao _settingsDao = AppSettingsDao();
 
   /// Retrieves the current application settings.
@@ -17,6 +19,7 @@ class SettingsRepository {
   /// - `themeSeedColor` set to `Colors.green`.
   ///
   /// Returns an `AppSettings` object containing the settings.
+  @override
   Future<AppSettings> getSetting() async {
     AppSettings? settings = await _settingsDao.getSettings();
     return settings ?? AppSettings(
@@ -27,11 +30,7 @@ class SettingsRepository {
     );
   }
 
-  /// Saves the provided application settings to the database.
-  ///
-  /// This method inserts or updates the given `AppSettings`.
-  ///
-  /// [settings] - The `AppSettings` object containing the settings to be saved.
+  @override
   Future<void> saveSettings(final AppSettings settings) async {
     return await _settingsDao.insertSettings(settings);
   }
