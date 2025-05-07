@@ -2,14 +2,14 @@ import 'dart:developer' as dev;
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:roadsyouwalked_app/data/repository/user_repository.dart';
+import 'package:roadsyouwalked_app/data/repository/user/i_user_repository.dart';
 import 'package:roadsyouwalked_app/model/authentication/user.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  final UserRepository _userRepository;
+  final IUserRepository _userRepository;
   
   UserBloc(this._userRepository) : super(UserInitial()) {
     on<Login>(onLogin);

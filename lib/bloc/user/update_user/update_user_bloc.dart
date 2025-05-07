@@ -2,14 +2,15 @@ import 'dart:io';
 import 'dart:developer' as dev;
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:roadsyouwalked_app/data/repository/user_repository.dart';
+import 'package:roadsyouwalked_app/data/repository/user/i_user_repository.dart';
+import 'package:roadsyouwalked_app/data/repository/user/user_repository.dart';
 import 'package:roadsyouwalked_app/model/authentication/user.dart';
 
 part 'update_user_event.dart';
 part 'update_user_state.dart';
 
 class UpdateUserBloc extends Bloc<UpdateUserEvent, UpdateUserState> {
-  final UserRepository _userRepository = UserRepository();
+  final IUserRepository _userRepository = UserRepository();
   final void Function() onUpdate;
 
   UpdateUserBloc({required final User user, required this.onUpdate})

@@ -2,14 +2,14 @@ import 'dart:developer' as dev;
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:roadsyouwalked_app/data/repository/user_repository.dart';
+import 'package:roadsyouwalked_app/data/repository/user/i_user_repository.dart';
 import 'package:roadsyouwalked_app/model/authentication/user.dart';
 
 part 'signup_event.dart';
 part 'signup_state.dart';
 
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
-  final UserRepository _userRepository;
+  final IUserRepository _userRepository;
 
   SignupBloc(this._userRepository) : super(SignupInitial()) {
     on<SignupRequest>(onSignupRequest);

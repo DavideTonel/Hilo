@@ -1,12 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:roadsyouwalked_app/data/repository/user_repository.dart';
+import 'package:roadsyouwalked_app/data/repository/user/i_user_repository.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final UserRepository _userRepository;
+  final IUserRepository _userRepository;
   
   LoginBloc(this._userRepository) : super(LoginInitial()) {
     on<LoginRequest>(onLoginRequest);
