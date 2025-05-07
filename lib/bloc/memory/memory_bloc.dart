@@ -1,11 +1,8 @@
-import 'dart:math';
-
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/data/repository/memory/i_memory_repository.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
-import 'dart:developer' as dev;
 
 part 'memory_event.dart';
 part 'memory_state.dart';
@@ -89,8 +86,6 @@ class MemoryBloc extends Bloc<MemoryEvent, MemoryState> {
       newYear += (newMonth - 1) ~/ 12;
       newMonth = (newMonth - 1) % 12 + 1;
     }
-
-    dev.log("Set time     curr: $currentMonth ----> event: $newMonth");
 
     await onLoadMemories(
       LoadMemories(
