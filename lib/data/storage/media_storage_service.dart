@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:roadsyouwalked_app/data/storage/i_media_storage_service.dart';
 import 'package:roadsyouwalked_app/data/storage/private_storage.dart';
 import 'package:roadsyouwalked_app/model/media/media.dart';
 import 'package:roadsyouwalked_app/model/media/media_source_type.dart';
@@ -7,7 +8,8 @@ import 'package:roadsyouwalked_app/model/media/media_type.dart';
 import 'package:roadsyouwalked_app/model/media/pending_media.dart';
 
 /// A service class responsible for managing media storage operations.
-class MediaStorageService {
+/// A concrete implementation of [IMediaStorageService].
+class MediaStorageService extends IMediaStorageService {
   // Private instance of [PrivateStorage] to handle file saving operations.
   final PrivateStorage _privateStorage = PrivateStorage();
 
@@ -25,6 +27,7 @@ class MediaStorageService {
   /// Returns a [Media] object containing the relevant media data, including the source type and reference.
   ///
   /// Throws an exception if neither [localFile] nor [remoteUri] is provided in [pendingMedia].
+  @override
   Future<Media> saveMedia(final PendingMedia pendingMedia) async {
     MediaSourceType sourceType;
     String reference;

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:roadsyouwalked_app/data/db/dao/user/i_user_dao.dart';
 import 'package:roadsyouwalked_app/data/db/dao/user/user_dao.dart';
 import 'package:roadsyouwalked_app/data/repository/user/i_user_repository.dart';
+import 'package:roadsyouwalked_app/data/storage/i_media_storage_service.dart';
 import 'package:roadsyouwalked_app/data/storage/media_storage_service.dart';
 import 'package:roadsyouwalked_app/model/authentication/user.dart';
 import 'package:roadsyouwalked_app/data/shared_preferences/shared_preferences_manager.dart';
@@ -15,7 +16,7 @@ class UserRepository extends IUserRepository {
   final IUserDao _userDao = UserDao();
   final SharedPreferencesManager _sharedPreferencesManager =
       SharedPreferencesManager.instance;
-  final _mediaStorageService = MediaStorageService();
+  final IMediaStorageService _mediaStorageService = MediaStorageService();
 
   @override
   Future<bool> checkUserExists(

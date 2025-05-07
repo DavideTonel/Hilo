@@ -6,6 +6,7 @@ import 'package:roadsyouwalked_app/data/db/database_manager.dart';
 import 'package:roadsyouwalked_app/data/repository/evaluation/evaluation_repository.dart';
 import 'package:roadsyouwalked_app/data/repository/evaluation/i_evaluation_repository.dart';
 import 'package:roadsyouwalked_app/data/repository/memory/i_memory_repository.dart';
+import 'package:roadsyouwalked_app/data/storage/i_media_storage_service.dart';
 import 'package:roadsyouwalked_app/data/storage/media_storage_service.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_item.dart';
 import 'package:roadsyouwalked_app/model/media/media.dart';
@@ -20,7 +21,7 @@ import 'dart:developer' as dev;
 class MemoryRepository extends IMemoryRepository {
   final IMemoryDao _memoryDao = MemoryDao();
   final IMediaDao _mediaDao = MediaDao();
-  final _mediaStorageService = MediaStorageService();
+  final IMediaStorageService _mediaStorageService = MediaStorageService();
   final IEvaluationRepository _evaluationRepository = EvaluationRepository();
 
   @override
