@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/model/location/i_position_service.dart';
+import 'package:roadsyouwalked_app/model/location/position_data.dart';
+import 'package:roadsyouwalked_app/model/location/position_service.dart';
 
 part 'position_event.dart';
 part 'position_state.dart';
