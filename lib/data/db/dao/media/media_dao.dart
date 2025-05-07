@@ -7,6 +7,7 @@ import 'dart:developer' as dev;
 import 'package:sqflite/sqflite.dart';
 
 /// Data Access Object (DAO) class for managing media-related operations in the database.
+/// /// Concrete implementation of [IMediaDao]
 class MediaDao extends IMediaDao {
   // Instance of the DatabaseManager for accessing the database.
   final DatabaseManager _dbManager = DatabaseManager.instance;
