@@ -9,8 +9,8 @@ import 'package:roadsyouwalked_app/ui/components/home/add_memory_action_button.d
 import 'package:roadsyouwalked_app/ui/components/home/home_app_bar.dart';
 import 'package:roadsyouwalked_app/ui/components/home/home_drawer.dart';
 import 'package:roadsyouwalked_app/ui/components/statistics/statistics_app_bar.dart';
-import 'package:roadsyouwalked_app/ui/pages/home/calendar_page.dart';
-import 'package:roadsyouwalked_app/ui/pages/home/feed_page.dart';
+import 'package:roadsyouwalked_app/ui/pages/calendar/calendar_page.dart';
+import 'package:roadsyouwalked_app/ui/pages/feed/feed_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/statistics/statistics_page.dart';
 
 class HomePage extends StatefulWidget {

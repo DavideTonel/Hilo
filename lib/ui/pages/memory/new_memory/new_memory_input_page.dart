@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:roadsyouwalked_app/model/media/media_type.dart';
 import 'package:roadsyouwalked_app/ui/pages/camera/camera_page.dart';
-import 'package:roadsyouwalked_app/ui/pages/memory/new_memory/new_memory_audio_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/memory/new_memory/new_memory_text_page.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -39,7 +38,6 @@ class NewMemoryInputPageState extends State<NewMemoryInputPage> {
             NewMemoryTextPage(
               onChangeDescription: widget.onChangeDescription,
             ),
-            const NewMemoryAudioPage(),
           ],
         ),
         Positioned(
