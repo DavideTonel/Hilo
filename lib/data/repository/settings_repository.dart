@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:roadsyouwalked_app/data/db/dao/app_settings_dao.dart';
+import 'package:roadsyouwalked_app/data/db/dao/settings/app_settings_dao.dart';
+import 'package:roadsyouwalked_app/data/db/dao/settings/i_app_settings_dao.dart';
 import 'package:roadsyouwalked_app/model/settings/app_settings.dart';
 import 'package:roadsyouwalked_app/ui/helper/map_style.dart';
 import 'package:roadsyouwalked_app/ui/helper/theme_light.dart';
 
 /// A repository class responsible for managing application settings.
 class SettingsRepository {
-  final AppSettingsDao _settingsDao = AppSettingsDao();
+  final IAppSettingsDao _settingsDao = AppSettingsDao();
 
   /// Retrieves the current application settings.
   ///

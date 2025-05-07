@@ -1,19 +1,17 @@
+import 'package:roadsyouwalked_app/data/db/dao/settings/i_app_settings_dao.dart';
 import 'package:roadsyouwalked_app/data/db/database_manager.dart';
 import 'package:roadsyouwalked_app/model/settings/app_settings.dart';
 import 'package:sqflite/sql.dart';
 import 'dart:developer' as dev;
 
 /// Data Access Object (DAO) class for managing application settings in the database.
-class AppSettingsDao {
+/// Concrete implementation of [IAppSettingsDao] for accessing and modifying
+/// application settings stored in a local SQLite database.
+class AppSettingsDao extends IAppSettingsDao {
   // Instance of the DatabaseManager for accessing the database.
   final DatabaseManager _dbManager = DatabaseManager.instance;
 
-  /// Retrieves the application settings from the database.
-  ///
-  /// This method queries the "Settings" table for the app settings using a fixed ID of 1.
-  /// If no settings are found, it returns `null`.
-  ///
-  /// Returns an `AppSettings` object, or `null` if no settings are found.
+  @override
   Future<AppSettings?> getSettings() async {
     try {
       final db = await _dbManager.database;
@@ -33,12 +31,7 @@ class AppSettingsDao {
     }
   }
 
-  /// Inserts or updates the application settings in the database.
-  ///
-  /// This method inserts a new `AppSettings` object into the "Settings" table.
-  /// If the settings already exist, they are replaced with the new values.
-  ///
-  /// [settings] - The `AppSettings` object to be inserted or updated in the database.
+  @override
   Future<void> insertSettings(
     final AppSettings settings,
   ) async {
