@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/data/repository/memory/i_memory_repository.dart';
 import 'package:roadsyouwalked_app/model/memory/memory.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
+import 'dart:developer' as dev;
 
 part 'memory_event.dart';
 part 'memory_state.dart';
@@ -15,7 +18,7 @@ class MemoryBloc extends Bloc<MemoryEvent, MemoryState> {
         MemoryInitial(
           year: DateTime.now().year,
           month: DateTime.now().month,
-          lastNDays: 7
+          lastNDays: 7,
         ),
       ) {
     on<LoadMemories>(onLoadMemories);
@@ -59,7 +62,7 @@ class MemoryBloc extends Bloc<MemoryEvent, MemoryState> {
           orderType: event.orderType,
           year: event.year ?? state.year,
           month: event.month ?? state.month,
-          lastNDays: event.lastNDays ?? state.lastNDays
+          lastNDays: event.lastNDays ?? state.lastNDays,
         ),
       );
     } catch (e) {
@@ -69,30 +72,32 @@ class MemoryBloc extends Bloc<MemoryEvent, MemoryState> {
           orderType: event.orderType,
           year: event.year ?? state.year,
           month: event.month ?? state.month,
-          lastNDays: event.lastNDays ?? state.lastNDays
+          lastNDays: event.lastNDays ?? state.lastNDays,
         ),
       );
     }
   }
 
   Future<void> onSetTime(SetTime event, Emitter<MemoryState> emit) async {
-    int month = event.month ?? state.month;
-    int year = event.year ?? state.year;
-    
-    if (state.month == 1 && event.month == 0) {
-      month = 12;
-      year = state.year - 1;
-    } else if (state.month == 12 && event.month == 13) {
-      month = 1;
-      year = state.year + 1;
+    int currentMonth = state.month;
+    int currentYear = state.year;
+
+    int newMonth = event.month ?? currentMonth;
+    int newYear = event.year ?? currentYear;
+
+    if (newMonth < 1 || newMonth > 12) {
+      newYear += (newMonth - 1) ~/ 12;
+      newMonth = (newMonth - 1) % 12 + 1;
     }
-    
+
+    dev.log("Set time     curr: $currentMonth ----> event: $newMonth");
+
     await onLoadMemories(
       LoadMemories(
         userId: event.userId,
         orderType: state.orderType,
-        year: year,
-        month: month,
+        year: newYear,
+        month: newMonth,
       ),
       emit,
     );

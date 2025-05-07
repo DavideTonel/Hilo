@@ -19,64 +19,78 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  late final PageController _pageController;
   static const int initialPage = 1000;
-  late int _currentPage;
+  late final PageController _pageController;
+
+  // Holds the month/year captured from the bloc on first build
+  int? _baseMonth;
+  int? _baseYear;
 
   @override
   void initState() {
     super.initState();
-    _currentPage = initialPage;
-    _pageController = PageController(initialPage: _currentPage);
+    _pageController = PageController(initialPage: initialPage);
   }
 
   void _onPageChanged(int newPage) {
-    final delta = newPage - _currentPage;
-    _currentPage = newPage;
-
     final userId = context.read<UserBloc>().state.user?.username;
-    final memoryState = context.read<MemoryBloc>().state;
+    if (userId == null) return;
 
-    if (userId != null) {
-      context.read<MemoryBloc>().add(
-        SetTime(userId: userId, month: memoryState.month + delta),
-      );
-    }
+    final offset   = newPage - initialPage;
+    final rawMonth = (_baseMonth! - 1) + offset;
+    final yearDelta= (rawMonth / 12).floor();
+    final newMonth = rawMonth - yearDelta * 12 + 1;
+    final newYear  = _baseYear! + yearDelta;
+
+    context.read<MemoryBloc>().add(
+      SetTime(
+        userId: userId,
+        year:  newYear,
+        month: newMonth,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoryBloc, MemoryState>(
       builder: (context, state) {
-        final double itemHeight = 90;
-        final double itemWidth = 50;
+        // Capture the base month/year once on first build
+        if (_baseMonth == null) {
+          _baseMonth = state.month;
+          _baseYear  = state.year;
+        }
+
+        const double itemHeight = 90;
+        const double itemWidth  = 50;
 
         return PageView.builder(
           controller: _pageController,
           onPageChanged: _onPageChanged,
           itemBuilder: (context, index) {
-            final offset = index - initialPage;
-            final displayedMonth = state.month + offset;
-            final tracker = CalendarTracker(displayedMonth, state.year);
+            final offset    = index - initialPage;
+            final rawMonth  = (_baseMonth! - 1) + offset;
+            final yearDelta = (rawMonth / 12).floor();
+            final displayedMonth = rawMonth - yearDelta * 12 + 1;
+            final displayedYear  = _baseYear! + yearDelta;
+
+            final tracker = CalendarTracker(displayedMonth, displayedYear);
+            final daysWithGap = tracker.getDaysCurrentMonthWithGap();
             final displayedMap = MemoryDayMapper.mapMemoriesToDays(
-              tracker.getDaysCurrentMonthWithGap(),
+              daysWithGap,
               state.memories,
             );
+
+            final headerDate = displayedMap.entries
+              .firstWhere((e) => e.key.gapType == CalendarDayGapType.currentMonth)
+              .key
+              .date;
 
             return Column(
               children: [
                 const SizedBox(height: AppSpacingConstants.xxs),
                 PeriodControllerWidget(
-                  header: DateFormat("MMM yyyy").format(
-                    displayedMap.entries
-                        .firstWhere(
-                          (entry) =>
-                              entry.key.gapType ==
-                              CalendarDayGapType.currentMonth,
-                        )
-                        .key
-                        .date,
-                  ),
+                  header: DateFormat("MMM yyyy").format(headerDate),
                   onPreviousPressed: () {
                     _pageController.previousPage(
                       duration: const Duration(milliseconds: 1000),
