@@ -3,7 +3,8 @@ import 'package:roadsyouwalked_app/data/db/dao/media/media_dao.dart';
 import 'package:roadsyouwalked_app/data/db/dao/memory/i_memory_dao.dart';
 import 'package:roadsyouwalked_app/data/db/dao/memory/memory_dao.dart';
 import 'package:roadsyouwalked_app/data/db/database_manager.dart';
-import 'package:roadsyouwalked_app/data/repository/evaluation_repository.dart';
+import 'package:roadsyouwalked_app/data/repository/evaluation/evaluation_repository.dart';
+import 'package:roadsyouwalked_app/data/repository/evaluation/i_evaluation_repository.dart';
 import 'package:roadsyouwalked_app/data/storage/media_storage_service.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_item.dart';
 import 'package:roadsyouwalked_app/model/media/media.dart';
@@ -18,7 +19,7 @@ class MemoryRepository {
   final IMemoryDao _memoryDao = MemoryDao();
   final IMediaDao _mediaDao = MediaDao();
   final _mediaStorageService = MediaStorageService();
-  final _evaluationRepository = EvaluationRepository();
+  final IEvaluationRepository _evaluationRepository = EvaluationRepository();
 
   /// Retrieves a list of memories for a given user ID.
   ///

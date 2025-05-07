@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:roadsyouwalked_app/data/repository/evaluation_repository.dart';
+import 'package:roadsyouwalked_app/data/repository/evaluation/evaluation_repository.dart';
+import 'package:roadsyouwalked_app/data/repository/evaluation/i_evaluation_repository.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_data.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_item.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale.dart';
@@ -11,7 +12,7 @@ part 'evaluation_event.dart';
 part 'evaluation_state.dart';
 
 class EvaluationBloc extends Bloc<EvaluationEvent, EvaluationState> {
-  final EvaluationRepository _evaluationRepository = EvaluationRepository();
+  final IEvaluationRepository _evaluationRepository = EvaluationRepository();
   
   EvaluationBloc() : super(EvaluationInitial()) {
     on<GetDefaultEvaluationScale>(onGetDefaultEvaluationScale);
