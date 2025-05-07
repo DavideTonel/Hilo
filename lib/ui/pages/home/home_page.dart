@@ -76,9 +76,9 @@ class _HomePageState extends State<HomePage> {
     final userBloc = context.read<UserBloc>();
     switch (index) {
       case 0:
-        return HomeAppBar(title: "Your Road", user: userBloc.state.user);
+        return HomeAppBar(title: "You", user: userBloc.state.user);
       case 1:
-        return HomeAppBar(title: "Your Time", user: userBloc.state.user);
+        return HomeAppBar(title: "You", user: userBloc.state.user);
       case 2:
         return StatisticsAppBar(user: userBloc.state.user);
       default:
