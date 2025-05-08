@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" /> <!-- If you want to read audio-->
 
     <application
-        android:label="roadsyouwalked_app"
+        android:label="Hilo"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
