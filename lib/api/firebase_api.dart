@@ -53,11 +53,12 @@ class FirebaseApi {
   /// - Foreground message handling and display via local notifications
   /// - Background and terminated state handling via registered listeners
   Future<void> initPushNotifications() async {
-    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
 
     // Handle notification that opened the app from a terminated state.
     FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
@@ -98,7 +99,9 @@ class FirebaseApi {
   /// to allow interaction with messages after they are shown locally.
   Future<void> initLocalNotifications() async {
     const iOSSettings = DarwinInitializationSettings();
-    const androidSettings = AndroidInitializationSettings("@mipmap/ic_launcher");
+    const androidSettings = AndroidInitializationSettings(
+      "@mipmap/ic_launcher",
+    );
     const settings = InitializationSettings(
       android: androidSettings,
       iOS: iOSSettings,
@@ -115,8 +118,11 @@ class FirebaseApi {
       },
     );
 
-    final platform = _localNotifications.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
+    final platform =
+        _localNotifications
+            .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin
+            >();
     if (platform != null) {
       // Create notification channel on Android.
       await platform.createNotificationChannel(_androidChannel);
@@ -133,7 +139,11 @@ class FirebaseApi {
     final fCMToken = await _firebaseMessaging.getToken();
     dev.log("Token: $fCMToken");
 
-    initPushNotifications();
-    initLocalNotifications();
+    // 🔔 Iscrizione al topic "dailyReminder"
+    await _firebaseMessaging.subscribeToTopic("dailyReminder");
+    dev.log("Subscribed to topic: dailyReminder");
+
+    await initPushNotifications();
+    await initLocalNotifications();
   }
 }
