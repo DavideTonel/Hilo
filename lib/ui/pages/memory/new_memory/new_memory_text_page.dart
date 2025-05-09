@@ -33,6 +33,7 @@ class NewMemoryTextPage extends StatelessWidget {
                 maxLines: null,
                 expands: true,
                 textAlignVertical: TextAlignVertical.top,
+                textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
                   labelText: "What are you thinking?",
                   alignLabelWithHint: true,
