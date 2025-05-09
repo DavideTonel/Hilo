@@ -67,11 +67,7 @@ class EvaluationPageState extends State<EvaluationPage>
           _animationController.forward(from: 0); // Trigger the animation
 
           body = Padding(
-            padding: const EdgeInsets.only(
-              left: 28.0,
-              right: 28.0,
-              top: 5.0
-            ),
+            padding: const EdgeInsets.only(left: 28.0, right: 28.0, top: 5.0),
             child: EvaluationWidget(
               items: items,
               scores: scores,
@@ -137,7 +133,7 @@ class EvaluationWidget extends StatelessWidget {
         items.map((item) {
           final currentValue = scores[item] ?? item.minValue;
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: EvaluationItemWidget(
               item: item,
               currentValue: currentValue.toDouble(),
@@ -173,17 +169,24 @@ class EvaluationItemWidget extends StatelessWidget {
       children: [
         Text(
           item.label,
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
         ),
-        Slider(
-          value: currentValue.toDouble(),
-          min: item.minValue.toDouble(),
-          max: item.maxValue.toDouble(),
-          divisions: item.maxValue - item.minValue,
-          label: currentValue.toInt().toString(),
-          onChanged: (value) {
-            onUpdateScoreItem(item, value.toInt());
-          },
+        SliderTheme(
+          data: SliderTheme.of(context).copyWith(
+            trackHeight: 3,
+            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
+            overlayShape: const RoundSliderOverlayShape(overlayRadius: 12),
+          ),
+          child: Slider(
+            value: currentValue.toDouble(),
+            min: item.minValue.toDouble(),
+            max: item.maxValue.toDouble(),
+            divisions: item.maxValue - item.minValue,
+            label: currentValue.toInt().toString(),
+            onChanged: (value) {
+              onUpdateScoreItem(item, value.toInt());
+            },
+          ),
         ),
       ],
     );
