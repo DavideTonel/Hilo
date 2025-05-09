@@ -25,7 +25,7 @@ class EvaluationBloc extends Bloc<EvaluationEvent, EvaluationState> {
   ) async {
     final EvaluationScale? scale = await _evaluationRepository.getEvaluationScaleById("panas_sf");
     final Map<EvaluationScaleItem, int?> scores = {
-      for (var item in scale!.items) item : null
+      for (var item in scale!.items) item : 1
     };
 
     emit(
