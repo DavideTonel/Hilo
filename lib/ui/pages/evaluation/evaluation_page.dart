@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/evaluation_bloc/evaluation_bloc.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_data.dart';
-import 'package:roadsyouwalked_app/model/evaluation/evaluation_scale_item.dart';
+import 'package:roadsyouwalked_app/ui/components/evaluation/evaluation_widget.dart';
 
 class EvaluationPage extends StatefulWidget {
   final Function(EvaluationResultData evaluationResultData)
@@ -112,83 +112,5 @@ class EvaluationPageState extends State<EvaluationPage>
   void dispose() {
     _animationController.dispose();
     super.dispose();
-  }
-}
-
-class EvaluationWidget extends StatelessWidget {
-  final List<EvaluationScaleItem> items;
-  final Map<EvaluationScaleItem, int?> scores;
-  final Function(EvaluationScaleItem item, int score) onUpdateScoreItem;
-
-  const EvaluationWidget({
-    super.key,
-    required this.items,
-    required this.scores,
-    required this.onUpdateScoreItem,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> evaluationItems =
-        items.map((item) {
-          final currentValue = scores[item] ?? item.minValue;
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: EvaluationItemWidget(
-              item: item,
-              currentValue: currentValue.toDouble(),
-              onUpdateScoreItem: onUpdateScoreItem,
-            ),
-          );
-        }).toList();
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [...evaluationItems],
-    );
-  }
-}
-
-class EvaluationItemWidget extends StatelessWidget {
-  final EvaluationScaleItem item;
-  final double currentValue;
-  final Function(EvaluationScaleItem item, int score) onUpdateScoreItem;
-
-  const EvaluationItemWidget({
-    super.key,
-    required this.item,
-    required this.currentValue,
-    required this.onUpdateScoreItem,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          item.label,
-          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-        ),
-        SliderTheme(
-          data: SliderTheme.of(context).copyWith(
-            trackHeight: 3,
-            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
-            overlayShape: const RoundSliderOverlayShape(overlayRadius: 12),
-          ),
-          child: Slider(
-            value: currentValue.toDouble(),
-            min: item.minValue.toDouble(),
-            max: item.maxValue.toDouble(),
-            divisions: item.maxValue - item.minValue,
-            label: currentValue.toInt().toString(),
-            onChanged: (value) {
-              onUpdateScoreItem(item, value.toInt());
-            },
-          ),
-        ),
-      ],
-    );
   }
 }
