@@ -47,7 +47,7 @@ class NewMemoryInputPageState extends State<NewMemoryInputPage> {
           child: Center(
             child: SmoothPageIndicator(
               controller: _horizontalController,
-              count: 3,
+              count: 2,
               effect: WormEffect(
                 dotHeight: 10,
                 dotWidth: 10,
