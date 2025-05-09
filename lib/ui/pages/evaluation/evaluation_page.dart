@@ -174,7 +174,7 @@ class EvaluationItemWidget extends StatelessWidget {
         SliderTheme(
           data: SliderTheme.of(context).copyWith(
             trackHeight: 3,
-            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
+            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
             overlayShape: const RoundSliderOverlayShape(overlayRadius: 12),
           ),
           child: Slider(
