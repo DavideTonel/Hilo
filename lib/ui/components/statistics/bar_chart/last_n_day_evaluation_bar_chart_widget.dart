@@ -33,8 +33,8 @@ class LastNDayEvaluationBarChartWidget extends StatelessWidget {
     List<DateTime> midnights,
   ) {
     Map<String, Map<DateTime, double>> groupedData = {
-      'positive': {},
-      'negative': {},
+      "negative": {},
+      "positive": {},
     };
 
     for (var midnight in midnights) {
@@ -96,13 +96,13 @@ class LastNDayEvaluationBarChartWidget extends StatelessWidget {
                       x: x.toInt(),
                       barRods: [
                         BarChartRodData(
-                          toY: grouped['positive']?[date] ?? 0,
+                          toY: grouped["positive"]?[date] ?? 0,
                           color: const Color(0xFF8FD6B7),
                           width: 8,
                           borderRadius: BorderRadius.circular(2),
                         ),
                         BarChartRodData(
-                          toY: grouped['negative']?[date] ?? 0,
+                          toY: grouped["negative"]?[date] ?? 0,
                           color: const Color(0xFFEF9A9A),
                           width: 8,
                           borderRadius: BorderRadius.circular(2),
@@ -119,7 +119,7 @@ class LastNDayEvaluationBarChartWidget extends StatelessWidget {
                         getTitlesWidget: (value, meta) {
                           final index = value.toInt();
                           if (index < 0 || index >= midnights.length) return const SizedBox.shrink();
-                          final label = DateFormat('dd').format(midnights[index]);
+                          final label = DateFormat("d").format(midnights[index]);
                           return Text(
                             label,
                             style: TextStyle(

@@ -146,7 +146,7 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
                                 Duration(hours: 1)) {
                               return const SizedBox.shrink();
                             }
-                            final label = DateFormat('dd').format(
+                            final label = DateFormat("d").format(
                               DateTime.fromMillisecondsSinceEpoch(
                                 value.floor(),
                               ),

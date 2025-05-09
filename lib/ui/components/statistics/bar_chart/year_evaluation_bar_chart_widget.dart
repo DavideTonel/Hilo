@@ -49,8 +49,8 @@ class YearEvaluationBarChartWidget extends StatelessWidget {
     for (int month = 1; month <= 12; month++) {
       final data = monthlyAverages[month];
       if (data != null) {
-        final positive = data['positive'] ?? 0;
-        final negative = data['negative'] ?? 0;
+        final positive = data["positive"] ?? 0;
+        final negative = data["negative"] ?? 0;
 
         barGroups.add(
           BarChartGroupData(

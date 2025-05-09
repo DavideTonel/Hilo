@@ -52,15 +52,15 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
 
     for (final day in daysInMonth.map((e) => e.date.day)) {
       final labelValues = dataByDay[day] ?? {};
-      final isPositive = labelValues.containsKey('positive');
-      final isNegative = labelValues.containsKey('negative');
+      final isPositive = labelValues.containsKey("positive");
+      final isNegative = labelValues.containsKey("negative");
 
       final List<BarChartRodData> rods = [];
 
       if (isPositive) {
         rods.add(
           BarChartRodData(
-            toY: labelValues['positive']!,
+            toY: labelValues["positive"]!,
             color: const Color(0xFF8FD6B7),
             width: 6,
             borderRadius: BorderRadius.circular(4),
@@ -71,7 +71,7 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
       if (isNegative) {
         rods.add(
           BarChartRodData(
-            toY: labelValues['negative']!,
+            toY: labelValues["negative"]!,
             color: const Color(0xFFEF9A9A),
             width: 6,
             borderRadius: BorderRadius.circular(4),
