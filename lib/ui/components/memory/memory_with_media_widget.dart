@@ -157,8 +157,10 @@ class _MemoryWithMediaWidgetState extends State<MemoryWithMediaWidget> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      MemoryDescriptionWidget(
-                        description: widget.memory.data.core.description!,
+                      Flexible(
+                        child: MemoryDescriptionWidget(
+                          description: widget.memory.data.core.description!,
+                        ),
                       ),
                     ],
                   ),
