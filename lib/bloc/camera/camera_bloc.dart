@@ -32,7 +32,11 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     Emitter<CameraState> emit
   ) async {
     await state.cameraManager.getAvailableCameras().then((cameras) async {
-      await state.cameraManager.initializeCamera(cameras.last).then((status) {
+      final frontCamera = cameras.firstWhere(
+        (camera) => camera.lensDirection == CameraLensDirection.front,
+        orElse: () => cameras.last,
+      );
+      await state.cameraManager.initializeCamera(frontCamera).then((status) {
         if (status == CameraAccessStatus.granted) {
           emit(CameraLoaded(cameraManager: state.cameraManager));
         } else {
