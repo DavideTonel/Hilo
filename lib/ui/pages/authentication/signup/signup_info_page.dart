@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:roadsyouwalked_app/bloc/authentication/signup/signup_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/camera/camera_bloc.dart';
 import 'package:roadsyouwalked_app/ui/components/authentication/add_profile_image_button.dart';
