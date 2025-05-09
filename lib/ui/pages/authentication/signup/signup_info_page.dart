@@ -7,6 +7,7 @@ import 'package:roadsyouwalked_app/bloc/camera/camera_bloc.dart';
 import 'package:roadsyouwalked_app/ui/components/authentication/add_profile_image_button.dart';
 import 'package:roadsyouwalked_app/ui/components/authentication/profile_image_preview_widget.dart';
 import 'package:roadsyouwalked_app/ui/components/input/confirm_button_widget.dart';
+import 'package:roadsyouwalked_app/ui/components/input/date_selector_widget.dart';
 import 'package:roadsyouwalked_app/ui/components/input/text_input_widget.dart';
 import 'package:roadsyouwalked_app/ui/constants/app_spacing.dart';
 import 'package:roadsyouwalked_app/ui/pages/camera/camera_page.dart';
@@ -90,6 +91,7 @@ class SignupInfoPage extends StatelessWidget {
                   label: "Birthday",
                   value: state.birthday,
                   onDateSelected: (date) {
+                    //dev.log("Date picked: ${DateFormat("dd/mm")}")
                     context.read<SignupBloc>().add(AddBirthday(date: date));
                   },
                 ),
@@ -134,46 +136,6 @@ class SignupInfoPage extends StatelessWidget {
         }
         return page;
       },
-    );
-  }
-}
-
-
-class DateSelectorWidget extends StatelessWidget {
-  final String label;
-  final DateTime? value;
-  final Function(DateTime date) onDateSelected;
-
-  const DateSelectorWidget({super.key, required this.label, this.value, required this.onDateSelected});
-
-  Future<void> _selectBirthday(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null) {
-      onDateSelected(picked);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => _selectBirthday(context),
-      child: AbsorbPointer(
-        child: TextField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: value == null
-                ? label
-                : DateFormat("dd/mm/yyyy").format(value!),
-            suffixIcon: Icon(Icons.calendar_today),
-          ),
-          readOnly: true,
-        ),
-      ),
     );
   }
 }

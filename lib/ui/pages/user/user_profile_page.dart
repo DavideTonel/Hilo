@@ -113,7 +113,7 @@ class UserProfileInfoPage extends StatelessWidget {
           );
         } else {
           final String birthday = DateFormat(
-            "dd/mm/yyyy",
+            "dd/MM/yyyy",
           ).format(DateTime.parse(state.user.birthday));
 
           page = Scaffold(
