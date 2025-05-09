@@ -48,11 +48,12 @@ class LastNDayEvaluationBarChartWidget extends StatelessWidget {
       });
 
       for (var label in groupedData.keys) {
-        final avg = dailyMemories
+        double avg = dailyMemories
             .map((m) => m.data.evaluation.evaluationResult[label])
             .whereType<double>()
             .fold<double>(0.0, (sum, val) => sum + val) /
             (dailyMemories.isNotEmpty ? dailyMemories.length : 1);
+        avg = double.parse(avg.toStringAsFixed(1));
 
         groupedData[label]![midnight] = avg.isNaN ? 0 : avg;
       }

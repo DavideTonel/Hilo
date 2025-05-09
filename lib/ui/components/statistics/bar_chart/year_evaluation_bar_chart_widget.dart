@@ -32,7 +32,8 @@ class YearEvaluationBarChartWidget extends StatelessWidget {
       monthlyAverages[month] = {"positive": 0.0, "negative": 0.0};
       if (labelMap != null) {
         labelMap.forEach((label, values) {
-          final avg = values.reduce((a, b) => a + b) / values.length;
+          double avg = values.reduce((a, b) => a + b) / values.length;
+          avg = double.parse(avg.toStringAsFixed(1));
           monthlyAverages[month]![label] = avg;
         });
       }

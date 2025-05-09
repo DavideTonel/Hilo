@@ -36,7 +36,8 @@ class MonthEvaluationBarChartWidget extends StatelessWidget {
       final Map<String, double> labelAverages = {};
       for (final labelEntry in dayEntry.value.entries) {
         final values = labelEntry.value;
-        final average = values.reduce((a, b) => a + b) / values.length;
+        double average = values.reduce((a, b) => a + b) / values.length;
+        average = double.parse(average.toStringAsFixed(1));
         labelAverages[labelEntry.key] = average;
       }
       result[dayEntry.key] = labelAverages;
