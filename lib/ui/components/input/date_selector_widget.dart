@@ -10,6 +10,7 @@ class DateSelectorWidget extends StatelessWidget {
 
   Future<void> _selectBirthday(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
+      initialEntryMode: DatePickerEntryMode.calendarOnly,
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1900),
