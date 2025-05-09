@@ -78,7 +78,16 @@ class LoginInfoPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("Roads You Walked Logo"),
+              Icon(
+                Icons.route,
+                size: 90,
+              ),
+              const Text(
+                "Hilo",
+                style: TextStyle(
+                  fontSize: 25
+                ),
+              ),
               const SizedBox(height: AppSpacingConstants.xxl),
               TextInputWidget(
                 textController: _usernameTextController,
@@ -110,7 +119,7 @@ class LoginInfoPage extends StatelessWidget {
                   );
                 }
               ),
-              const SizedBox(height: AppSpacingConstants.md),
+              const SizedBox(height: AppSpacingConstants.xs),
               TextButton(
                 onPressed: () {
                   GoRouter.of(context).push("/auth/signup");
