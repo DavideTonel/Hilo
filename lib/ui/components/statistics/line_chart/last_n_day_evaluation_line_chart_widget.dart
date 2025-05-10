@@ -35,25 +35,37 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
     }).toList();
   }
 
-  Map<String, List<FlSpot>> _getSpotsGroupByLabel(final List<Memory> memories) {
-    Map<String, List<FlSpot>> spotsGroupByLabel = {};
-    if (memories.isNotEmpty) {
-      for (final String label
-          in memories.first.data.evaluation.evaluationResult.keys) {
-        List<FlSpot> labeledSpots =
-            memories
-                .map(
-                  (memory) => FlSpot(
-                    DateTime.parse(
-                      memory.data.core.timestamp,
-                    ).millisecondsSinceEpoch.toDouble(),
-                    memory.data.evaluation.evaluationResult[label]!,
-                  ),
-                )
-                .toList();
-        spotsGroupByLabel[label] = labeledSpots;
-      }
+  Map<String, List<FlSpot>> _getDailyAverageSpotsGroupByLabel(
+    List<Memory> memories,
+  ) {
+    final Map<String, Map<DateTime, List<double>>> temp = {};
+
+    for (final memory in memories) {
+      final ts = DateTime.parse(memory.data.core.timestamp);
+      final day = DateTime(ts.year, ts.month, ts.day);
+
+      memory.data.evaluation.evaluationResult.forEach((label, value) {
+        temp.putIfAbsent(label, () => {});
+        temp[label]!.putIfAbsent(day, () => []);
+        temp[label]![day]!.add(value);
+      });
     }
+
+    final Map<String, List<FlSpot>> spotsGroupByLabel = {};
+    temp.forEach((label, dayMap) {
+      final spots =
+          dayMap.entries.map((e) {
+              final day = e.key;
+              final values = e.value;
+              double avg = values.reduce((a, b) => a + b) / values.length;
+              avg = double.parse(avg.toStringAsFixed(1));
+              return FlSpot(day.millisecondsSinceEpoch.toDouble(), avg);
+            }).toList()
+            ..sort((a, b) => a.x.compareTo(b.x));
+
+      spotsGroupByLabel[label] = spots;
+    });
+
     return spotsGroupByLabel;
   }
 
@@ -63,12 +75,15 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
       fromDate: fromDate,
       lastNDays: lastNDays,
     );
-    final Map<String, List<FlSpot>> spotsGroupByLabel = _getSpotsGroupByLabel(
+    final Map<String, List<FlSpot>> spotsGroupByLabel = _getDailyAverageSpotsGroupByLabel(
       memories,
     );
 
     final isDark = Theme.of(context).colorScheme.brightness == Brightness.dark;
-    final Color color = isDark ? const Color(0xFF1A1A1A) : Theme.of(context).colorScheme.primary.withAlpha(20);
+    final Color color =
+        isDark
+            ? const Color(0xFF1A1A1A)
+            : Theme.of(context).colorScheme.primary.withAlpha(20);
 
     return Card(
       elevation: isDark ? 4.0 : 0.0,
@@ -77,12 +92,7 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            Text(
-              "Mood Flow",
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            Text("Mood Flow", style: TextStyle(fontWeight: FontWeight.w500)),
             const SizedBox(height: AppSpacingConstants.md),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -117,10 +127,7 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
                           belowBarData: BarAreaData(
                             show: true,
                             gradient: LinearGradient(
-                              colors: [
-                                color.withAlpha(50),
-                                Colors.transparent,
-                              ],
+                              colors: [color.withAlpha(50), Colors.transparent],
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                             ),
@@ -151,12 +158,7 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
                                 value.floor(),
                               ),
                             );
-                            return Text(
-                              label,
-                              style: TextStyle(
-                                fontSize: 12,
-                              ),
-                            );
+                            return Text(label, style: TextStyle(fontSize: 12));
                           },
                         ),
                       ),
@@ -169,16 +171,12 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
                             if (value == 1) {
                               return Text(
                                 "Low",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                ),
+                                style: TextStyle(fontSize: 12),
                               );
                             } else if (value == 25) {
                               return Text(
                                 "High",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                ),
+                                style: TextStyle(fontSize: 12),
                               );
                             } else {
                               return SizedBox.shrink();
@@ -197,11 +195,13 @@ class LastNDayEvaluationLineChartWidget extends StatelessWidget {
                     borderData: FlBorderData(
                       border: Border(
                         left: BorderSide(
-                          color: Theme.of(context).colorScheme.onPrimaryContainer,
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
                         ),
                         bottom: BorderSide(
-                          color: Theme.of(context).colorScheme.onPrimaryContainer,
-                        )
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
                       ),
                     ),
                   ),
