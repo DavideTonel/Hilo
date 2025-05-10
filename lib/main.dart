@@ -95,7 +95,7 @@ class MyAppWithRouter extends StatelessWidget {
           darkTheme: AppTheme.darkTheme(colorSchemeDark),
           themeMode: themeMode,
           routerConfig: appRouter.router,
-          title: "Roads You Walked",
+          title: "Hilo",
         );
       },
     );
