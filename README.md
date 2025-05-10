@@ -1,16 +1,11 @@
-# roadsyouwalked_app
+# Hilo
 
-A new Flutter project.
+**Hilo** is a Flutter-based mobile application developed as part of a thesis project.  
+The app helps users track and evaluate their mood while creating memories such as photos and textual descriptions.
 
-## Getting Started
+## 📱 Features
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- 📝 Daily mood evaluations using validated psychological scales (e.g., PANAS Short Form)
+- 📊 Visual statistics and interactive charts to monitor mood over time
+- 🔔 Smart reminders to encourage consistent self-reflection and journaling
+- 📷 Memory logging with optional photo and audio attachments
