@@ -26,7 +26,7 @@ class DatabaseManager {
   /// Initializes the local SQLite database with all required tables and default data.
   Future<Database> initializeDB() async {
     return openDatabase(
-      join(await getDatabasesPath(), "uni_test_11.db"),
+      join(await getDatabasesPath(), "hilo_db.db"),
       version: 1,
       onCreate: (db, version) async {
         // Settings table
@@ -138,7 +138,7 @@ class DatabaseManager {
           "affectType": "positive",
         });
         await db.insert("Evaluation_Scale_Item", {
-          "id": "2",
+          "id": "3",
           "evaluationScaleId": "panas_sf",
           "label": "Excited",
           "minValue": 1,
@@ -146,7 +146,7 @@ class DatabaseManager {
           "affectType": "positive",
         });
         await db.insert("Evaluation_Scale_Item", {
-          "id": "3",
+          "id": "5",
           "evaluationScaleId": "panas_sf",
           "label": "Strong",
           "minValue": 1,
@@ -154,7 +154,7 @@ class DatabaseManager {
           "affectType": "positive",
         });
         await db.insert("Evaluation_Scale_Item", {
-          "id": "4",
+          "id": "7",
           "evaluationScaleId": "panas_sf",
           "label": "Enthusiastic",
           "minValue": 1,
@@ -162,7 +162,7 @@ class DatabaseManager {
           "affectType": "positive",
         });
         await db.insert("Evaluation_Scale_Item", {
-          "id": "5",
+          "id": "9",
           "evaluationScaleId": "panas_sf",
           "label": "Inspired",
           "minValue": 1,
@@ -172,7 +172,7 @@ class DatabaseManager {
 
         // Negative affect items
         await db.insert("Evaluation_Scale_Item", {
-          "id": "6",
+          "id": "2",
           "evaluationScaleId": "panas_sf",
           "label": "Afraid",
           "minValue": 1,
@@ -180,7 +180,7 @@ class DatabaseManager {
           "affectType": "negative",
         });
         await db.insert("Evaluation_Scale_Item", {
-          "id": "7",
+          "id": "4",
           "evaluationScaleId": "panas_sf",
           "label": "Upset",
           "minValue": 1,
@@ -188,7 +188,7 @@ class DatabaseManager {
           "affectType": "negative",
         });
         await db.insert("Evaluation_Scale_Item", {
-          "id": "8",
+          "id": "10",
           "evaluationScaleId": "panas_sf",
           "label": "Hostile",
           "minValue": 1,
@@ -196,7 +196,7 @@ class DatabaseManager {
           "affectType": "negative",
         });
         await db.insert("Evaluation_Scale_Item", {
-          "id": "9",
+          "id": "6",
           "evaluationScaleId": "panas_sf",
           "label": "Nervous",
           "minValue": 1,
@@ -204,7 +204,7 @@ class DatabaseManager {
           "affectType": "negative",
         });
         await db.insert("Evaluation_Scale_Item", {
-          "id": "10",
+          "id": "8",
           "evaluationScaleId": "panas_sf",
           "label": "Ashamed",
           "minValue": 1,

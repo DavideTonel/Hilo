@@ -44,13 +44,10 @@ class EvaluationDao extends IEvaluationDao {
   Future<EvaluationScale?> getEvaluationScaleById(final String id) async {
     try {
       final db = await _dbManager.database;
-
-      // Retrieve the evaluation scale data.
       final evalData = await db
           .query("Evaluation_Scale", where: "id = ?", whereArgs: [id], limit: 1)
           .then((results) => results.first);
 
-      // Retrieve the items associated with the evaluation scale.
       final List<EvaluationScaleItem> items = await db
           .query(
             "Evaluation_Scale_Item",
@@ -64,7 +61,6 @@ class EvaluationDao extends IEvaluationDao {
                 .toList();
           });
 
-      // Return the constructed EvaluationScale object with its items.
       return EvaluationScale(
         id: id,
         name: evalData["name"] as String,
