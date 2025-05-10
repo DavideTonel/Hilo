@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:roadsyouwalked_app/bloc/evaluation_bloc/evaluation_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/evaluation/evaluation_bloc.dart';
 import 'package:roadsyouwalked_app/model/evaluation/evaluation_result_data.dart';
 import 'package:roadsyouwalked_app/ui/components/evaluation/evaluation_widget.dart';
 
@@ -48,7 +48,7 @@ class EvaluationPageState extends State<EvaluationPage>
         } else if (state is EvaluationLoaded ||
             state is EvaluationInProgress ||
             state is EvaluationCompleted) {
-          final items = state.scale!.items;
+          final items = state.scale!.items..sort((a,b) => int.parse(a.id).compareTo(int.parse(b.id)));
           final scores = state.scores;
 
           final completed = scores.values.where((v) => v != null).length;

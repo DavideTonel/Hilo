@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/bloc/camera/camera_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/new_memory/new_memory_bloc.dart';
-import 'package:roadsyouwalked_app/bloc/evaluation_bloc/evaluation_bloc.dart';
+import 'package:roadsyouwalked_app/bloc/evaluation/evaluation_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/position/position_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
