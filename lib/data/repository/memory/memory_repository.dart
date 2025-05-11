@@ -110,7 +110,7 @@ class MemoryRepository extends IMemoryRepository {
     await DatabaseManager.instance.database.then((db) {
       db.transaction((transaction) async {
         try {
-          _memoryDao.insertMemory(Memory(data: memoryData), transaction);
+          await _memoryDao.insertMemory(Memory(data: memoryData), transaction);
 
           for (var pendingMedia in pendingMediaList) {
             final Media media = await _mediaStorageService.saveMedia(

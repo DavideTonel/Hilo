@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:roadsyouwalked_app/ui/pages/authentication/authentication_page.dart';
 import 'package:roadsyouwalked_app/ui/pages/authentication/login/login_page.dart';
@@ -16,6 +17,9 @@ class AppRouter {
   /// The GoRouter instance used throughout the app to manage navigation.
   late final GoRouter router;
 
+  /// The RouteObserver used throughout the app to manage navigation reactions.
+  static final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+
   /// Initializes the application router with a set of predefined routes.
   ///
   /// Sets the initial location to `/auth`, guiding users first to the
@@ -23,6 +27,7 @@ class AppRouter {
   AppRouter() {
     router = GoRouter(
       initialLocation: "/auth",
+      observers: [ routeObserver ],
       routes: [
         /// Home page route.
         GoRoute(

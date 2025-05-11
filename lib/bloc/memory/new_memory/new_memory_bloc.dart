@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:roadsyouwalked_app/data/db/dao/media/i_media_dao.dart';
 import 'package:roadsyouwalked_app/data/db/dao/media/media_dao.dart';
@@ -137,8 +138,9 @@ class NewMemoryBloc extends Bloc<NewMemoryEvent, NewMemoryState> {
         ),
         state.mediaList,
         state.evaluationResultData!.singleItemScores,
-      );
-      emit(NewMemorySaveSuccess());
+      ).then((_) {
+        emit(NewMemorySaveSuccess());
+      });
     } on IncompleteMemoryException catch (e) {
       dev.log(e.toString());
       emit(

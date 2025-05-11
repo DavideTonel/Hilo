@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/memory/memory_bloc.dart';
 import 'package:roadsyouwalked_app/bloc/user/user_bloc.dart';
 import 'package:roadsyouwalked_app/model/memory/memory_order_type.dart';
+import 'package:roadsyouwalked_app/navigation/app_router.dart';
 import 'package:roadsyouwalked_app/ui/components/home/add_memory_action_button.dart';
 import 'package:roadsyouwalked_app/ui/components/home/home_app_bar.dart';
 import 'package:roadsyouwalked_app/ui/components/home/home_drawer.dart';
@@ -20,8 +21,9 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with RouteAware {
   int _selectedIndex = 0;
+  bool isLoading = false;
 
   static const Map<int, MemoryOrderType> _orderTypeMap = {
     0: MemoryOrderType.timeline,
@@ -33,6 +35,39 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _loadInitialMemories();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    AppRouter.routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void dispose() {
+    AppRouter.routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() async {
+    final userId = context.read<UserBloc>().state.user?.username;
+    setState(() {
+      isLoading = true;
+    });
+
+    await _loadMemoriesIfNeeded(2, userId!);
+    setState(() {
+      _selectedIndex = 2;
+    });
+
+    await Future.delayed(const Duration(milliseconds: 500), () async {
+      await _loadMemoriesIfNeeded(0, userId);
+      setState(() {
+        _selectedIndex = 0;
+      });
+      isLoading = false;
+    });
   }
 
   MemoryOrderType _getMemoryOrderTypeFromIndex(final int index) {
@@ -74,26 +109,24 @@ class _HomePageState extends State<HomePage> {
 
   PreferredSizeWidget? _getAppBarFromIndex(BuildContext context, int index) {
     final userBloc = context.read<UserBloc>();
-    switch (index) {
-      case 0:
-        return HomeAppBar(title: "You", user: userBloc.state.user);
-      case 1:
-        return HomeAppBar(title: "You", user: userBloc.state.user);
-      case 2:
-        return StatisticsAppBar(user: userBloc.state.user);
-      default:
-        return null;
+    if (isLoading) {
+      return AppBar();
+    } else {
+      switch (index) {
+        case 0:
+          return HomeAppBar(title: "You", user: userBloc.state.user);
+        case 1:
+          return HomeAppBar(title: "You", user: userBloc.state.user);
+        case 2:
+          return StatisticsAppBar(user: userBloc.state.user);
+        default:
+          return null;
+      } 
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> pages = [
-      const FeedPage(key: PageStorageKey('feed')),
-      const CalendarPage(key: PageStorageKey('calendar')),
-      const StatisticsPage(key: PageStorageKey("statistics")),
-    ];
-
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
         return Scaffold(
@@ -101,7 +134,15 @@ class _HomePageState extends State<HomePage> {
           appBar: _getAppBarFromIndex(context, _selectedIndex),
           drawer: HomeDrawer(user: state.user),
           drawerDragStartBehavior: DragStartBehavior.start,
-          body: IndexedStack(index: _selectedIndex, children: pages),
+          body:
+              isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : switch (_selectedIndex) {
+                    0 => FeedPage(),
+                    1 => CalendarPage(),
+                    2 => StatisticsPage(),
+                    _ => FeedPage(),
+                  },
           floatingActionButtonLocation:
               FloatingActionButtonLocation.miniEndFloat,
           floatingActionButton:
