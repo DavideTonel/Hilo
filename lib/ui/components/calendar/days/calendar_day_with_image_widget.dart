@@ -25,28 +25,24 @@ class CalendarDayWithImageWidget extends StatelessWidget {
       child: Container(
         height: height,
         width: width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
         clipBehavior: Clip.antiAlias,
         child: Stack(
           fit: StackFit.expand,
           alignment: Alignment.center,
           children: [
-            ColorFiltered(
-              colorFilter: const ColorFilter.mode(
-                Colors.black12,
-                BlendMode.darken,
-              ),
-              child: ImageWidget(
-                imagePath:
-                    memories
-                        .where((memory) => memory.mediaList.isNotEmpty)
-                        .map((memory) => memory.mediaList)
-                        .lastWhere((medias) => medias.any((media) => media.type == MediaType.image))
-                        .lastWhere((media) => media.type == MediaType.image)
-                        .reference,
-              ),
+            ImageWidget(
+              imagePath:
+                  memories
+                      .where((memory) => memory.mediaList.isNotEmpty)
+                      .map((memory) => memory.mediaList)
+                      .lastWhere(
+                        (medias) => medias.any(
+                          (media) => media.type == MediaType.image,
+                        ),
+                      )
+                      .lastWhere((media) => media.type == MediaType.image)
+                      .reference,
             ),
             Align(
               alignment: Alignment.center,
@@ -55,6 +51,13 @@ class CalendarDayWithImageWidget extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      offset: Offset(2.0, 2.0),
+                      blurRadius: 3.0,
+                      color: Colors.black.withAlpha(150),
+                    ),
+                  ],
                 ),
               ),
             ),
