@@ -37,4 +37,9 @@ abstract class IUserDao {
   /// [username] - The username of the user whose profile image needs to be updated.
   /// [newImagePath] - The new image path to be set. Can be `null` if the image is to be removed.
   Future<void> updateProfileImageUser(final String username, final String? newImagePath);
+
+  /// Updates the existing user data.
+  ///
+  /// [user] - The user with new data.
+  Future<void> updateUser(User user);
 }

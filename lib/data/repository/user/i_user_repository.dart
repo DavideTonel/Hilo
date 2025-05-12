@@ -45,6 +45,11 @@ abstract class IUserRepository {
   /// Throws an exception if there is an issue saving the image.
   Future<void> updateProfileImage(final String username, final File? newImage);
 
+  /// Updates the existing user data.
+  ///
+  /// [user] - The user with new data.
+  Future<void> updateUser(User user);
+
   /// Retrieves the stored auto-login credentials.
   ///
   /// This method retrieves the username and password stored for auto-login.

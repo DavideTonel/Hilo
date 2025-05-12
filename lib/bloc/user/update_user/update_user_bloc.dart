@@ -11,7 +11,7 @@ part 'update_user_state.dart';
 
 class UpdateUserBloc extends Bloc<UpdateUserEvent, UpdateUserState> {
   final IUserRepository _userRepository = UserRepository();
-  final void Function() onUpdate;
+  final Future<void> Function(String username, String password) onUpdate;
 
   UpdateUserBloc({required final User user, required this.onUpdate})
     : super(UpdateUserInitial(
@@ -51,21 +51,34 @@ class UpdateUserBloc extends Bloc<UpdateUserEvent, UpdateUserState> {
     Emitter<UpdateUserState> emit,
   ) async {
     try {
+      await _userRepository.deleteAutoLoginCredentials();
+      await _userRepository.setAutoLoginCredentials(
+        event.user.username,
+        event.user.password
+      );
+
+      await _userRepository.updateUser(event.user);
+
       await _userRepository.updateProfileImage(
-        state.user.username,
+        event.user.username,
         state.newProfileImage,
       );
+
       final User? newUser = await _userRepository.getUser(
-        state.user.username,
-        state.user.password,
+        event.user.username,
+        event.user.password,
       );
+      
       emit(
         UpdateUserInProgress(
           user: newUser!,
           newProfileImage: state.newProfileImage,
         ),
       );
-      onUpdate();
+      await onUpdate(
+        newUser.username,
+        newUser.password
+      );
     } catch (e) {
       dev.log(e.toString());
     }

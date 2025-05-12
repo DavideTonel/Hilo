@@ -7,6 +7,7 @@ class TextInputWidget extends StatelessWidget {
   final void Function(String value)? onChanged;
   final bool isValid;
   final String? errorText;
+  final bool enabled;
 
   const TextInputWidget({
     super.key,
@@ -16,11 +17,13 @@ class TextInputWidget extends StatelessWidget {
     this.onChanged,
     this.isValid = true,
     this.errorText,
+    this.enabled = true
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      enabled: enabled,
       controller: textController,
       onChanged: onChanged,
       decoration: InputDecoration(

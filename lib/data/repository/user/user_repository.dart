@@ -100,4 +100,9 @@ class UserRepository extends IUserRepository {
   Future<void> deleteAutoLoginCredentials() async {
     await _sharedPreferencesManager.delete(["username", "password"]);
   }
+
+  @override
+  Future<void> updateUser(final User user) async {
+    await _userDao.updateUser(user);
+  }
 }

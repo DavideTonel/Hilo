@@ -11,7 +11,10 @@ class UserDao extends IUserDao {
   final DatabaseManager _dbManager = DatabaseManager.instance;
 
   @override
-  Future<bool> checkUserExists(final String username, final String password) async {
+  Future<bool> checkUserExists(
+    final String username,
+    final String password,
+  ) async {
     try {
       final db = await _dbManager.database;
       final List<Map<String, dynamic>> result = await db.query(
@@ -58,7 +61,10 @@ class UserDao extends IUserDao {
   }
 
   @override
-  Future<List<User>> getUser(final String username, final String password) async {
+  Future<List<User>> getUser(
+    final String username,
+    final String password,
+  ) async {
     try {
       final db = await _dbManager.database;
       final List<Map<String, dynamic>> result = await db.query(
@@ -74,16 +80,32 @@ class UserDao extends IUserDao {
   }
 
   @override
-  Future<void> updateProfileImageUser(final String username, final String? newImagePath) async {
+  Future<void> updateProfileImageUser(
+    final String username,
+    final String? newImagePath,
+  ) async {
     try {
       final db = await _dbManager.database;
       await db.update(
         "User",
-        {
-          "referenceProfileImage": newImagePath
-        },
+        {"referenceProfileImage": newImagePath},
         where: "username = ?",
-        whereArgs: [ username ]
+        whereArgs: [username],
+      );
+    } catch (e) {
+      dev.log(e.toString());
+    }
+  }
+
+  @override
+  Future<void> updateUser(User user) async {
+    try {
+      final db = await DatabaseManager.instance.database;
+      await db.update(
+        "User",
+        user.toMap(),
+        where: "username = ?",
+        whereArgs: [user.username],
       );
     } catch (e) {
       dev.log(e.toString());

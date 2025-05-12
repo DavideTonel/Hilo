@@ -44,6 +44,7 @@ class User {
     final String? newFirstName,
     final String? newLastName,
     final String? newProfileImagePath,
+    final String? newBirthday
   }) {
     return User(
       username: newUsername ?? username,
@@ -51,7 +52,7 @@ class User {
       firstName: newFirstName ?? firstName,
       lastName: newLastName ?? lastName,
       profileImagePath: newProfileImagePath ?? profileImagePath,
-      birthday: birthday,
+      birthday: newBirthday ?? birthday,
     );
   }
 
@@ -81,5 +82,17 @@ class User {
       profileImagePath: map["referenceProfileImage"] as String?,
       birthday: map["birthday"] as String,
     );
+  }
+
+  @override
+  String toString() {
+    return 'User('
+        'username: $username, '
+        'password: $password, '
+        'firstName: $firstName, '
+        'lastName: $lastName, '
+        'profileImagePath: $profileImagePath, '
+        'birthday: $birthday'
+        ')';
   }
 }
