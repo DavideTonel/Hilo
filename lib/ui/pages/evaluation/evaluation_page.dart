@@ -66,9 +66,12 @@ class EvaluationPageState extends State<EvaluationPage>
           );
           _animationController.forward(from: 0); // Trigger the animation
 
+          final heightPerItem = MediaQuery.of(context).size.height / (items.length + 6.8); // +1 for padding
+
           body = Padding(
             padding: const EdgeInsets.only(left: 28.0, right: 28.0, top: 5.0),
             child: EvaluationWidget(
+              height: heightPerItem,
               items: items,
               scores: scores,
               onUpdateScoreItem: (item, score) {

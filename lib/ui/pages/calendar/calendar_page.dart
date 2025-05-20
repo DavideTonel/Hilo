@@ -61,8 +61,9 @@ class _CalendarPageState extends State<CalendarPage> {
           _baseYear  = state.year;
         }
 
-        const double itemHeight = 90;
-        const double itemWidth  = 50;
+        final size = MediaQuery.of(context).size;
+        final double itemWidth = size.width / 8.6;
+        final double itemHeight = (size.height - 200) / 7.5;
 
         return PageView.builder(
           controller: _pageController,

@@ -6,12 +6,14 @@ class EvaluationWidget extends StatelessWidget {
   final List<EvaluationScaleItem> items;
   final Map<EvaluationScaleItem, int?> scores;
   final Function(EvaluationScaleItem item, int score) onUpdateScoreItem;
+  final double? height;
 
   const EvaluationWidget({
     super.key,
     required this.items,
     required this.scores,
     required this.onUpdateScoreItem,
+    this.height
   });
 
   @override
@@ -21,10 +23,13 @@ class EvaluationWidget extends StatelessWidget {
           final currentValue = scores[item] ?? item.minValue;
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: EvaluationItemWidget(
-              item: item,
-              currentValue: currentValue.toDouble(),
-              onUpdateScoreItem: onUpdateScoreItem,
+            child: SizedBox(
+              height: height,
+              child: EvaluationItemWidget(
+                item: item,
+                currentValue: currentValue.toDouble(),
+                onUpdateScoreItem: onUpdateScoreItem,
+              ),
             ),
           );
         }).toList();
@@ -32,7 +37,9 @@ class EvaluationWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: [...evaluationItems],
+      children: [
+        ...evaluationItems
+      ],
     );
   }
 }
